@@ -1,0 +1,152 @@
+<template>
+  <div class="device_con">
+    <div class="device_title">
+      <div class="content">
+        <img src="../../assets/images/mechanic_icon/running_icon.gif">
+         <span class="text">加工台数</span>
+         <span class="number">{{unitsNumber}}台</span>
+      </div>
+       <div class="content">
+        <img src="../../assets/images/mechanic_icon/alarm_icon.gif">
+         <span class="text">报警台数</span>
+         <span class="number">{{AlamNumber}}台</span>
+      </div>
+       <div class="content">
+        <img src="../../assets/images/mechanic_icon/standby_icon.gif">
+         <span class="text">待机台数</span>
+         <span class="number">{{StandbyNumber}}台</span>
+      </div>
+       <div class="content">
+        <img src="../../assets/images/mechanic_icon/off_line_icon.png">
+         <span class="text">离线台数</span>
+         <span class="number">{{offlineNumber}}台</span>
+      </div>
+    </div>
+    <div class="device-distribution-map" ref="device_distribution_map"
+    :style="{
+      backgroundImage: 'url(' + layoutImgUrl + ')',
+      backgroundRepeat:'no-repeat',
+      backgroundPosition:'center center', 
+      backgroundSize: '100% 100%'
+    }"
+    >
+    </div>
+    <div class="map-tab">
+		<a class="arrow-left" href="#" @click="slidePrev"></a>
+		<a class="arrow-right" href="#" @click="slideNext"></a>
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" :class="{'normal': !item.isSelected,'selected' : item.isSelected}" v-for="item in swiperShowList" :key="item.workshopName">
+        <div class="swiper-option">{{item.workshopName}}</div>
+      </div>
+    </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data(){
+    return{
+      unitsNumber:0,
+      AlamNumber:0,
+      StandbyNumber:0,
+      offlineNumber:0,
+      layoutImgUrl:'',
+      swiperShowList:[]
+    }
+  },
+  mounted(){},
+  methods:{
+    //向左点击移动车间
+    slidePrev(){},
+    //向右点击移动车间
+    slideNext(){}
+  }
+}
+</script>
+<style scoped lang="scss">
+.device_con{
+  width: 100%;
+  height:616px ;
+  .device_title{
+     height: 5%;
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    .content{
+       flex: 1;
+      position: relative;
+      font-size: 21px;
+       @-webkit-keyframes myAnimation {
+        0% {
+          opacity: 0;
+          filter: alpha(opacity=0)
+        }
+        100% {
+          opacity: 1;
+          filter: alpha(opacity=100)
+        }
+      } 
+      @keyframes myAnimation {
+        0% {
+          opacity: 0
+        }
+        100% {
+          opacity: 1
+        }
+      }
+   img{
+     width: 33px;
+     height: 33px;
+    -webkit-animation: myAnimation 1.5s infinite;
+    animation: myAnimation 1.5s infinite
+   }
+    .text{
+        color: rgb(71,191,196);
+        padding-left: 8px;
+        position: absolute;
+        left: 33px;
+      }
+      .number{
+        color: #ffffff;
+        position: absolute;
+        right: 16px
+      }
+  }
+}
+ .device-distribution-map {
+    width: 98%;
+    height: 70%;
+    margin-top: 5%;
+    margin-left: 1%;
+    position: relative;
+  }
+  .map-tab {
+     width: 100%;
+    height: 18%;
+    margin-top: 2%;
+    margin-bottom: 42px;
+    position: relative;
+       .arrow-left {
+      background: url("../../assets/images/distribution_map/arrow_left.png") no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      top: 50%;
+      margin-top: -33px;
+      left: 10px;
+      width: 66px;
+      height: 66px;
+    }
+    .arrow-right {
+      background: url("../../assets/images/distribution_map/arrow_right.png") no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      top: 50%;
+      margin-top: -33px;
+      right: 10px;
+      width: 66px;
+      height: 66px;
+    }
+  }
+}
+</style>
