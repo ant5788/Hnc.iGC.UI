@@ -44,7 +44,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .main{
-height: calc(100% - 114px);
+ height: calc(100% - 114px);
  width: 100%;
  margin-top:20px;
 }

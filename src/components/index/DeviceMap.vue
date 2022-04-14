@@ -50,8 +50,8 @@ export default {
       AlamNumber:0,
       StandbyNumber:0,
       offlineNumber:0,
-      layoutImgUrl:'',
-      swiperShowList:[]
+      layoutImgUrl:require("../../assets/images/weidanum3.png"),
+      swiperShowList:[{workshopName:"大件加工车间"}]
     }
   },
   mounted(){},
@@ -148,5 +148,33 @@ export default {
       height: 66px;
     }
   }
+ .swiper-wrapper {
+      width: 100%;
+      height: 100%;
+      margin-left: 83px;
+      position: absolute;
+      overflow: hidden;
+      .swiper-slide {
+        width: 158px;
+        height: 66px;
+        margin-top: 16px;
+        margin-left: 13px;
+        margin-right: 13px;
+        display: inline-block;
+        font-size: 20px;
+        line-height: 75px;
+        text-align: center;
+      }
+      .normal {
+        background: url("../../assets/images/border_normal.png") no-repeat;
+        background-size: 100% 100%;
+        color: #ffffff;
+      }
+      .selected {
+        background: url("../../assets/images/border_selected.png") no-repeat;
+        background-size: 100% 100%;
+        color: #77DCDD;
+      }
+    }
 }
 </style>

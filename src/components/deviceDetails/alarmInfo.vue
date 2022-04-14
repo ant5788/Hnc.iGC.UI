@@ -1,9 +1,9 @@
 <template>
-  <div class="alaminfo_box">
-    <dv-border-box-12>
-      <div class="title">▎实时报警信息</div>
-        <div class="alam_info">
-        <span>工位</span>
+  <div class="alarm_info">
+    <dv-border-box-13>
+      <dv-decoration-7  class="title">报警信息</dv-decoration-7>
+       <div class="alam_info">
+        <span>报警编号</span>
         <span>报警内容</span>
         <span>持续时长</span>
         </div>
@@ -14,9 +14,9 @@
             <span>{{ item.alarmMessage }}</span>
             <span>{{ item.durationTime }}</span>
           </li>
-        </ul>     
-      </div>
-    </dv-border-box-12>
+        </ul>   
+         </div>  
+    </dv-border-box-13>
   </div>
 </template>
 <script>
@@ -70,16 +70,17 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.alaminfo_box{
-  width: 100%;
-  height: 316px;
+.alarm_info{
+margin-top: 20px;
+width: 90%;
+height: 100%;
+color: #fff;
 .title{
   height: 60px;
-   line-height: 60px;
-   width: 100%;
-   color: #fff;
-   font-size: 20px;
-   padding-left: 30px;
+  width: 30%;
+  line-height: 60px;
+  font-size: 30px;
+padding: 10px 0;
 }
 .alam_info{
   color: #fff;
@@ -87,9 +88,9 @@ export default {
       span {
         display: inline-block;
         width: 33%;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 400;
-        line-height: 18px;
+        line-height: 30px;
         text-align: center;
         color: #ffffff;
       }
@@ -102,10 +103,10 @@ export default {
         padding: 0;
         margin:0;
         li {
-          height: 30px;
-          font-size: 18px;
+          height: 40px;
+          font-size: 20px;
           color: #ffffff;
-          line-height: 30px;
+          line-height: 40px;
           text-align: center;
           list-style: none;
           span {
