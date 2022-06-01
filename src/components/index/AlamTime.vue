@@ -1,54 +1,63 @@
 <template>
   <div class="box">
     <dv-border-box-12 class="alam_box">
-      <div class="title">▎{{title}}</div>
+      <div class="title">▎{{ title }}</div>
       <div class="alam_con" ref="alarm_duration_top5_ref"></div>
     </dv-border-box-12>
   </div>
 </template>
 <script>
 export default {
-  data(){
-    return{
-      title:"报警时长TOP5",
+  props: {
+    deviceNumberList: {
+      type: Array,
+    },
+    durationTimeList: { type: Array },
+  },
+  data() {
+    return {
+      title: "报警时长TOP5",
       chartInstance: null,
-      deviceNumberList: [],
-      durationTimeList: [],
-       timer5Sec: null
-    }
+      // deviceNumberList: [],
+      // durationTimeList: [],
+      timer5Sec: null,
+    };
   },
-  mounted(){
-    this.initChart()
-   this.screenAdapter()
-    window.addEventListener('resize', () => {
-      this.screenAdapter()
-    })
-    this.startInterval()
+  mounted() {
+    this.initChart();
+    this.screenAdapter();
+    window.addEventListener("resize", () => {
+      this.screenAdapter();
+    });
+    this.startInterval();
   },
-   destroyed() {
+  destroyed() {
     if (this.timer5Sec !== null) {
-      clearInterval(this.timer5Sec)
+      clearInterval(this.timer5Sec);
     }
     // 在组件销毁时，将监听器注销
-    window.removeEventListener('resize', function () {
-      this.chartInstance.resize()
-    })
+    window.removeEventListener("resize", function () {
+      this.chartInstance.resize();
+    });
   },
-  created(){ 
-  console.log(this.$echarts)},
-  methods:{
-      initChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.alarm_duration_top5_ref)
+  created() {
+    console.log(this.$echarts);
+  },
+  methods: {
+    initChart() {
+      this.chartInstance = this.$echarts.init(
+        this.$refs.alarm_duration_top5_ref
+      );
       const initOption = {
         grid: {
-          top: '3%',
-          left: '3%',
-          right: '2%',
-          bottom: '3%',
+          top: "3%",
+          left: "3%",
+          right: "2%",
+          bottom: "3%",
           containLabel: true,
         },
         xAxis: {
-          type: 'value',
+          type: "value",
           axisTick: {
             show: false,
           },
@@ -63,7 +72,7 @@ export default {
           },
         },
         yAxis: {
-          type: 'category',
+          type: "category",
           boundaryGap: true,
           inverse: true,
           axisLine: {
@@ -74,41 +83,39 @@ export default {
           },
           axisLabel: {
             margin: 18,
-            color: '#ffffff',
+            color: "#ffffff",
             fontSize: 18,
           },
           data: [],
         },
         series: [
           {
-            type: 'bar',
-            barMaxWidth: '80%',
+            type: "bar",
+            barMaxWidth: "80%",
             label: {
               normal: {
                 show: true,
-                position: 'insideLeft',
+                position: "insideLeft",
                 distance: 15,
-                formatter: '{c}分钟',
+                formatter: "{c}分钟",
                 textStyle: {
-                  color: '#ffffff',
-                  fontSize: 18
+                  color: "#ffffff",
+                  fontSize: 18,
                 },
               },
             },
           },
         ],
-      }
-      this.chartInstance.setOption(initOption)
+      };
+      this.chartInstance.setOption(initOption);
     },
-    getData(){
-      this.deviceNumberList=["设备一","设备二","设备三","设备四","设备五"]
-      this.durationTimeList=["99","98","90","80","70"]
-      this.updateChart()
+    getData() {
+      this.updateChart();
     },
-     updateChart() {
+    updateChart() {
       const dataOption = {
         yAxis: {
-          data: this.deviceNumberList
+          data: this.deviceNumberList,
         },
         series: [
           {
@@ -116,86 +123,86 @@ export default {
               {
                 value: this.durationTimeList[0],
                 itemStyle: {
-                  color: '#fb4d4b',
-                }
+                  color: "#fb4d4b",
+                },
               },
               {
                 value: this.durationTimeList[1],
                 itemStyle: {
-                  color: '#fb4d4b',
-                }
+                  color: "#fb4d4b",
+                },
               },
               {
                 value: this.durationTimeList[2],
                 itemStyle: {
-                  color: '#3292c5',
-                }, 
+                  color: "#3292c5",
+                },
               },
               {
                 value: this.durationTimeList[3],
                 itemStyle: {
-                  color: '#3292c5',
+                  color: "#3292c5",
                 },
               },
               {
                 value: this.durationTimeList[4],
                 itemStyle: {
-                  color: '#59ebe8',
-                }
-              }
-            ]
-          }
-        ]
-      }
-     
-      this.chartInstance.setOption(dataOption)
+                  color: "#59ebe8",
+                },
+              },
+            ],
+          },
+        ],
+      };
+
+      this.chartInstance.setOption(dataOption);
     },
-       screenAdapter() {
+    screenAdapter() {
       const adapterOption = {
         yAxis: {
           axisLabel: {
             fontSize: 24,
-          }
+          },
         },
         series: [
           {
             label: {
               normal: {
                 textStyle: {
-                  fontSize: 24
+                  fontSize: 24,
                 },
               },
             },
           },
         ],
-      }
-      this.chartInstance.setOption(adapterOption)
-      this.chartInstance.resize()
+      };
+      this.chartInstance.setOption(adapterOption);
+      this.chartInstance.resize();
     },
     startInterval() {
       if (this.timer5Sec != null) {
-        clearInterval(this.timer5Sec)
+        clearInterval(this.timer5Sec);
       }
       this.timer5Sec = setInterval(() => {
-        this.getData()
-      }, 1000 * 5)
-    }
-  }
-}
+        this.getData();
+      }, 1000 * 5);
+    },
+  },
+};
 </script>
 <style scoped lang="scss">
-.alam_box{
+.alam_box {
   width: 100%;
   height: 300px;
-  .title{
-   height: 60px;
-   line-height: 60px;
-   width: 100%;
-   color: #fff;
-   font-size: 20px;
-   padding-left: 30px;
+  .title {
+    height: 60px;
+    line-height: 60px;
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    padding-left: 30px;
   }
-  .alam_con{
+  .alam_con {
     width: 96%;
     height: 75%;
     margin-left: 2%;

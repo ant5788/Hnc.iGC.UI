@@ -1,7 +1,7 @@
 <template>
   <div class="reg_con">
     <dv-border-box-12 >
-      <div class="banner">
+      <!-- <div class="banner">
          <div
               class="banner-item"
               :class="{ active: item.isActive }"
@@ -34,7 +34,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
     </dv-border-box-12>
   </div>
 </template>
