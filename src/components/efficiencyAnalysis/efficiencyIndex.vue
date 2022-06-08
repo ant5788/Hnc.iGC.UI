@@ -2,55 +2,103 @@
   <div class="eff_con">
     <div class="btn_box">
       <button class="btns" @click="tab(0)">设备运行日志</button>
-      <button class="btns" @click="tab(0)">机床效率分析</button>
+      <!-- <button class="btns" @click="tab(1)">机床效率分析</button> -->
     </div>
-    <div class="con-top">
+    <div :class="index === 0 ? '' : 'show'">
+      <div class="con-top">
+        <div class="date_box">
+          <el-date-picker
+            v-model="startTime"
+            type="date"
+            placeholder="开始日期"
+            value-format="yyyy-MM-dd"
+            :picker-options="pickerOptionsStart"
+            @change="getDate()"
+          >
+          </el-date-picker>
+          <el-time-picker
+            v-model="time1"
+            value-format="HH:mm:ss"
+            placeholder="选择时间"
+            @change="getTime()"
+          >
+          </el-time-picker>
+          <el-date-picker
+            v-model="endTime"
+            type="date"
+            placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            @change="getDate()"
+            :picker-options="pickerOptionsEnd"
+          >
+          </el-date-picker>
+          <el-time-picker
+            v-model="time2"
+            value-format="HH:mm:ss"
+            @change="getTime()"
+            placeholder="选择时间"
+          >
+          </el-time-picker>
+          <button class="btn" @click="getData()">查询</button>
+        </div>
+      </div>
+      <div class="con">
+        <div class="con-left"></div>
+        <div class="con-right">
+          <div class="chart-container" ref="loadpross"></div>
+        </div>
+      </div>
+    </div>
+    <div :class="index === 1 ? '' : 'show'">
       <div class="date_box">
+        <el-select v-model="device" placeholder="请选择设备">
+          <el-option
+            v-for="item in DeviceList"
+            :key="item.DeviceId"
+            :label="item.DeviceName"
+            :value="item.DeviceId"
+          ></el-option>
+        </el-select>
         <el-date-picker
-          v-model="startTime"
+          v-model="startTime1"
           type="date"
           placeholder="开始日期"
           value-format="yyyy-MM-dd"
           :picker-options="pickerOptionsStart"
-          @change="getDate()"
+          @change="getDate1()"
         >
         </el-date-picker>
         <el-time-picker
-          v-model="time1"
+          v-model="time3"
           value-format="HH:mm:ss"
           placeholder="选择时间"
-          @change="getTime()"
         >
         </el-time-picker>
         <el-date-picker
-          v-model="endTime"
+          v-model="endTime1"
           type="date"
           placeholder="结束日期"
           value-format="yyyy-MM-dd"
-          @change="getDate()"
+          @change="getDate1()"
           :picker-options="pickerOptionsEnd"
         >
         </el-date-picker>
         <el-time-picker
-          v-model="time2"
+          v-model="time4"
           value-format="HH:mm:ss"
-          @change="getTime()"
           placeholder="选择时间"
         >
         </el-time-picker>
-        <button class="btn" @click="getData()">查询</button>
+        <button class="btn" @click="query()">查询</button>
       </div>
-    </div>
-    <div class="con">
-      <div class="con-left"></div>
-      <div class="con-right">
-        <div class="chart-container" ref="loadpross"></div>
-      </div>
+      <div class="con"></div>
     </div>
   </div>
 </template>
 <script>
 let url = "http://192.168.20.160:24912/api/CNC/EfficiencyAnalysis?";
+let urlE = "http://192.168.20.160:24912/api/CNC/MarriageRate?";
+let DeviceUrl = "http://192.168.20.160:24912/api/CNC/GetDeviceList";
 export default {
   data() {
     return {
@@ -60,6 +108,11 @@ export default {
       day: "",
       time1: "",
       time2: "",
+      time3: "",
+      time4: "",
+      startTime1: "",
+      endTime1: "",
+      device: "",
       xAxisJudge: [
         { val: 0, date: "00:00:00" },
         { val: 24, date: "02:00:00" },
@@ -172,10 +225,13 @@ export default {
           ],
         },
       },
+      index: 0,
+      DeviceList: [],
     };
   },
   mounted() {
-    this.initchart();
+    this.initChart2();
+    this.getDeiceList();
   },
   created() {
     // this.getData();
@@ -296,7 +352,7 @@ export default {
                 color: "#00ABF9",
               },
             },
-            data: [1],
+            data: [10],
           },
           {
             type: "bar",
@@ -386,16 +442,17 @@ export default {
       };
       this.chartInstance.setOption(option);
     },
+    initProfile() {},
     getDate() {
       console.log(this.endTime);
       console.log(this.startTime);
     },
     getData() {
-      let time3 = this.startTime + " " + this.time1;
-      let time4 = this.endTime + " " + this.time2;
-      let startTime = this.getTimestamp(time3);
-      let endTime = this.getTimestamp(time4);
-      let url1 = url + "startTime=" + startTime + "&" + "endTime=" + endTime;
+      let time5 = this.startTime1 + " " + this.time3;
+      let time6 = this.endTime1 + " " + this.time4;
+      let startTime1 = this.getTimestamp(time5);
+      let endTime1 = this.getTimestamp(time6);
+      let url1 = urlE + "startTime=" + startTime1 + "&" + "endTime=" + endTime1;
       console.log(url1);
       this.data = [];
       if (
@@ -417,6 +474,40 @@ export default {
           }
         });
       }
+    },
+    getDate1() {
+      let time3 = this.startTime + " " + this.time1;
+      let time4 = this.endTime + " " + this.time2;
+      let startTime1 = this.getTimestamp(time3);
+      let endTime1 = this.getTimestamp(time4);
+      let url1 = url + "startTime=" + startTime1 + "&" + "endTime=" + endTime1;
+      console.log(url1);
+      this.data = [];
+      if (
+        this.startTime === "" ||
+        this.endTime === "" ||
+        this.time1 === "" ||
+        this.time2 === ""
+      ) {
+        return false;
+      } else {
+        this.$axios.get(url1).then((res) => {
+          console.log(res);
+
+          // if(res.data.)
+          if (res.data.state === 0) {
+            return false;
+          } else {
+            this.data = res.data.data;
+          }
+        });
+      }
+    },
+    getYData() {
+      this.DeviceNames = [];
+      this.table.data.statusTotals.forEach((item) => {
+        this.DeviceNames.push(item.DeviceName);
+      });
     },
     getTime() {
       console.log(this.time2);
@@ -449,7 +540,20 @@ export default {
     //页面切换
     tab(val) {
       console.log(val);
+      this.index = val;
     },
+    getEfficedata() {
+      console.log(urlE);
+    },
+    //设备列表
+    getDeiceList() {
+      this.$axios.get(DeviceUrl).then((res) => {
+        if (res.data.state === 1) {
+          this.DeviceList = res.data.data;
+        }
+      });
+    },
+    query() {},
   },
 };
 </script>
@@ -471,6 +575,8 @@ export default {
   float: left;
 }
 .con {
+  width: 100%;
+  height: calc(100vh - 114px);
 }
 .con-left {
   // width: 40%;
@@ -491,7 +597,7 @@ export default {
   margin-top: 600px;
 }
 .chart-container {
-  width: 95%;
+  width: 100vw;
   height: 20%;
   margin-left: 2%;
 }

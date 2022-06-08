@@ -6,9 +6,19 @@ import dataV from "@jiaminghi/data-view";
 import * as echarts from "echarts";
 import "./assets/css/main.scss";
 import store from "./store";
-import { DatePicker, TimePicker} from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+import {
+  DatePicker,
+  TimePicker,
+  Select,
+  Option,
+  OptionGroup,
+} from "element-ui";
 Vue.component(DatePicker.name, DatePicker);
 Vue.component(TimePicker.name, TimePicker);
+Vue.use(Select);
+Vue.use(Option);
+Vue.use(OptionGroup);
 Vue.use(dataV);
 Vue.config.productionTip = false;
 Vue.prototype.$axios = Axios;

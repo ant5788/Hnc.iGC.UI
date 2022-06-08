@@ -22,17 +22,57 @@
   </div>
 </template>
 <script>
+let url = "http://192.168.20.160:24912/api/CNC/AlarmMessage";
 export default {
-  props: {
-    alarmData: {
-      type: Array,
-    },
-  },
+  // props: {
+  //   alarmData: {
+  //     type: Array,
+  //   },
+  // },
   data() {
-    return {};
+    return {
+      alarmData: [],
+    };
   },
   mounted() {},
-  methods: {},
+  created() {
+    this.getdata();
+  },
+  methods: {
+    getdata() {
+      this.alarmData = [];
+      this.$axios.get(url).then((res) => {
+        this.alarmData.push(res.data.data);
+        console.log(this.data);
+        if (this.alarmData != null) {
+          this.alarmData.forEach((item) => {
+            item.StartAt = this.Timeconversion(item.StartAt);
+            item.EndAt = this.Timeconversion(item.EndAt);
+            console.log(item);
+          });
+        }
+      });
+    },
+    Timeconversion(time) {
+      var d = time ? new Date(time) : new Date();
+      var year = d.getFullYear();
+      var month = d.getMonth() + 1;
+      var day = d.getDate();
+      var hours = d.getHours();
+      var min = d.getMinutes();
+      var seconds = d.getSeconds();
+
+      if (month < 10) month = "0" + month;
+      if (day < 10) day = "0" + day;
+      if (hours < 0) hours = "0" + hours;
+      if (min < 10) min = "0" + min;
+      if (seconds < 10) seconds = "0" + seconds;
+
+      return (
+        year + "-" + month + "-" + day + " " + hours + ":" + min + ":" + seconds
+      );
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

@@ -7,20 +7,22 @@
   </div>
 </template>
 <script>
+let url = "http://192.168.20.160:24912/api/CNC/getTop5";
 export default {
-  props: {
-    deviceNumberList: {
-      type: Array,
-    },
-    durationTimeList: { type: Array },
-  },
+  // props: {
+  //   deviceNumberList: {
+  //     type: Array,
+  //   },
+  //   durationTimeList: { type: Array },
+  // },
   data() {
     return {
       title: "报警时长TOP5",
       chartInstance: null,
-      // deviceNumberList: [],
-      // durationTimeList: [],
+      deviceNumberList: [],
+      durationTimeList: [],
       timer5Sec: null,
+      data: [],
     };
   },
   mounted() {
@@ -42,6 +44,7 @@ export default {
   },
   created() {
     console.log(this.$echarts);
+    this.getData();
   },
   methods: {
     initChart() {
@@ -110,9 +113,69 @@ export default {
       this.chartInstance.setOption(initOption);
     },
     getData() {
-      this.updateChart();
+      // this.deviceNumberList = [];
+      // this.durationTimeList = [];
+      this.$axios.get(url).then((res) => {
+        console.log(res.data.data);
+        this.data = res.data.data;
+        if (this.data != null) {
+          this.data.forEach((item) => {
+            this.deviceNumberList.push(item.name);
+            this.durationTimeList.push(item.value);
+          });
+          this.chartInstance = this.$echarts.init(
+            this.$refs.alarm_duration_top5_ref
+          );
+          const dataOption = {
+            yAxis: {
+              data: this.deviceNumberList,
+            },
+            series: [
+              {
+                data: [
+                  {
+                    value: this.durationTimeList[0],
+                    itemStyle: {
+                      color: "#fb4d4b",
+                    },
+                  },
+                  {
+                    value: this.durationTimeList[1],
+                    itemStyle: {
+                      color: "#fb4d4b",
+                    },
+                  },
+                  {
+                    value: this.durationTimeList[0],
+                    itemStyle: {
+                      color: "#3292c5",
+                    },
+                  },
+                  {
+                    value: this.durationTimeList[1],
+                    itemStyle: {
+                      color: "#3292c5",
+                    },
+                  },
+                  {
+                    value: this.durationTimeList[0],
+                    itemStyle: {
+                      color: "#59ebe8",
+                    },
+                  },
+                ],
+              },
+            ],
+          };
+
+          this.chartInstance.setOption(dataOption);
+        }
+      });
     },
     updateChart() {
+      this.chartInstance = this.$echarts.init(
+        this.$refs.alarm_duration_top5_ref
+      );
       const dataOption = {
         yAxis: {
           data: this.deviceNumberList,
@@ -133,19 +196,19 @@ export default {
                 },
               },
               {
-                value: this.durationTimeList[2],
+                value: this.durationTimeList[0],
                 itemStyle: {
                   color: "#3292c5",
                 },
               },
               {
-                value: this.durationTimeList[3],
+                value: this.durationTimeList[1],
                 itemStyle: {
                   color: "#3292c5",
                 },
               },
               {
-                value: this.durationTimeList[4],
+                value: this.durationTimeList[0],
                 itemStyle: {
                   color: "#59ebe8",
                 },
@@ -180,12 +243,12 @@ export default {
       this.chartInstance.resize();
     },
     startInterval() {
-      if (this.timer5Sec != null) {
-        clearInterval(this.timer5Sec);
-      }
-      this.timer5Sec = setInterval(() => {
-        this.getData();
-      }, 1000 * 5);
+      // if (this.timer5Sec != null) {
+      //   clearInterval(this.timer5Sec);
+      // }
+      // this.timer5Sec = setInterval(() => {
+      //   this.getData();
+      // }, 1000 * 5);
     },
   },
 };

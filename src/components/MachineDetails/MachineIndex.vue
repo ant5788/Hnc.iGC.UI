@@ -50,17 +50,6 @@
       <div class="machine_top_midle">
         <dv-border-box-12 class="Axios_info">
           <div class="title">▎设备利用率</div>
-          <!-- <div class="content">
-            <div
-              class="axisItem"
-              v-for="(item, i) in axisPositionForm"
-              :key="i"
-            >
-              <div class="name">{{ item.name }}</div>
-              <div class="value">{{ item.value }}</div>
-              <div class="unit">{{ item.unit }}</div>
-            </div>
-          </div> -->
           <div class="chart-container" ref="proportions"></div>
         </dv-border-box-12>
         <dv-border-box-12 class="load_info">

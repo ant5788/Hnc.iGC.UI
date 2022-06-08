@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="date_box fl">
-      <!-- <div class="text">日期</div> -->
       <el-date-picker
         v-model="day"
         type="date"
@@ -15,20 +14,35 @@
   </div>
 </template>
 <script>
+let url = "http://192.168.20.160:24912/api/CNC/RealTimeOutPut?";
 export default {
   data() {
     return {
       chartInstance: null,
       day: "",
+      startTime: "",
+      endTime: "",
+      data: [],
+      xdata: [],
+      Ydata: [],
     };
+  },
+  props: {
+    deviceId: {
+      type: String,
+      default: "A183AA3A-7274-48D5-AADC-53009B7DC203 ",
+    },
   },
   mounted() {
     this.initChart();
   },
+  created() {
+    this.getData();
+  },
   methods: {
     initChart() {
       this.chartInstance = this.$echarts.init(this.$refs.loadProduction);
-      const initOption = {
+      let initOption = {
         legend: {
           textStyle: {
             color: "#ffffff",
@@ -52,7 +66,7 @@ export default {
               color: "#ffffff",
             },
           },
-          data: ["9:00", "10:00", "11:00", "12:00", "13:00", "14:00"],
+          data: this.xdata,
         },
         yAxis: {
           axisLabel: {
@@ -69,15 +83,89 @@ export default {
         },
         series: [
           {
-            name: "当日产量统计",
-            data: [120, 200, 150, 80, 70, 110, 130],
+            name: "实时产量统计",
+            data: this.Ydata,
             type: "bar",
           },
         ],
       };
       this.chartInstance.setOption(initOption);
     },
-    getDate() {},
+    getData() {
+      console.log(this.day);
+      let url1 = url + "time=" + this.day + "&deviceId=" + this.deviceId;
+      console.log(url1);
+      this.$axios.get(url1).then((res) => {
+        if (res.data.state === 0) {
+          return false;
+        } else {
+          this.data = res.data.data;
+          if (this.data != null) {
+            this.data.forEach((item) => {
+              this.xdata.push(item.Time);
+              this.Ydata.push(item.Total);
+            });
+            this.chartInstance = this.$echarts.init(this.$refs.loadProduction);
+            let initOption = {
+              legend: {
+                textStyle: {
+                  color: "#ffffff",
+                },
+              },
+              grid: {
+                left: "3%",
+                right: "4%",
+                bottom: "4%",
+                containLabel: true,
+              },
+              xAxis: {
+                type: "category",
+                axisLabel: {
+                  interval: 0,
+                  color: "#ffffff",
+                  fontSize: 16,
+                },
+                axisLine: {
+                  lineStyle: {
+                    color: "#ffffff",
+                  },
+                },
+                data: this.xdata,
+              },
+              yAxis: {
+                axisLabel: {
+                  interval: 0,
+                  color: "#ffffff",
+                  fontSize: 16,
+                },
+                axisLine: {
+                  lineStyle: {
+                    color: "#ffffff",
+                  },
+                },
+                type: "value",
+              },
+              series: [
+                {
+                  name: "实时产量统计",
+                  data: this.Ydata,
+                  type: "bar",
+                },
+              ],
+            };
+            this.chartInstance.setOption(initOption);
+          }
+        }
+      });
+    },
+    getDate() {
+      console.log(this.day);
+      this.getData();
+    },
+
+    getTimestamp(time) {
+      return new Date(time).getTime();
+    },
   },
 };
 </script>

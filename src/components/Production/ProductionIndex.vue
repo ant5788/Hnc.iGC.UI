@@ -1,33 +1,14 @@
 <template>
   <div>
     <div class="con_top">
-      <span>{{ type }}</span>
-      <span>></span>
-      <span>{{ part }}</span>
-    </div>
-    <div class="con_left fl">
-      <div class="date_box">
-        <button @click="moth()" :class="index === 0 ? 'active_btn' : ''">
-          本月
-        </button>
-      </div>
-      <div class="date_box">
-        <button @click="Half()" :class="index === 1 ? 'active_btn' : ''">
-          最近半年
-        </button>
-      </div>
-      <div class="date_box">
-        <button @click="custom_date()">自定义</button>
-        <el-date-picker
-          v-model="customDate"
-          type="month"
-          placeholder="选择月"
-          v-show="index == 2"
-          value-format="yyyy-MM-dd"
-          @change="getDate()"
-        >
-        </el-date-picker>
-      </div>
+      <el-select v-model="deviceId" placeholder="请选择设备">
+        <el-option
+          v-for="item in DeviceList"
+          :key="item.DeviceId"
+          :label="item.DeviceName"
+          :value="item.DeviceId"
+        ></el-option>
+      </el-select>
     </div>
     <div class="con_right fl">
       <div class="con_right_top">
@@ -45,10 +26,10 @@
       </div>
       <div class="con_right_bottom">
         <div class="chart">
-          <proStatis></proStatis>
+          <proStatis :deviceId="deviceId"></proStatis>
         </div>
         <div class="chart">
-          <faultChart></faultChart>
+          <faultChart :deviceId="deviceId"></faultChart>
         </div>
       </div>
     </div>
@@ -59,12 +40,11 @@ import piceChart from "./piceChart.vue";
 import lineChart from "./lineChart.vue";
 import proStatis from "./ProductionStatistics.vue";
 import faultChart from "./faultChart.vue";
+let DeviceUrl = "http://192.168.20.160:24912/api/CNC/GetDeviceList";
 export default {
   components: { piceChart, lineChart, proStatis, faultChart },
   data() {
     return {
-      type: "机械",
-      part: "A4奥迪CB转向节",
       monthArr: [],
       index: 0,
       customDate: "",
@@ -72,38 +52,50 @@ export default {
       startupTime: 10,
       noalarmTime: 10,
       alarmNum: 0,
+      DeviceList: [],
+      deviceId: "",
     };
   },
+  created() {
+    this.getDeviceData();
+  },
   methods: {
-    moth() {
-      this.index = 0;
-      console.log("ok");
-      let date = new Date();
-      let moth = date.getMonth();
-      this.mothDate = moth;
-      console.log(moth);
-    },
-    Half() {
-      this.index = 1;
-      this.monthArr = [];
-      var data = new Date();
-      // var year = data.getFullYear();
-      data.setMonth(data.getMonth() + 1, 1); //获取到当前月份,设置月份
-      for (var i = 0; i < 6; i++) {
-        data.setMonth(data.getMonth() - 1); //每次循环一次 月份值减1
-        var m = data.getMonth() + 1;
-        m = m < 10 ? "0" + m : m;
-        this.monthArr.push(data.getFullYear() + "-" + m);
-      }
-      console.log(this.monthArr);
-      //  return monthArr;
-    },
+    // moth() {
+    //   this.index = 0;
+    //   console.log("ok");
+    //   let date = new Date();
+    //   let moth = date.getMonth();
+    //   this.mothDate = moth;
+    //   console.log(moth);
+    // },
+    // Half() {
+    //   this.index = 1;
+    //   this.monthArr = [];
+    //   var data = new Date();
+    //   // var year = data.getFullYear();
+    //   data.setMonth(data.getMonth() + 1, 1); //获取到当前月份,设置月份
+    //   for (var i = 0; i < 6; i++) {
+    //     data.setMonth(data.getMonth() - 1); //每次循环一次 月份值减1
+    //     var m = data.getMonth() + 1;
+    //     m = m < 10 ? "0" + m : m;
+    //     this.monthArr.push(data.getFullYear() + "-" + m);
+    //   }
+    //   console.log(this.monthArr);
+    //   //  return monthArr;
+    // },
     custom_date() {
       this.index = 2;
       console.log(this.customDate);
     },
     getDate() {
       console.log(this.customDate);
+    },
+    getDeviceData() {
+      this.$axios.get(DeviceUrl).then((res) => {
+        if (res.data.state === 1) {
+          this.DeviceList = res.data.data;
+        }
+      });
     },
   },
 };
@@ -140,11 +132,17 @@ export default {
   }
 }
 .con_right {
-  width: 85%;
+  width: 100%;
   height: calc(100vh - 270px);
 }
 .fl {
   float: left;
+}
+.date_box {
+  width: 18%;
+  height: 426px;
+  background: #0a2a55;
+  margin-left: 2%;
 }
 .con_right_top,
 .con_right_bottom {
