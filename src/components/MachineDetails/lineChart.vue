@@ -1,11 +1,11 @@
 <template>
   <div class="linChart_box">
     <dv-border-box-12>
-      <div class="time_box fl">
+      <!-- <div class="time_box fl">
         <p><button class="btn">每班</button></p>
         <p><button class="btn">每天</button></p>
         <p><button class="btn">每周</button></p>
-      </div>
+      </div> -->
       <div class="chart-container fl" ref="load_diagram_ref"></div>
     </dv-border-box-12>
   </div>
@@ -25,7 +25,7 @@ export default {
   mounted() {
     this.initChart();
     this.getAxisData();
-    // this.updateChart();
+     this.updateChart();
     window.addEventListener("resize", () => {
       this.screenAdapter();
     });
@@ -39,10 +39,10 @@ export default {
       this.chartInstance = this.$echarts.init(this.$refs.load_diagram_ref);
       const initOption = {
         grid: {
-          top: 50,
-          bottom: 10,
-          left: 40,
-          right: 20,
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
         },
         legend: {
           top: 15,
@@ -55,22 +55,24 @@ export default {
           type: "category",
           boundaryGap: false,
           axisLabel: {
-            formatter: "{value}",
+            interval: 0,
             textStyle: {
               color: "#ffffff",
             },
           },
           axisLine: {
             lineStyle: {
-              color: "#D9D9D9",
+              color: "#ffffff",
             },
           },
+          data: [],
         },
         yAxis: {
           type: "value",
           min: 0,
           max: 100,
           axisLabel: {
+            fontSize: 14,
             textStyle: {
               color: "#ffffff",
             },
@@ -87,10 +89,22 @@ export default {
           axisTick: {
             show: false,
           },
-          data: [0, 20, 40, 60, 80, 100],
+          data: [],
         },
+        series: [
+          {
+            data: [],
+            type: "bar",
+            barWidth: "60%",
+            itemStyle: {
+              normal: {
+                color: "#41b9e2",
+              },
+            },
+          },
+        ],
       };
-      
+
       this.chartInstance.setOption(initOption);
     },
     // 更新负载折线图
@@ -150,11 +164,8 @@ export default {
   width: 100%;
   height: 280px;
   .chart-container {
-    // width: 96%;
-    // height: 95%;
-    // margin-left: 2%;
-    width: 90%;
-    height: 228px;
+    width: 96%;
+    height: 90%;
   }
 }
 .time_box {

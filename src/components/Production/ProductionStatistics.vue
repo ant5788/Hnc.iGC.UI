@@ -23,8 +23,8 @@ export default {
       startTime: "",
       endTime: "",
       data: [],
-      xdata: [],
-      Ydata: [],
+      xdata: ["8:00", "10:00", "12:00", "14:00", "16:00", "18:00"],
+      Ydata: [30, 40, 50, 40, 60, 80],
     };
   },
   props: {
@@ -37,7 +37,7 @@ export default {
     this.initChart();
   },
   created() {
-    this.getData();
+    // this.getData();
   },
   methods: {
     initChart() {
@@ -92,9 +92,7 @@ export default {
       this.chartInstance.setOption(initOption);
     },
     getData() {
-      console.log(this.day);
       let url1 = url + "time=" + this.day + "&deviceId=" + this.deviceId;
-      console.log(url1);
       this.$axios.get(url1).then((res) => {
         if (res.data.state === 0) {
           return false;

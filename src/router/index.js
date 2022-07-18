@@ -6,6 +6,7 @@ import Machine from "../components/MachineDetails/MachineIndex.vue";
 import Production from "../components/Production/ProductionIndex.vue";
 import Efficiency from "../components/efficiencyAnalysis/efficiencyIndex.vue";
 import ProLineRate from "../components/productionLineRate/productionLine.vue";
+import text from "../components/text/textLIne.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -54,6 +55,14 @@ const routes = [
     component: ProLineRate,
     meta: {
       title: "生产线达成率",
+    },
+  },
+  {
+    path: "/text",
+    name: "text",
+    component: text,
+    meta: {
+      title: "测试",
     },
   },
 ];

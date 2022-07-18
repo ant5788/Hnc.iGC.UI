@@ -8,22 +8,24 @@
 
 <script>
 export default {
-  name: 'ScreenAdapter',
+  name: "ScreenAdapter",
   data() {
     return {
       style: {
         width: `${this.w}px`,
         height: `${this.h}px`,
-        transform: 'scale(1) translate(-50%, -50%)', // 默认不缩放，垂直水平居中
+        transform: "scale(1) translate(-50%, -50%)", // 默认不缩放，垂直水平居中
       },
     };
   },
   props: {
-    w: { // 设计图尺寸宽
+    w: {
+      // 设计图尺寸宽
       type: Number,
       default: 1920,
     },
-    h: { // 设计图尺寸高
+    h: {
+      // 设计图尺寸高
       type: Number,
       default: 1080,
     },
@@ -31,7 +33,7 @@ export default {
   mounted() {
     this.setScale();
     this.onresize = this.debounce(() => this.setScale(), 100);
-    window.addEventListener('resize', this.onresize);
+    window.addEventListener("resize", this.onresize);
   },
   methods: {
     // 防抖
@@ -65,7 +67,7 @@ export default {
     },
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.onresize);
+    window.removeEventListener("resize", this.onresize);
   },
 };
 </script>
@@ -76,9 +78,6 @@ export default {
   min-height: 100%;
   max-height: 100vh;
   overflow: hidden;
-  // background: url("../../assets/charts/icon-bg.png") no-repeat;
-  // background-size: 100% 100%;
-
   .content-wrap {
     transform-origin: 0 0;
     position: absolute;
@@ -88,4 +87,3 @@ export default {
   }
 }
 </style>
-

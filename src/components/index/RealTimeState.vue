@@ -31,14 +31,12 @@ export default {
       },
     };
   },
-  mounted() {},
   created() {
     this.getData();
   },
   methods: {
     getData() {
       this.$axios.get(url).then((res) => {
-        console.log(res);
         this.deviceStateList = res.data.data;
         this.deviceStateList.forEach((item) => {
           item.StatusName = this.statusmap[item.Status];

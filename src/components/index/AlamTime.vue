@@ -9,12 +9,6 @@
 <script>
 let url = "http://192.168.20.160:24912/api/CNC/getTop5";
 export default {
-  // props: {
-  //   deviceNumberList: {
-  //     type: Array,
-  //   },
-  //   durationTimeList: { type: Array },
-  // },
   data() {
     return {
       title: "报警时长TOP5",
@@ -89,7 +83,7 @@ export default {
             color: "#ffffff",
             fontSize: 18,
           },
-          data: [],
+          data: this.deviceNumberList,
         },
         series: [
           {
@@ -107,16 +101,45 @@ export default {
                 },
               },
             },
+            data: [
+              {
+                value: this.durationTimeList[0],
+                itemStyle: {
+                  color: "#fb4d4b",
+                },
+              },
+              {
+                value: this.durationTimeList[1],
+                itemStyle: {
+                  color: "#fb4d4b",
+                },
+              },
+              {
+                value: this.durationTimeList[2],
+                itemStyle: {
+                  color: "#3292c5",
+                },
+              },
+              {
+                value: this.durationTimeList[3],
+                itemStyle: {
+                  color: "#3292c5",
+                },
+              },
+              {
+                value: this.durationTimeList[4],
+                itemStyle: {
+                  color: "#59ebe8",
+                },
+              },
+            ],
           },
         ],
       };
       this.chartInstance.setOption(initOption);
     },
     getData() {
-      // this.deviceNumberList = [];
-      // this.durationTimeList = [];
       this.$axios.get(url).then((res) => {
-        console.log(res.data.data);
         this.data = res.data.data;
         if (this.data != null) {
           this.data.forEach((item) => {
@@ -243,12 +266,12 @@ export default {
       this.chartInstance.resize();
     },
     startInterval() {
-      // if (this.timer5Sec != null) {
-      //   clearInterval(this.timer5Sec);
-      // }
-      // this.timer5Sec = setInterval(() => {
-      //   this.getData();
-      // }, 1000 * 5);
+      if (this.timer5Sec != null) {
+        clearInterval(this.timer5Sec);
+      }
+      this.timer5Sec = setInterval(() => {
+        this.getData();
+      }, 1000 * 5);
     },
   },
 };

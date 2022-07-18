@@ -7,7 +7,8 @@
   </div>
 </template>
 <script>
-let url = "http://192.168.20.160:24912/api/CNC/StatusDistributed ";
+let url =
+  "https://www.fastmock.site/mock/2d1419597327286d2cd869db91121624/api/CNC/StatusDistributed";
 export default {
   data() {
     return {
@@ -80,21 +81,25 @@ export default {
               },
             },
           },
+          data: [],
         },
       };
       this.chartInstance.setOption(initOption);
     },
     getData() {
       this.$axios.get(url).then((res) => {
-        this.dataList.push(res.data.data);
+        this.dataList = [];
+        this.dataList = res.data.data;
         this.dataList.forEach((item) => {
           item.name = this.statusmap[item.name];
         });
       });
+
       this.updateChart();
     },
     updateChart() {
       let seriesData = this.dataList;
+      console.log(this.dataList);
       const dataOption = {
         series: {
           data: seriesData,

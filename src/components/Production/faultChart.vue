@@ -43,8 +43,16 @@ export default {
       startTime: "",
       endTime: "",
       data: [],
-      xdata: [],
-      Ydata: [],
+      xdata: [
+        "2022-06-01",
+        "2022-06-02",
+        "2022-06-03",
+        "2022-06-04",
+        "2022-06-05",
+        "2022-06-06",
+        "2022-06-07",
+      ],
+      Ydata: [200,160,300,360,400,380,300],
     };
   },
   props: {
@@ -54,7 +62,7 @@ export default {
     },
   },
   mounted() {
-    this.getTime();
+     this.getTime();
     this.initChart();
   },
   methods: {
@@ -102,7 +110,7 @@ export default {
         series: [
           {
             name: "累计产量",
-            data: [0, 0, 0, 0, 0, 0.15],
+            data: this.Ydata,
             type: "bar",
           },
         ],
@@ -122,8 +130,7 @@ export default {
         "endTime=" +
         endTime1 +
         "&deviceId=" +
-        this.deviceId;
-      console.log(url1);
+        this.deviceId
       this.data = [];
       if (
         this.startTime === "" ||
@@ -134,7 +141,6 @@ export default {
         return false;
       } else {
         this.$axios.get(url1).then((res) => {
-          console.log(res);
           if (res.data.state === 0) {
             return false;
           } else {
@@ -146,7 +152,6 @@ export default {
                 this.Ydata.push(item.Total);
               });
               //获取数据后加载获取echart的方法
-              console.log(this.$refs);
               this.chartInstance = this.$echarts.init(this.$refs.loadBar);
               let initOption = {
                 legend: {

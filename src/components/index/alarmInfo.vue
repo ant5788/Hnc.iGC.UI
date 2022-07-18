@@ -3,7 +3,6 @@
     <dv-border-box-12>
       <div class="title">▎实时报警信息</div>
       <div class="alam_info">
-        <!-- <span class="alarm_number">报警号</span> -->
         <span>报警内容</span>
         <span>报警开始时间</span>
         <span>报警结束时间</span>
@@ -11,7 +10,6 @@
       <div class="list_warp">
         <ul>
           <li v-for="(item, index) in alarmData" :key="index">
-            <!-- <span class="alarm_number">{{ item.Number }}</span> -->
             <span>{{ item.Message }}</span>
             <span>{{ item.StartAt }}</span>
             <span>{{ item.EndAt }}</span>
@@ -24,26 +22,19 @@
 <script>
 let url = "http://192.168.20.160:24912/api/CNC/AlarmMessage";
 export default {
-  // props: {
-  //   alarmData: {
-  //     type: Array,
-  //   },
-  // },
   data() {
     return {
-      alarmData: [],
+      alarmData: [ ],
     };
   },
-  mounted() {},
   created() {
-    this.getdata();
+     this.getdata();
   },
   methods: {
     getdata() {
       this.alarmData = [];
       this.$axios.get(url).then((res) => {
         this.alarmData.push(res.data.data);
-        console.log(this.data);
         if (this.alarmData != null) {
           this.alarmData.forEach((item) => {
             item.StartAt = this.Timeconversion(item.StartAt);
@@ -61,7 +52,6 @@ export default {
       var hours = d.getHours();
       var min = d.getMinutes();
       var seconds = d.getSeconds();
-
       if (month < 10) month = "0" + month;
       if (day < 10) day = "0" + day;
       if (hours < 0) hours = "0" + hours;

@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="con_top">
-      <el-select v-model="deviceId" placeholder="请选择设备">
+      <!-- <el-select v-model="deviceId" placeholder="请选择设备">
         <el-option
           v-for="item in DeviceList"
           :key="item.DeviceId"
           :label="item.DeviceName"
           :value="item.DeviceId"
         ></el-option>
-      </el-select>
+      </el-select> -->
     </div>
     <div class="con_right fl">
       <div class="con_right_top">

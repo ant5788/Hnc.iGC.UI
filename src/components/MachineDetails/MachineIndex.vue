@@ -24,7 +24,7 @@
             </div>
             <div class="line">
               <span>设备总的故障次数：</span>
-              <span></span>
+              <span>4</span>
             </div>
             <div class="line">
               <span>加工的零件编码：</span>
@@ -238,8 +238,13 @@ export default {
         },
       ],
       chartInstance: null,
-      deviceData: [],
-      Partcode: "",
+      deviceData: {
+        Name: "智能高速五轴数控机床",
+        PartsTotal: "200",
+        CurrentProgramNumber: "007",
+        CurrentProgramName: "../prog/O1111",
+      },
+      Partcode: "005",
     };
   },
   mounted() {
@@ -247,7 +252,7 @@ export default {
     this.initPartcode();
   },
   created() {
-    this.initData();
+      this.initData();
   },
   methods: {
     //设置负载背景颜色
@@ -380,7 +385,6 @@ export default {
                   },
                 ]),
                 shadowBlur: 10,
-                // shadowColor: 'rgba(55,70,130, 1)'
               },
             },
             data: [
@@ -395,8 +399,6 @@ export default {
     },
     initData() {
       this.$axios.get(url).then((res) => {
-        console.log(res.data);
-        console.log(res);
         this.deviceData = res.data;
         this.multiplyingPower.forEach((item) => {
           if (item.name === "主轴修调") {
@@ -416,7 +418,6 @@ export default {
     },
     initPartcode() {
       this.$axios.get(partUrl).then((res) => {
-        console.log(res);
         this.Partcode = res.data.data;
       });
     },

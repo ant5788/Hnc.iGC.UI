@@ -57,13 +57,11 @@ export default {
   methods: {
     getData() {
       this.$axios.get(url).then((res) => {
-        console.log(res);
         this.data = res.data;
         this.processData(this.data);
       });
     },
     processData(data) {
-      console.log(this.data);
       let arry = [];
       let obj = {};
       if (data.lenght > 0) {
