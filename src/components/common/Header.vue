@@ -6,7 +6,9 @@
         <div class="title">智慧工厂管理平台</div>
         <dv-decoration-5 class="top" />
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <button class="btn" @click="go">设备监控</button>
+      </div>
     </div>
     <div class="bottom_img"></div>
   </div>
@@ -17,6 +19,11 @@ export default {
   name: "HeaderCom",
   props: {
     msg: String,
+  },
+  methods: {
+    go() {
+      this.$router.push("/deviceList");
+    },
   },
 };
 </script>
@@ -33,6 +40,18 @@ export default {
     float: left;
     width: 30%;
     height: 80px;
+    line-height: 80px;
+    text-align: right;
+    .btn {
+      width: 120px;
+      height: 40px;
+      color: #fff;
+      font-size: 18px;
+      background: #010c22;
+      border: 1px solid #00d8ff;
+      cursor: pointer;
+      border-radius: 10px;
+    }
   }
   .center {
     position: relative;

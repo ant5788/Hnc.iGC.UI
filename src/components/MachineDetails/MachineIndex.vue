@@ -19,15 +19,23 @@
               <span>{{ deviceData.Name }}</span>
             </div>
             <div class="line">
-              <span>设备型号：</span>
+              <span>设备ID：</span>
               <span></span>
             </div>
             <div class="line">
-              <span>设备总的故障次数：</span>
+              <span>设备类型：</span>
               <span>4</span>
             </div>
             <div class="line">
-              <span>加工的零件编码：</span>
+              <span>设备所在车间：</span>
+              <span>{{ Partcode }}</span>
+            </div>
+            <div class="line">
+              <span>加工零件编码：</span>
+              <span>{{ Partcode }}</span>
+            </div>
+            <div class="line">
+              <span>零件加工百分比：</span>
               <span>{{ Partcode }}</span>
             </div>
           </div>
@@ -252,7 +260,7 @@ export default {
     this.initPartcode();
   },
   created() {
-      this.initData();
+    this.initData();
   },
   methods: {
     //设置负载背景颜色
@@ -479,8 +487,8 @@ export default {
     width: 50%;
     font-size: 20px;
     .line {
-      height: 60px;
-      line-height: 60px;
+      height: 45px;
+      line-height: 45px;
     }
   }
   .text {
@@ -559,13 +567,6 @@ export default {
               height: 32px;
               position: relative;
               line-height: 21px;
-              // background: linear-gradient(
-              //   to right,
-              //   #e6a13a,
-              //   #eaefab,
-              //   #f30707,
-              //   #d64e25
-              // );
             }
           }
         }

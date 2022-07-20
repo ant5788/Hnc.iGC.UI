@@ -61,6 +61,7 @@ export default {
   .alam_info {
     color: #fff;
     font-size: 18px;
+    margin: 0 auto;
     span {
       display: inline-block;
       width: 33%;
@@ -72,8 +73,9 @@ export default {
     }
   }
   .list_warp {
-    height: 65%;
-    overflow: scroll;
+    height: 78%;
+    overflow: auto;
+    margin: 0 8px;
     ul {
       height: 100%;
       padding: 0;

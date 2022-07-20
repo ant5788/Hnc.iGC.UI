@@ -6,11 +6,11 @@
         :deviceNumberList="deviceNumberList"
       ></AlamTime>
       <AlamInfo :alarmData="alarmData"></AlamInfo>
-      <TimeUti></TimeUti>
+      <!-- <TimeUti></TimeUti> -->
     </div>
     <div class="center fl">
       <deviceMap></deviceMap>
-      <TimeUtilizationTop></TimeUtilizationTop>
+      <!-- <TimeUtilizationTop></TimeUtilizationTop> -->
     </div>
     <div class="right fl">
       <RealTimeState></RealTimeState>
@@ -21,9 +21,9 @@
 <script>
 import AlamTime from "./AlamTime";
 import AlamInfo from "./alarmInfo";
-import TimeUti from "./TimeUtilization";
+// import TimeUti from "./TimeUtilization";
 import deviceMap from "./DeviceMap";
-import TimeUtilizationTop from "./TimeUtilizationTop";
+// import TimeUtilizationTop from "./TimeUtilizationTop";
 import RealTimeState from "./RealTimeState";
 import StateDistribute from "./StateDistribute";
 let url = "http://192.168.20.160:24912/api/CNC";
@@ -35,9 +35,9 @@ export default {
   components: {
     AlamTime,
     AlamInfo,
-    TimeUti,
+    // TimeUti,
     deviceMap,
-    TimeUtilizationTop,
+    // TimeUtilizationTop,
     RealTimeState,
     StateDistribute,
   },

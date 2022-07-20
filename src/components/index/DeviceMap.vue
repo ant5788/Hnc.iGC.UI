@@ -97,11 +97,12 @@ export default {
 <style scoped lang="scss">
 .device_con {
   width: 100%;
-  height: 616px;
+  height: 716px;
   .device_title {
-    height: 5%;
+    height: 6%;
     width: 90%;
     margin-left: 5%;
+    margin-top: 20px;
     display: flex;
     flex-direction: row;
     .content {
@@ -154,7 +155,7 @@ export default {
   }
   .map-tab {
     width: 100%;
-    height: 18%;
+    height: 20%;
     margin-top: 2%;
     margin-bottom: 42px;
     position: relative;
@@ -185,11 +186,12 @@ export default {
     width: 790px;
     height: 100%;
     margin-left: 83px;
+    margin-top: 20px;
     position: absolute;
     overflow: hidden;
     .swiper-slide {
       width: 158px;
-      height: 66px;
+      height: 76px;
       margin-top: 16px;
       margin-left: 13px;
       margin-right: 13px;

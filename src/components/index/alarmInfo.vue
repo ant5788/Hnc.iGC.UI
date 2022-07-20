@@ -3,15 +3,15 @@
     <dv-border-box-12>
       <div class="title">▎实时报警信息</div>
       <div class="alam_info">
+        <span>设备名称</span>
         <span>报警内容</span>
-        <span>报警开始时间</span>
-        <span>报警结束时间</span>
+        <span>报警报警时长</span>
       </div>
       <div class="list_warp">
         <ul>
           <li v-for="(item, index) in alarmData" :key="index">
             <span>{{ item.Message }}</span>
-            <span>{{ item.StartAt }}</span>
+            <span>{{ item.Message }}</span>
             <span>{{ item.EndAt }}</span>
           </li>
         </ul>
@@ -20,15 +20,16 @@
   </div>
 </template>
 <script>
-let url = "http://192.168.20.160:24912/api/CNC/AlarmMessage";
+let url = "";
 export default {
   data() {
     return {
-      alarmData: [ ],
+      alarmData: [],
     };
   },
   created() {
-     this.getdata();
+    this.getdata();
+    console.log(this.$api);
   },
   methods: {
     getdata() {
@@ -68,7 +69,7 @@ export default {
 <style scoped lang="scss">
 .alaminfo_box {
   width: 100%;
-  height: 316px;
+  height: 550px;
   .title {
     height: 60px;
     line-height: 60px;
@@ -80,9 +81,7 @@ export default {
   .alam_info {
     color: #fff;
     font-size: 18px;
-    // .alarm_number {
-    //   width: 20%;
-    // }
+    margin: 0 8px;
     span {
       display: inline-block;
       width: 33%;
@@ -94,8 +93,9 @@ export default {
     }
   }
   .list_warp {
-    height: 65%;
-    overflow: scroll;
+    height: 78%;
+    overflow: auto;
+    margin: 0 8px;
     ul {
       height: 100%;
       padding: 0;

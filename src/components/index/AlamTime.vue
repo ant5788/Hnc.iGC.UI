@@ -279,7 +279,7 @@ export default {
 <style scoped lang="scss">
 .alam_box {
   width: 100%;
-  height: 300px;
+  height: 380px;
   .title {
     height: 60px;
     line-height: 60px;
