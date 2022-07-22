@@ -45,9 +45,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .main {
-  height: calc(100% - 114px);
-  width: 100%;
-  margin-top: 20px;
   .fl {
     float: left;
   }

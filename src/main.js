@@ -14,12 +14,20 @@ import {
   Select,
   Option,
   OptionGroup,
+  Table,
+  TableColumn,
+  Button,
+  Pagination,
 } from "element-ui";
 Vue.component(DatePicker.name, DatePicker);
 Vue.component(TimePicker.name, TimePicker);
 Vue.use(Select);
 Vue.use(Option);
 Vue.use(OptionGroup);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Button);
+Vue.use(Pagination);
 Vue.use(dataV);
 Vue.config.productionTip = false;
 Vue.prototype.$axios = Axios;

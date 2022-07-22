@@ -64,8 +64,14 @@ export default {
   },
   created() {},
   methods: {
-    go(val) {
-      console.log(val);
+    go(index) {
+      switch (index) {
+        case 1:
+          this.$router.push("/deviceList").catch(() => {});
+          break;
+        case 2:
+          this.$router.push("/Equipment").catch(() => {});
+      }
     },
   },
 };

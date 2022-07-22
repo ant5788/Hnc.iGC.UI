@@ -99,7 +99,6 @@ export default {
     },
     updateChart() {
       let seriesData = this.dataList;
-      console.log(this.dataList);
       const dataOption = {
         series: {
           data: seriesData,

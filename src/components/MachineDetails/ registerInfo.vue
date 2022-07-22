@@ -1,7 +1,7 @@
 <template>
   <div class="reg_con">
     <dv-border-box-12>
-      <div class="title">▎加工件数</div>
+      <div class="title">▎设备运行时间</div>
       <div class="chart-container" ref="loadBar"></div>
     </dv-border-box-12>
   </div>
@@ -11,83 +11,65 @@ export default {
   data() {
     return {
       chartInstance: null,
-      banner: [
-        {
-          name: "PLC/PMC X",
-          isActive: false,
-        },
-        {
-          name: "PLC/PMC Y",
-          isActive: true,
-        },
-        {
-          name: "PLC/PMC R",
-          isActive: false,
-        },
-      ],
+      dataList: [],
     };
   },
   mounted() {
     this.initchart();
   },
   methods: {
-    bannerClick() {},
-    oddEvenCheck() {},
     initchart() {
       this.chartInstance = this.$echarts.init(this.$refs.loadBar);
       const initOption = {
-        legend: {
-          textStyle: {
-            color: "#ffffff",
+        color: ["#FF343F", "#FFCF21", "#00FF7F", "#808080"],
+        series: {
+          type: "pie",
+          clockwise: false, //饼图的扇区是否是顺时针排布
+          minAngle: 2, //最小的扇区角度（0 ~ 360）
+          radius: ["40%", "60%"],
+          center: ["50%", "55%"],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            //图形样式
+            normal: {
+              borderColor: "#ffffff",
+              borderWidth: 1,
+            },
           },
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "4%",
-          containLabel: true,
-        },
-        xAxis: {
-          type: "category",
-          axisLabel: {
-            interval: 0,
-            color: "#ffffff",
-            fontSize: 16,
-          },
-          axisLine: {
-            lineStyle: {
-              color: "#ffffff",
+          label: {
+            normal: {
+              show: true,
+              formatter: "{b|{b}:}\n{per|{d}%}",
+              rich: {
+                b: {
+                  color: "#fff",
+                  fontSize: 18,
+                  padding: 8,
+                },
+                per: {
+                  fontSize: 18,
+                },
+              },
             },
           },
           data: [],
         },
-        yAxis: {
-          axisLabel: {
-            interval: 0,
-            color: "#ffffff",
-            fontSize: 16,
-          },
-          axisLine: {
-            lineStyle: {
-              color: "#ffffff",
-            },
-          },
-          type: "value",
-        },
-        series: [
-          {
-            name: "加工件数（件）",
-            data: [],
-            type: "bar",
-            itemStyle: {
-              normal: {
-                color: "#41b9e2",
-              },
-            },
-          },
-        ],
       };
       this.chartInstance.setOption(initOption);
+    },
+    //获取设备运行时间
+    getdata() {
+      this.updateChart();
+    },
+    //更新设备数据
+    updateChart() {
+      let seriesData = this.dataList;
+      const dataOption = {
+        series: {
+          data: seriesData,
+        },
+      };
+      this.chartInstance.setOption(dataOption);
     },
   },
 };

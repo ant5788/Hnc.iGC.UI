@@ -8,6 +8,7 @@ import Efficiency from "../components/efficiencyAnalysis/efficiencyIndex.vue";
 import ProLineRate from "../components/productionLineRate/productionLine.vue";
 import text from "../components/text/textLIne.vue";
 import deviceList from "../components/deviceList/deviceList.vue";
+import Equipment from "../components/Equipment/equipmentIndex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -64,6 +65,14 @@ const routes = [
     component: deviceList,
     meta: {
       title: "设备列表",
+    },
+  },
+  {
+    path: "/Equipment",
+    name: "Equipment",
+    component: Equipment,
+    meta: {
+      title: "设备档案管理",
     },
   },
   {
