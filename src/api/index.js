@@ -1,5 +1,5 @@
 const url = {
-  base: "http://47.114.150.53:18088/weida",
+  base: "http://127.0.0.1:24912",
 };
 export default {
   url,

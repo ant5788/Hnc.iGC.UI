@@ -4,26 +4,29 @@
       <leftNav></leftNav>
     </div>
     <div class="con fl">
+      <el-button type="primary" @click="add">新增</el-button>
       <el-table
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
       >
-        <el-table-column prop="name" label="设备名称"></el-table-column>
-        <el-table-column prop="number" label="设备编号"></el-table-column>
-        <el-table-column prop="status" label="设备状态"></el-table-column>
+        <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
+        <el-table-column prop="DeviceType" label="设备类型"></el-table-column>
+        <el-table-column
+          prop="DerviceNumber"
+          label="设备编号"
+        ></el-table-column>
+        <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
+        <el-table-column prop="CreateTime" label="创建时间"></el-table-column>
+        <el-table-column prop="UpdateTime" label="修改时间"></el-table-column>
         <el-table-column label="操作">
-          <el-button
-            @click="handleEdit(scope.$index, scope.row)"
-            type="primary"
-          >
-            修改</el-button
-          >
-          <el-button
-            @click="handleDelete(scope.$index, scope.row)"
-            type="warning"
-          >
-            删除</el-button
-          >
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary">
+              修改</el-button
+            >
+            <el-button @click="handleDelete(scope.row)" type="warning">
+              删除</el-button
+            >
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -37,32 +40,85 @@
       >
       </el-pagination>
     </div>
+    <addDigo :visible.sync="visible"></addDigo>
+    <upDigo :show.sync="show" :data="updata" v-if="flag"></upDigo>
   </div>
 </template>
 <script>
+let query = "/api/CNC/GetArchivesList"; //查询接口
+let del = "/api/CNC/DeleteArchives?";
 import leftNav from "../common/leftNav.vue";
+import addDigo from "./equipmentAdd.vue";
+import upDigo from "./equipmentUpdate.vue";
 export default {
-  components: { leftNav },
+  components: { leftNav, addDigo, upDigo },
   data() {
     return {
       tableData: [
         {
-          name: "设备一",
-          number: 123,
-          status: "运行",
+          Id: "8UHYPKUJ3CGQ1RTX6DOUBBRV9KBQMF93",
+          DeviceName: "ces",
+          DeviceType: "ji",
+          DerviceNumber: "12",
+          AssetNumber: "13",
+          archivesNumber: "rrrr",
+          CreateTime: "2022-07-14T15:48:29",
+          UpdateTime: "2022-07-14T15:48:29",
         },
       ],
       currentPage4: 4,
+      visible: false,
+      show: false,
+      updata: {},
+      flag: false,
     };
   },
+  created() {
+    this.getdata();
+  },
   methods: {
+    //获取数据
+    getdata() {
+      this.tableData = [];
+      this.$axios.get(this.$api + query).then((res) => {
+        if (res.data.state === 1) {
+          let data = res.data.data;
+          if (data.length > 0) {
+            data.forEach((item) => {
+              item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
+              item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
+            });
+            this.tableData = data;
+          }
+        } else {
+          return false;
+        }
+      });
+    },
     //编辑
-    handleEdit() {},
+    handleEdit(row) {
+      this.updata = row;
+      this.show = true;
+      this.flag = true;
+    },
     //删除
-    handleDelete() {},
+    handleDelete(row) {
+      this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
+        if (res.data.state === 1) {
+          this.$message.success(res.data.message);
+        } else {
+          this.$message(res.data.message);
+        }
+      });
+    },
     //
     handleSizeChange() {},
     handleCurrentChange() {},
+    //新增
+    add() {
+      this.visible = true;
+      console.log(this.visible);
+    },
   },
 };
 </script>
