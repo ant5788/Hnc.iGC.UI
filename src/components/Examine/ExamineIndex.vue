@@ -5,6 +5,7 @@
     </div>
     <div class="con fl">
       <el-button type="primary" @click="add">新增</el-button>
+      <el-button type="primary" @click="upLoad">文件上传</el-button>
       <el-table
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
@@ -42,22 +43,21 @@
     </div>
     <addDigo :visible.sync="visible"></addDigo>
     <UpDigo :show.sync="show" :data="updata" v-if="flag"></UpDigo>
-    <detailsDigo
-      :detail.sync="detail"
-      :data="datailData"
-      v-if="dflag"
-    ></detailsDigo>
+    <detailsDigo :detail.sync="detail" :data="datailData" v-if="dflag">
+    </detailsDigo>
+    <upLoad :upShow.sync="upShow" :type="type"></upLoad>
   </div>
 </template>
 <script>
 let query = "/api/CNC/GetCheckPointList";
 let del = "/api/CNC/DeleteCheckPoint?";
 import leftNav from "../common/leftNav.vue";
+import upLoad from "../common/UpLoad.vue";
 import addDigo from "./ExamineAdd";
 import UpDigo from "./ExamineUpdata.vue";
 import detailsDigo from "./ExamineDetails.vue";
 export default {
-  components: { leftNav, addDigo, UpDigo, detailsDigo },
+  components: { leftNav, addDigo, UpDigo, detailsDigo, upLoad },
   data() {
     return {
       tableData: [
@@ -83,6 +83,8 @@ export default {
       detail: false,
       dflag: false,
       datailData: {},
+      upShow: false,
+      type: 2,
     };
   },
   methods: {
@@ -127,6 +129,9 @@ export default {
       this.detail = true;
       this.dflag = true;
     },
+    upLoad() {
+      this.upShow = true;
+    },
   },
 };
 </script>
@@ -167,6 +172,9 @@ export default {
   line-height: 30px;
 }
 /deep/.el-input--mini {
+  font-size: 18px;
+}
+.text {
   font-size: 18px;
 }
 </style>

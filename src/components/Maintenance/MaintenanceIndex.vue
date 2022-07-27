@@ -5,6 +5,7 @@
     </div>
     <div class="con fl">
       <el-button type="primary" @click="add">新增</el-button>
+      <el-button type="primary" @click="upLoad">文件上传</el-button>
       <el-table
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
@@ -57,17 +58,19 @@
       :data="datailData"
       v-if="dflag"
     ></detailDigo>
+    <upLoad :upShow.sync="upShow" :type="type"></upLoad>
   </div>
 </template>
 <script>
 let query = "/api/CNC/GetMaintainList";
 let del = "/api/CNC/DeleteMaintain?";
 import leftNav from "../common/leftNav.vue";
+import upLoad from "../common/UpLoad.vue";
 import addDigo from "./MaintenanceAdd.vue";
 import upDigo from "./MaintenanceUpdate.vue";
 import detailDigo from "./MaintenanceDetails.vue";
 export default {
-  components: { leftNav, addDigo, upDigo, detailDigo },
+  components: { leftNav, addDigo, upDigo, detailDigo, upLoad },
   data() {
     return {
       currentPage4: 4,
@@ -78,6 +81,8 @@ export default {
       detail: false,
       dflag: false,
       datailData: {},
+      upShow: false,
+      type: 3,
       tableData: [
         {
           Id: "1D8UXQNJ2OT3XR52MUOAO07MX2CNNLP7",
@@ -142,6 +147,9 @@ export default {
           this.$message(res.data.message);
         }
       });
+    },
+    upLoad() {
+      this.upShow = true;
     },
   },
 };

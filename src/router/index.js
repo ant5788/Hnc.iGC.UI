@@ -93,6 +93,7 @@ const routes = [
       title: "设备检点情况",
     },
   },
+
   {
     path: "/text",
     name: "text",

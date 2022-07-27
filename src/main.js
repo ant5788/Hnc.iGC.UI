@@ -24,6 +24,7 @@ import {
   Dialog,
   Message,
   Input,
+  Upload,
 } from "element-ui";
 Vue.component(DatePicker.name, DatePicker);
 Vue.component(TimePicker.name, TimePicker);
@@ -39,6 +40,7 @@ Vue.use(Dialog);
 Vue.use(Message);
 Vue.use(Input);
 Vue.use(FormItem);
+Vue.use(Upload);
 Vue.use(dataV);
 Vue.config.productionTip = false;
 Vue.prototype.$axios = Axios;

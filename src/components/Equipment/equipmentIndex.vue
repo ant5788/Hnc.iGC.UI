@@ -5,6 +5,7 @@
     </div>
     <div class="con fl">
       <el-button type="primary" @click="add">新增</el-button>
+      <el-button type="primary" @click="upLoad">文件上传</el-button>
       <el-table
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
@@ -63,17 +64,19 @@
       :data="datailData"
       v-if="dflag"
     ></detailDigo>
+    <upLoad :upShow.sync="upShow" :type="type"></upLoad>
   </div>
 </template>
 <script>
 let query = "/api/CNC/GetArchivesList"; //查询接口
 let del = "/api/CNC/DeleteArchives?";
 import leftNav from "../common/leftNav.vue";
+import upLoad from "../common/UpLoad.vue";
 import addDigo from "./equipmentAdd.vue";
 import upDigo from "./equipmentUpdate.vue";
 import detailDigo from "./equipmentDetails.vue";
 export default {
-  components: { leftNav, addDigo, upDigo, detailDigo },
+  components: { leftNav, addDigo, upDigo, detailDigo, upLoad },
   data() {
     return {
       tableData: [
@@ -96,6 +99,8 @@ export default {
       detail: false,
       dflag: false,
       datailData: {},
+      upShow: false,
+      type: 1,
     };
   },
   created() {
@@ -149,6 +154,9 @@ export default {
     add() {
       this.visible = true;
       console.log(this.visible);
+    },
+    upLoad() {
+      this.upShow = true;
     },
   },
 };

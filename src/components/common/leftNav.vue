@@ -36,12 +36,8 @@ export default {
           id: 4,
         },
         {
-          text: "文件导入",
+          text: "生产统计",
           id: 5,
-        },
-        {
-          text: "实时产量统计",
-          id: 6,
         },
         {
           text: "累计产量统计",
@@ -77,6 +73,9 @@ export default {
           break;
         case 4:
           this.$router.push("/Examine").catch(() => {});
+          break;
+        case 5:
+          this.$router.push("/Production").catch(() => {});
       }
     },
   },
