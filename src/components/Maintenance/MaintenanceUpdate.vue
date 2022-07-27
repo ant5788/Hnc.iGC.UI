@@ -7,20 +7,40 @@
       :before-close="onClose"
     >
       <el-form :model="form" :rules="rules" ref="form" class="form_box">
+        <el-form-item label="设备编号" prop="DeviceNumber">
+          <el-input v-model="form.DeviceNumber" class="input_box"></el-input>
+        </el-form-item>
         <el-form-item label="设备名称" prop="DeviceName">
           <el-input v-model="form.DeviceName" class="input_box"></el-input>
+        </el-form-item>
+        <el-form-item label="设备型号" prop="DeviceModel">
+          <el-input v-model="form.DeviceModel" class="input_box"></el-input>
         </el-form-item>
         <el-form-item label="设备类型" prop="DeviceType">
           <el-input v-model="form.DeviceType" class="input_box"></el-input>
         </el-form-item>
-        <el-form-item label="设备编码" prop="DerviceNumber">
-          <el-input v-model="form.DerviceNumber" class="input_box"></el-input>
+        <el-form-item label="设备状态" prop="DeviceState">
+          <el-input v-model="form.DeviceState" class="input_box"></el-input>
         </el-form-item>
-        <el-form-item label="资产编号" prop="AssetNumber">
-          <el-input v-model="form.AssetNumber" class="input_box"></el-input>
+        <el-form-item label="保养内容" prop="Content">
+          <el-input
+            type="textarea"
+            row="2"
+            v-model="form.Content"
+            class="input_box"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="档案编号" prop="archivesNumber">
-          <el-input v-model="form.archivesNumber" class="input_box"></el-input>
+        <el-form-item label="设备分类" prop="DeviceClassification">
+          <el-input
+            v-model="form.DeviceClassification"
+            class="input_box"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="责任人" prop="PersonLiable">
+          <el-input v-model="form.PersonLiable" class="input_box"></el-input>
+        </el-form-item>
+        <el-form-item label="使用单位" prop="UserDep">
+          <el-input v-model="form.UserDep" class="input_box"></el-input>
         </el-form-item>
         <el-form-item>
           <div class="btns">
@@ -35,7 +55,7 @@
   </div>
 </template>
 <script>
-let updata = "/api/CNC/UpdateArchives";
+let updata = "";
 export default {
   props: {
     show: {
@@ -50,27 +70,43 @@ export default {
   data() {
     return {
       form: {
+        DeviceNumber: "",
         DeviceName: "",
+        DeviceModel: "",
         DeviceType: "",
-        DerviceNumber: "",
-        AssetNumber: "",
-        archivesNumber: "",
+        DeviceState: "",
+        Content: "",
+        DeviceClassification: "",
+        PersonLiable: "",
+        UserDep: "",
       },
       rules: {
+        DeviceNumber: [
+          { required: true, message: "请输入设备编号", trigger: "blur" },
+        ],
         DeviceName: [
           { required: true, message: "请输入设备名称", trigger: "blur" },
+        ],
+        DeviceModel: [
+          { required: true, message: "请输入设备型号", trigger: "blur" },
         ],
         DeviceType: [
           { required: true, message: "请输入设备类型", trigger: "blur" },
         ],
-        DerviceNumber: [
-          { required: true, message: "请输入设备编码", trigger: "blur" },
+        DeviceState: [
+          { required: true, message: "请输入设备状态", trigger: "blur" },
         ],
-        AssetNumber: [
-          { required: true, message: "请输入资产编号", trigger: "blur" },
+        Content: [
+          { required: true, message: "请输入保养内容", trigger: "blur" },
         ],
-        archivesNumber: [
-          { required: true, message: "请输入档案编号", trigger: "blur" },
+        DeviceClassification: [
+          { required: true, message: "请输入设备分类", trigger: "blur" },
+        ],
+        PersonLiable: [
+          { required: true, message: "请输入责任人", trigger: "blur" },
+        ],
+        UserDep: [
+          { required: true, message: "请输入使用单位", trigger: "blur" },
         ],
       },
     };

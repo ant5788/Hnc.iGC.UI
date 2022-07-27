@@ -8,30 +8,24 @@
       <el-table
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
+        :show-overflow-tooltip="true"
       >
+        <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
+        <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
+        <el-table-column prop="DeviceModel" label="设备型号"></el-table-column>
+        <el-table-column prop="DeviceType" label="设备类型"></el-table-column>
+        <el-table-column prop="DeviceState" label="设备状态"></el-table-column>
+        <el-table-column prop="Content" label="保养内容"></el-table-column>
+        <el-table-column prop="Cycle" label="保养周期"></el-table-column>
         <el-table-column
-          prop="DeviceName"
-          label="设备名称"
-          width="180"
+          prop="DeviceClassification"
+          label="设备分类"
         ></el-table-column>
-        <el-table-column
-          prop="DeviceType"
-          label="设备类型"
-          width="180"
-        ></el-table-column>
-        <el-table-column
-          prop="DerviceNumber"
-          label="设备编号"
-          width="180"
-        ></el-table-column>
-        <el-table-column
-          prop="AssetNumber"
-          label="资产编号"
-          width="180"
-        ></el-table-column>
+        <el-table-column prop="PersonLiable" label="责任人"></el-table-column>
+        <el-table-column prop="UserDep" label="使用单位"></el-table-column>
         <el-table-column prop="CreateTime" label="创建时间"></el-table-column>
         <el-table-column prop="UpdateTime" label="修改时间"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
               修改</el-button
@@ -39,7 +33,7 @@
             <el-button @click="handleDelete(scope.row)" type="warning">
               删除</el-button
             >
-            <el-button @click="handledetail(scope.row)" type="primary">
+            <el-button @click="handleDetail(scope.row)" type="primary">
               详情</el-button
             >
           </template>
@@ -66,28 +60,16 @@
   </div>
 </template>
 <script>
-let query = "/api/CNC/GetArchivesList"; //查询接口
-let del = "/api/CNC/DeleteArchives?";
+let query = "/api/CNC/GetMaintainList";
+let del = "/api/CNC/DeleteMaintain?";
 import leftNav from "../common/leftNav.vue";
-import addDigo from "./equipmentAdd.vue";
-import upDigo from "./equipmentUpdate.vue";
-import detailDigo from "./equipmentDetails.vue";
+import addDigo from "./MaintenanceAdd.vue";
+import upDigo from "./MaintenanceUpdate.vue";
+import detailDigo from "./MaintenanceDetails.vue";
 export default {
   components: { leftNav, addDigo, upDigo, detailDigo },
   data() {
     return {
-      tableData: [
-        {
-          Id: "8UHYPKUJ3CGQ1RTX6DOUBBRV9KBQMF93",
-          DeviceName: "ces",
-          DeviceType: "ji",
-          DerviceNumber: "12",
-          AssetNumber: "13",
-          archivesNumber: "rrrr",
-          CreateTime: "2022-07-14T15:48:29",
-          UpdateTime: "2022-07-14T15:48:29",
-        },
-      ],
       currentPage4: 4,
       visible: false,
       show: false,
@@ -96,16 +78,37 @@ export default {
       detail: false,
       dflag: false,
       datailData: {},
+      tableData: [
+        {
+          Id: "1D8UXQNJ2OT3XR52MUOAO07MX2CNNLP7",
+          DeviceNumber: "123",
+          DeviceName: "123",
+          DeviceModel: "123",
+          DeviceType: "123",
+          DeviceState: "123",
+          Content: "设备正常h",
+          Cycle: "6",
+          DeviceClassification: "7",
+          PersonLiable: "8",
+          UserDep: "9",
+          CreateTime: "2022-07-14T16:42:16",
+          UpdateTime: "2022-07-14T16:42:16",
+        },
+      ],
     };
   },
   created() {
-    // this.getdata();
+    //this.getdata();
   },
   methods: {
-    //获取数据
+    add() {
+      this.visible = true;
+    },
+    handleSizeChange() {},
+    handleCurrentChange() {},
     getdata() {
-      this.tableData = [];
       this.$axios.get(this.$api + query).then((res) => {
+        console.log(res);
         if (res.data.state === 1) {
           let data = res.data.data;
           if (data.length > 0) {
@@ -120,18 +123,15 @@ export default {
         }
       });
     },
-    //编辑
     handleEdit(row) {
       this.updata = row;
       this.show = true;
       this.flag = true;
     },
-    //查看详情
-    handledetail(row) {
+    handleDetail(row) {
       this.datailData = row;
       this.detail = true;
       this.dflag = true;
-      console.log(this.detail);
     },
     //删除
     handleDelete(row) {
@@ -142,14 +142,6 @@ export default {
           this.$message(res.data.message);
         }
       });
-    },
-    //
-    handleSizeChange() {},
-    handleCurrentChange() {},
-    //新增
-    add() {
-      this.visible = true;
-      console.log(this.visible);
     },
   },
 };

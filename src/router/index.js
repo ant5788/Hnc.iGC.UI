@@ -9,6 +9,7 @@ import ProLineRate from "../components/productionLineRate/productionLine.vue";
 import text from "../components/text/textLIne.vue";
 import deviceList from "../components/deviceList/deviceList.vue";
 import Equipment from "../components/Equipment/equipmentIndex.vue";
+import Maintenance from "../components/Maintenance/MaintenanceIndex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -73,6 +74,14 @@ const routes = [
     component: Equipment,
     meta: {
       title: "设备档案管理",
+    },
+  },
+  {
+    path: "/Maintenance",
+    name: "Maintenance",
+    component: Maintenance,
+    meta: {
+      title: "设备维保管理",
     },
   },
   {
