@@ -8,30 +8,24 @@
       <el-table
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
+        :show-overflow-tooltip="true"
       >
+        <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
+        <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
+        <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
+        <el-table-column prop="Type" label="类型"></el-table-column>
+        <el-table-column prop="State" label="状态"></el-table-column>
+        <el-table-column prop="StartTime" label="开始时间"></el-table-column>
+        <el-table-column prop="EndTime" label="结束时间"></el-table-column>
         <el-table-column
-          prop="DeviceName"
-          label="设备名称"
+          prop="Details"
+          label="检点详细信息"
           width="180"
         ></el-table-column>
-        <el-table-column
-          prop="DeviceType"
-          label="设备类型"
-          width="180"
-        ></el-table-column>
-        <el-table-column
-          prop="DerviceNumber"
-          label="设备编号"
-          width="180"
-        ></el-table-column>
-        <el-table-column
-          prop="AssetNumber"
-          label="资产编号"
-          width="180"
-        ></el-table-column>
+        <el-table-column prop="Inspector" label="检点人员"></el-table-column>
         <el-table-column prop="CreateTime" label="创建时间"></el-table-column>
         <el-table-column prop="UpdateTime" label="修改时间"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
               修改</el-button
@@ -39,56 +33,49 @@
             <el-button @click="handleDelete(scope.row)" type="warning">
               删除</el-button
             >
-            <el-button @click="handledetail(scope.row)" type="primary">
+            <el-button @click="handleDetail(scope.row)" type="primary">
               详情</el-button
             >
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
-      >
-      </el-pagination>
     </div>
     <addDigo :visible.sync="visible"></addDigo>
-    <upDigo :show.sync="show" :data="updata" v-if="flag"></upDigo>
-    <detailDigo
+    <UpDigo :show.sync="show" :data="updata" v-if="flag"></UpDigo>
+    <detailsDigo
       :detail.sync="detail"
       :data="datailData"
       v-if="dflag"
-    ></detailDigo>
+    ></detailsDigo>
   </div>
 </template>
 <script>
-let query = "/api/CNC/GetArchivesList"; //查询接口
-let del = "/api/CNC/DeleteArchives?";
+let query = "/api/CNC/GetCheckPointList";
+let del = "/api/CNC/DeleteCheckPoint?";
 import leftNav from "../common/leftNav.vue";
-import addDigo from "./equipmentAdd.vue";
-import upDigo from "./equipmentUpdate.vue";
-import detailDigo from "./equipmentDetails.vue";
+import addDigo from "./ExamineAdd";
+import UpDigo from "./ExamineUpdata.vue";
+import detailsDigo from "./ExamineDetails.vue";
 export default {
-  components: { leftNav, addDigo, upDigo, detailDigo },
+  components: { leftNav, addDigo, UpDigo, detailsDigo },
   data() {
     return {
       tableData: [
         {
-          Id: "8UHYPKUJ3CGQ1RTX6DOUBBRV9KBQMF93",
-          DeviceName: "ces",
-          DeviceType: "ji",
-          DerviceNumber: "12",
-          AssetNumber: "13",
-          archivesNumber: "rrrr",
-          CreateTime: "2022-07-14T15:48:29",
-          UpdateTime: "2022-07-14T15:48:29",
+          Id: "0A5T0GGFEA4KH60SL6FINMWSOSWLDKCU",
+          DeviceName: "AAAccc",
+          DeviceNumber: "AAAAA",
+          AssetNumber: "AAAAA",
+          Type: 2,
+          State: 4,
+          StartTime: "2022-07-17T00:00:00",
+          EndTime: "2022-07-17T00:00:00",
+          Details: "QQQQQ",
+          Inspector: "CCCCC",
+          CreateTime: "0001-01-01T00:00:00",
+          UpdateTime: "0001-01-01T00:00:00",
         },
       ],
-      currentPage4: 4,
       visible: false,
       show: false,
       updata: {},
@@ -98,13 +85,8 @@ export default {
       datailData: {},
     };
   },
-  created() {
-    // this.getdata();
-  },
   methods: {
-    //获取数据
-    getdata() {
-      this.tableData = [];
+    queryData() {
       this.$axios.get(this.$api + query).then((res) => {
         if (res.data.state === 1) {
           let data = res.data.data;
@@ -112,6 +94,8 @@ export default {
             data.forEach((item) => {
               item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
               item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
+              item.StartTime = this.$utils.Timeconversion(item.StartTime);
+              item.EndTime = this.$utils.Timeconversion(item.EndTime);
             });
             this.tableData = data;
           }
@@ -120,17 +104,13 @@ export default {
         }
       });
     },
-    //编辑
+    add() {
+      this.visible = true;
+    },
     handleEdit(row) {
       this.updata = row;
       this.show = true;
       this.flag = true;
-    },
-    //查看详情
-    handledetail(row) {
-      this.datailData = row;
-      this.detail = true;
-      this.dflag = true;
     },
     //删除
     handleDelete(row) {
@@ -142,13 +122,10 @@ export default {
         }
       });
     },
-    //
-    handleSizeChange() {},
-    handleCurrentChange() {},
-    //新增
-    add() {
-      this.visible = true;
-      console.log(this.visible);
+    handleDetail(row) {
+      this.datailData = row;
+      this.detail = true;
+      this.dflag = true;
     },
   },
 };

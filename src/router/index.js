@@ -10,6 +10,7 @@ import text from "../components/text/textLIne.vue";
 import deviceList from "../components/deviceList/deviceList.vue";
 import Equipment from "../components/Equipment/equipmentIndex.vue";
 import Maintenance from "../components/Maintenance/MaintenanceIndex.vue";
+import Examine from "../components/Examine/ExamineIndex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -82,6 +83,14 @@ const routes = [
     component: Maintenance,
     meta: {
       title: "设备维保管理",
+    },
+  },
+  {
+    path: "/Examine",
+    name: "Examine",
+    component: Examine,
+    meta: {
+      title: "设备检点情况",
     },
   },
   {

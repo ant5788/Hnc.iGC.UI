@@ -74,6 +74,9 @@ export default {
           break;
         case 3:
           this.$router.push("/Maintenance").catch(() => {});
+          break;
+        case 4:
+          this.$router.push("/Examine").catch(() => {});
       }
     },
   },
