@@ -40,12 +40,8 @@ export default {
           id: 5,
         },
         {
-          text: "累计产量统计",
-          id: 7,
-        },
-        {
           text: "合格率统计分析",
-          id: 8,
+          id: 6,
         },
         {
           text: "外协加工进度",
@@ -76,6 +72,9 @@ export default {
           break;
         case 5:
           this.$router.push("/Production").catch(() => {});
+          break;
+        case 6:
+          this.$router.push("/Rate").catch(() => {});
       }
     },
   },

@@ -11,6 +11,7 @@ import deviceList from "../components/deviceList/deviceList.vue";
 import Equipment from "../components/Equipment/equipmentIndex.vue";
 import Maintenance from "../components/Maintenance/MaintenanceIndex.vue";
 import Examine from "../components/Examine/ExamineIndex.vue";
+import Rate from "../components/PassRate/passRateindex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -93,7 +94,14 @@ const routes = [
       title: "设备检点情况",
     },
   },
-
+  {
+    path: "/Rate",
+    name: "Rate",
+    component: Rate,
+    meta: {
+      title: "合格率统计分析",
+    },
+  },
   {
     path: "/text",
     name: "text",
