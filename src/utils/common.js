@@ -16,6 +16,10 @@ function Timeconversion(time) {
     year + "-" + month + "-" + day + " " + hours + ":" + min + ":" + seconds
   );
 }
+function getTimestamp(time) {
+  return new Date(time).getTime();
+}
 export default {
   Timeconversion,
+  getTimestamp,
 };

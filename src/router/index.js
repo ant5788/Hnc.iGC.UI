@@ -4,14 +4,17 @@ import Home from "../components/index/index.vue";
 import deviceDetails from "../components/deviceDetails/deviceIndex.vue";
 import Machine from "../components/MachineDetails/MachineIndex.vue";
 import Production from "../components/Production/ProductionIndex.vue";
-import Efficiency from "../components/efficiencyAnalysis/efficiencyIndex.vue";
+//import Efficiency from "../components/efficiencyAnalysis/efficiencyIndex.vue";
 import ProLineRate from "../components/productionLineRate/productionLine.vue";
-import text from "../components/text/textLIne.vue";
+import Efficiency from "../components/text/textLIne.vue";
 import deviceList from "../components/deviceList/deviceList.vue";
 import Equipment from "../components/Equipment/equipmentIndex.vue";
 import Maintenance from "../components/Maintenance/MaintenanceIndex.vue";
 import Examine from "../components/Examine/ExamineIndex.vue";
 import Rate from "../components/PassRate/passRateindex.vue";
+import OutsideP from "../components/outsideP/OutsidePindex.vue";
+import Achievement from "../components/AchievementRate/AchievementIndex.vue";
+import Output from "../components/AchievementRate/AchievementList.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -103,11 +106,27 @@ const routes = [
     },
   },
   {
-    path: "/text",
-    name: "text",
-    component: text,
+    path: "/OutsideP",
+    name: "OutsideP",
+    component: OutsideP,
     meta: {
-      title: "测试",
+      title: "外协加工",
+    },
+  },
+  {
+    path: "/Achievement",
+    name: "Achievement",
+    component: Achievement,
+    meta: {
+      title: "达成率分析",
+    },
+  },
+  {
+    path: "/Output",
+    name: "Output",
+    component: Output,
+    meta: {
+      title: "实际产量",
     },
   },
 ];

@@ -45,10 +45,18 @@ export default {
         },
         {
           text: "外协加工进度",
-          id: 9,
+          id: 7,
         },
         {
           text: "设备运行日志",
+          id: 8,
+        },
+        {
+          text: "达成率分析",
+          id: 9,
+        },
+        {
+          text: "计划产量实际产量列表",
           id: 10,
         },
       ],
@@ -75,6 +83,18 @@ export default {
           break;
         case 6:
           this.$router.push("/Rate").catch(() => {});
+          break;
+        case 7:
+          this.$router.push("/OutsideP").catch(() => {});
+          break;
+        case 8:
+          this.$router.push("/Efficiency").catch(() => {});
+          break;
+        case 9:
+          this.$router.push("/Achievement").catch(() => {});
+          break;
+        case 10:
+          this.$router.push("/Output").catch(() => {});
       }
     },
   },
