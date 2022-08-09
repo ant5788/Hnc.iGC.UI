@@ -110,7 +110,7 @@ export default {
   methods: {
     //提交数据
     submitForm(formName) {
-      this.$axios.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post(this.$api + addDate, this.form).then((res) => {
             if (res.data.state === 1) {
