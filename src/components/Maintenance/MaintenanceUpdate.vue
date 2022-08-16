@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-let updata = "";
+let updata = "/api/CNC/UpdateMaintain";
 export default {
   props: {
     show: {
@@ -116,12 +116,14 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      console.log(this.form);
+      delete this.form.CreateTime;
+      delete this.form.UpdateTime;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post(this.$api + updata, this.form).then((res) => {
             if (res.data.state === 1) {
               this.$message.success(res.data.message);
+              this.$emit("update:show", false);
               this.$parent.getdata();
             } else {
               this.$message(res.data.message);

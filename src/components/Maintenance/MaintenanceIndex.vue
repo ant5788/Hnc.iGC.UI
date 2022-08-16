@@ -10,6 +10,7 @@
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
         :show-overflow-tooltip="true"
+        :height="tableHeight"
       >
         <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
         <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
@@ -24,8 +25,6 @@
         ></el-table-column>
         <el-table-column prop="PersonLiable" label="责任人"></el-table-column>
         <el-table-column prop="UserDep" label="使用单位"></el-table-column>
-        <el-table-column prop="CreateTime" label="创建时间"></el-table-column>
-        <el-table-column prop="UpdateTime" label="修改时间"></el-table-column>
         <el-table-column label="操作" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
@@ -43,11 +42,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="pageNo"
+        :page-sizes="[10, 20, 30]"
+        :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -83,50 +82,68 @@ export default {
       datailData: {},
       upShow: false,
       type: 3,
-      tableData: [
-        {
-          Id: "1D8UXQNJ2OT3XR52MUOAO07MX2CNNLP7",
-          DeviceNumber: "123",
-          DeviceName: "123",
-          DeviceModel: "123",
-          DeviceType: "123",
-          DeviceState: "123",
-          Content: "设备正常h",
-          Cycle: "6",
-          DeviceClassification: "7",
-          PersonLiable: "8",
-          UserDep: "9",
-          CreateTime: "2022-07-14T16:42:16",
-          UpdateTime: "2022-07-14T16:42:16",
-        },
-      ],
+      tableData: [],
+      tableHeight: "",
+      pageSize: 10,
+      pageNo: 1,
+      total: 0,
     };
   },
   created() {
-    //this.getdata();
+    this.getTableHeight();
+    this.getdata();
+  },
+  mounted() {
+    let _this = this;
+    window.onresize = () => {
+      if (_this.resizeFlag) {
+        clearTimeout(_this.resizeFlag);
+      }
+      _this.resizeFlag = setTimeout(() => {
+        _this.getTableHeight();
+        _this.resizeFlag = null;
+      }, 100);
+    };
   },
   methods: {
     add() {
       this.visible = true;
     },
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    //
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getdata();
+    },
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.getdata();
+    },
     getdata() {
-      this.$axios.get(this.$api + query).then((res) => {
-        console.log(res);
-        if (res.data.state === 1) {
-          let data = res.data.data;
-          if (data.length > 0) {
-            data.forEach((item) => {
-              item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
-              item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
-            });
-            this.tableData = data;
+      this.tableData = [];
+      this.$axios
+        .get(
+          this.$api +
+            query +
+            "?pageNo=" +
+            this.pageNo +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          if (res.data.state === 1) {
+            let data = res.data.data.list;
+            if (data.length > 0) {
+              data.forEach((item) => {
+                item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
+                item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
+              });
+              this.total = res.data.data.total;
+              this.tableData = data;
+            }
+          } else {
+            return false;
           }
-        } else {
-          return false;
-        }
-      });
+        });
     },
     handleEdit(row) {
       this.updata = row;
@@ -138,6 +155,15 @@ export default {
       this.detail = true;
       this.dflag = true;
     },
+    getTableHeight() {
+      let tableH = 150; //距离页面下方的高度
+      let tableHeightDetil = window.innerHeight - tableH;
+      if (tableHeightDetil <= 300) {
+        this.tableHeight = 300;
+      } else {
+        this.tableHeight = window.innerHeight - tableH;
+      }
+    },
     //删除
     handleDelete(row) {
       this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
@@ -146,6 +172,7 @@ export default {
         } else {
           this.$message(res.data.message);
         }
+        this.getdata();
       });
     },
     upLoad() {

@@ -23,26 +23,40 @@
           <el-input v-model="form.AssetNumber" class="input_box"></el-input>
         </el-form-item>
         <el-form-item label="类型" prop="Type">
-          <el-input v-model="form.Type" class="input_box"></el-input>
+          <el-select v-model="form.Type" class="input_box">
+            <el-option
+              v-for="item in typeData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="状态" prop="State">
-          <el-input v-model="form.State" class="input_box"></el-input>
+          <el-select v-model="form.State" class="input_box">
+            <el-option
+              v-for="item in stateData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="开始时间" prop="StartTime">
           <el-date-picker
             v-model="form.StartTime"
-            type="date"
+            type="datetime"
             placeholder="选择日期"
-            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd HH:mm:ss"
           >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="EndTime">
           <el-date-picker
             v-model="form.EndTime"
-            type="date"
+            type="datetime"
             placeholder="选择日期"
-            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd HH:mm:ss"
           >
           </el-date-picker>
         </el-form-item>
@@ -100,6 +114,34 @@ export default {
         Details: "",
         Inspector: "",
       },
+      typeData: [
+        {
+          value: 0,
+          label: "类型",
+        },
+        {
+          value: 1,
+          label: "类型1",
+        },
+        {
+          value: 2,
+          label: "类型2",
+        },
+      ],
+      stateData: [
+        {
+          value: 0,
+          label: "检点未完成",
+        },
+        {
+          value: 1,
+          label: "检点中",
+        },
+        {
+          value: 0,
+          label: "检点完成",
+        },
+      ],
       rules: {
         DeviceName: [
           { required: true, message: "请输入设备名称", trigger: "blur" },
@@ -114,8 +156,8 @@ export default {
             trigger: "blur",
           },
         ],
-        Type: [{ required: true, message: "请输入类型", trigger: "blur" }],
-        State: [{ required: true, message: "请输入状态", trigger: "blur" }],
+        Type: [{ required: true, message: "请选择类型", trigger: "blur" }],
+        State: [{ required: true, message: "请选择状态", trigger: "blur" }],
         StartTime: [
           { required: true, message: "请选择开始时间", trigger: "blur" },
         ],
@@ -136,12 +178,14 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      console.log(this.form);
+      delete this.form.CreateTime;
+      delete this.form.UpdateTime;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post(this.$api + updata, this.form).then((res) => {
             if (res.data.state === 1) {
               this.$message.success(res.data.message);
+              this.$emit("update:show", false);
               this.$parent.getdata();
             } else {
               this.$message(res.data.message);

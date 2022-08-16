@@ -8,30 +8,16 @@
       <el-button type="primary" @click="upLoad">文件上传</el-button>
       <el-table
         :data="tableData"
+        :height="tableHeight"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
       >
-        <el-table-column
-          prop="DeviceName"
-          label="设备名称"
-          width="180"
-        ></el-table-column>
-        <el-table-column
-          prop="DeviceType"
-          label="设备类型"
-          width="180"
-        ></el-table-column>
+        <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
+        <el-table-column prop="DeviceType" label="设备类型"></el-table-column>
         <el-table-column
           prop="DerviceNumber"
           label="设备编号"
-          width="180"
         ></el-table-column>
-        <el-table-column
-          prop="AssetNumber"
-          label="资产编号"
-          width="180"
-        ></el-table-column>
-        <el-table-column prop="CreateTime" label="创建时间"></el-table-column>
-        <el-table-column prop="UpdateTime" label="修改时间"></el-table-column>
+        <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
@@ -49,11 +35,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="pageNo"
+        :page-sizes="[10, 20, 30]"
+        :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -79,19 +65,7 @@ export default {
   components: { leftNav, addDigo, upDigo, detailDigo, upLoad },
   data() {
     return {
-      tableData: [
-        {
-          Id: "8UHYPKUJ3CGQ1RTX6DOUBBRV9KBQMF93",
-          DeviceName: "ces",
-          DeviceType: "ji",
-          DerviceNumber: "12",
-          AssetNumber: "13",
-          archivesNumber: "rrrr",
-          CreateTime: "2022-07-14T15:48:29",
-          UpdateTime: "2022-07-14T15:48:29",
-        },
-      ],
-      currentPage4: 4,
+      tableData: [],
       visible: false,
       show: false,
       updata: {},
@@ -101,29 +75,65 @@ export default {
       datailData: {},
       upShow: false,
       type: 1,
+      tableHeight: "",
+      pageSize: 10,
+      pageNo: 1,
+      total: 0,
     };
   },
   created() {
-    // this.getdata();
+    this.getTableHeight();
+    this.getdata();
+  },
+  mounted() {
+    let _this = this;
+    window.onresize = () => {
+      if (_this.resizeFlag) {
+        clearTimeout(_this.resizeFlag);
+      }
+      _this.resizeFlag = setTimeout(() => {
+        _this.getTableHeight();
+        _this.resizeFlag = null;
+      }, 100);
+    };
   },
   methods: {
     //获取数据
     getdata() {
       this.tableData = [];
-      this.$axios.get(this.$api + query).then((res) => {
-        if (res.data.state === 1) {
-          let data = res.data.data;
-          if (data.length > 0) {
-            data.forEach((item) => {
-              item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
-              item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
-            });
-            this.tableData = data;
+      this.$axios
+        .get(
+          this.$api +
+            query +
+            "?pageNo=" +
+            this.pageNo +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          if (res.data.state === 1) {
+            let data = res.data.data.list;
+            if (data.length > 0) {
+              data.forEach((item) => {
+                item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
+                item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
+              });
+              this.total = res.data.data.total;
+              this.tableData = data;
+            }
+          } else {
+            return false;
           }
-        } else {
-          return false;
-        }
-      });
+        });
+    },
+    getTableHeight() {
+      let tableH = 150; //距离页面下方的高度
+      let tableHeightDetil = window.innerHeight - tableH;
+      if (tableHeightDetil <= 300) {
+        this.tableHeight = 300;
+      } else {
+        this.tableHeight = window.innerHeight - tableH;
+      }
     },
     //编辑
     handleEdit(row) {
@@ -141,19 +151,29 @@ export default {
     handleDelete(row) {
       this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
         if (res.data.state === 1) {
-          this.$message.success(res.data.message);
+          this.$message({
+            showClose: true,
+            message: res.data.message,
+            type: "success",
+          });
         } else {
           this.$message(res.data.message);
         }
+        this.getdata();
       });
     },
     //
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getdata();
+    },
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.getdata();
+    },
     //新增
     add() {
       this.visible = true;
-      console.log(this.visible);
     },
     upLoad() {
       this.upShow = true;

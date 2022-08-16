@@ -47,6 +47,7 @@ Vue.prototype.$axios = Axios;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$api = base.url.base;
 Vue.prototype.$utils = utils;
+Vue.prototype.$message = Message;
 new Vue({
   render: (h) => h(App),
   router,

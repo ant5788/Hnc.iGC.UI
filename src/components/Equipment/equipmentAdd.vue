@@ -76,20 +76,23 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      console.log(this.form);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post(this.$api + add, this.form).then((res) => {
             if (res.data.state === 1) {
-              this.$message.success(res.data.message);
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: "success",
+              });
+              this.$emit("update:visible", false);
               this.$parent.getdata();
             } else {
-             // this.$message(res.data.message);
+              this.$message(res.data.message);
             }
           });
         } else {
           console.log("error submit!!");
-          this.$emit("update:visible", false);
 
           return false;
         }
