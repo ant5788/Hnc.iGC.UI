@@ -27,8 +27,6 @@
           prop="ProcessoinQuality"
           label="加工质量"
         ></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="修改时间"></el-table-column>
         <el-table-column width="250" label="操作">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
@@ -46,11 +44,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="pageNo"
+        :page-sizes="[10, 20, 30]"
+        :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       >
       </el-pagination>
       <addOutside :visible.sync="visible"></addOutside>
@@ -69,7 +67,7 @@
 </template>
 <script>
 let del = "/api/CNC/DeleteOutsourcing?";
-let query = "";
+let query = "/api/CNC/GetOutsourcingList";
 import leftNav from "../common/leftNav.vue";
 import addOutside from "./OutsidePAdd.vue";
 import updataOutside from "./OutsidePUpdata.vue";
@@ -86,37 +84,58 @@ export default {
       detail: false,
       dflag: false,
       datailData: {},
-      tableData: [
-        {
-          Id: "LBDDOTB1HHKFPO78CEC6Q6NLOEII38IT",
-          OutsourceDate: "2022-05-17T00:00:00",
-          ReturnDate: "2022-05-17T00:00:00",
-          ProcessingNumber: 12,
-          ProcessingComponents: "test111",
-          ProcessoinQuality: "test111",
-          CreateTime: "2022-07-19T09:32:53",
-          UpdateTime: "2022-07-19T09:32:53",
-        },
-      ],
+      tableData: [],
+      tableHeight: "",
+      pageSize: 10,
+      pageNo: 1,
+      total: 0,
     };
+  },
+  mounted() {
+    let _this = this;
+    window.onresize = () => {
+      if (_this.resizeFlag) {
+        clearTimeout(_this.resizeFlag);
+      }
+      _this.resizeFlag = setTimeout(() => {
+        _this.getTableHeight();
+        _this.resizeFlag = null;
+      }, 100);
+    };
+  },
+  created() {
+    this.getTableHeight();
+    this.query();
   },
   methods: {
     query() {
-      this.$axios.get(this.$api + query).then((res) => {
-        if (res.data.state === 1) {
-          let data = res.data.data;
-          if (data != null && data.length > 0) {
-            data.forEach((item) => {
-              item.OutsourceDate = this.$utils.Timeconversion(
-                item.OutsourceDate
-              );
-              item.ReturnDate = this.$utils.Timeconversion(item.ReturnDate);
-              item.createTime = this.$utils.Timeconversion(item.createTime);
-              item.updateTime = this.$utils.Timeconversion(item.updateTime);
-            });
+      this.tableData = [];
+      this.$axios
+        .get(
+          this.$api +
+            query +
+            "?pageNo=" +
+            this.pageNo +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          if (res.data.state === 1) {
+            let data = res.data.data.list;
+            if (data != null && data.length > 0) {
+              data.forEach((item) => {
+                item.OutsourceDate = this.$utils.Timeconversion(
+                  item.OutsourceDate
+                );
+                item.ReturnDate = this.$utils.Timeconversion(item.ReturnDate);
+                item.createTime = this.$utils.Timeconversion(item.createTime);
+                item.updateTime = this.$utils.Timeconversion(item.updateTime);
+              });
+              this.total = res.data.data.total;
+              this.tableData = data;
+            }
           }
-        }
-      });
+        });
     },
     add() {
       this.visible = true;
@@ -130,6 +149,7 @@ export default {
       this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
         if (res.data.state === 1) {
           this.$message.success(res.data.message);
+          this.query();
         } else {
           this.$message(res.data.message);
         }
@@ -140,8 +160,23 @@ export default {
       this.detail = true;
       this.dflag = true;
     },
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.query();
+    },
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.query();
+    },
+    getTableHeight() {
+      let tableH = 150; //距离页面下方的高度
+      let tableHeightDetil = window.innerHeight - tableH;
+      if (tableHeightDetil <= 300) {
+        this.tableHeight = 300;
+      } else {
+        this.tableHeight = window.innerHeight - tableH;
+      }
+    },
   },
 };
 </script>

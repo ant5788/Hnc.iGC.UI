@@ -94,15 +94,16 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      console.log(this.form);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post(this.$api + add, this.form).then((res) => {
             if (res.data.state === 1) {
               this.$message.success(res.data.message);
-              this.$parent.getdata();
+              this.$emit("update:visible", false);
+              this.$parent.query();
+              this.$refs[formName].resetFields();
             } else {
-              // this.$message(res.data.message);
+              this.$message(res.data.message);
             }
           });
         } else {

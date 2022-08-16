@@ -9,6 +9,7 @@
         :data="tableData"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
         :show-overflow-tooltip="true"
+        :height="tableHeight"
       >
         <el-table-column label="编号" prop="Number"></el-table-column>
         <el-table-column label="名称" prop="Name"></el-table-column>
@@ -39,11 +40,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="pageNo"
+        :page-sizes="[10, 20, 30]"
+        :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       >
       </el-pagination>
       <PassRateAdd :visible.sync="visible"></PassRateAdd>
@@ -71,7 +72,6 @@ export default {
   components: { leftNav, PassRateAdd, PassRateUpdata, PassRateDetails },
   data() {
     return {
-      currentPage4: 4,
       visible: false,
       show: false,
       updata: {},
@@ -79,28 +79,53 @@ export default {
       detail: false,
       dflag: false,
       datailData: {},
-      tableData: [
-        {
-          Id: "P7KS63K5UCL1V2R6IDX9M0RTU8QN30WI",
-          Number: "test001",
-          Name: "test",
-          Date: "2022-07-15T10:51:02",
-          FeedingNumber: 2,
-          WasteNumber: 1,
-          Pass_Rate: "sasdfasdf",
-          CreateTime: "2022-07-15T10:51:02",
-          UpdateTime: "2022-07-15T10:51:02",
-        },
-      ],
+      tableData: [],
+      tableHeight: "",
+      pageSize: 10,
+      pageNo: 1,
+      total: 0,
+    };
+  },
+  created() {
+    this.getTableHeight();
+    this.query();
+  },
+  mounted() {
+    let _this = this;
+    window.onresize = () => {
+      if (_this.resizeFlag) {
+        clearTimeout(_this.resizeFlag);
+      }
+      _this.resizeFlag = setTimeout(() => {
+        _this.getTableHeight();
+        _this.resizeFlag = null;
+      }, 100);
     };
   },
   methods: {
     query() {
-      this.$axios.get(this.$api + query).then((res) => {
-        if (res.data.state === 1) {
-          this.tableData = res.data.data;
-        }
-      });
+      this.tableData = [];
+      this.$axios
+        .get(
+          this.$api +
+            query +
+            "?pageNo=" +
+            this.pageNo +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          if (res.data.state === 1) {
+            let data = res.data.data.list;
+            if (data.length > 0) {
+              data.forEach((item) => {
+                item.Date = this.$utils.Timeconversion(item.Date);
+              });
+              this.total = res.data.data.total;
+              this.tableData = data;
+            }
+          }
+        });
     },
     add() {
       this.visible = true;
@@ -116,8 +141,23 @@ export default {
       this.detail = true;
       this.dflag = true;
     },
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    getTableHeight() {
+      let tableH = 150; //距离页面下方的高度
+      let tableHeightDetil = window.innerHeight - tableH;
+      if (tableHeightDetil <= 300) {
+        this.tableHeight = 300;
+      } else {
+        this.tableHeight = window.innerHeight - tableH;
+      }
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.query();
+    },
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.query();
+    },
     handleDelete(row) {
       this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
         if (res.data.state === 1) {
@@ -125,6 +165,7 @@ export default {
         } else {
           this.$message(res.data.message);
         }
+        this.query();
       });
     },
   },

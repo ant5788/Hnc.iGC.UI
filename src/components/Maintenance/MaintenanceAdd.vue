@@ -117,6 +117,7 @@ export default {
               this.$message.success(res.data.message);
               this.$emit("update:visible", false);
               this.$parent.getdata();
+              this.$refs[formName].resetFields();
             }
           });
         } else {

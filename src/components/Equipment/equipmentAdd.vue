@@ -87,6 +87,7 @@ export default {
               });
               this.$emit("update:visible", false);
               this.$parent.getdata();
+              this.$refs[formName].resetFields();
             } else {
               this.$message(res.data.message);
             }

@@ -51,115 +51,55 @@ export default {
       endTime: "",
       data: [],
       form: { deviceId: "", startTime: "", endTime: "" },
-      deviceList: [
-        {
-          Id: "G09K23IEYNA",
-          DeviceId: "A183AA3A-7274-48D5-AADC-53009B7DC203",
-          DeviceName: "立式加工中心",
-          Description: "V1160L",
-          Ip: "192.168.18.2",
-          Port: "8193",
-        },
-        {
-          Id: "HM7KLAGTI7T",
-          DeviceId: "D55F897D-D483-4E84-9928-BC6338C5C4C5",
-          DeviceName: "立式车床",
-          Description: "VTC850",
-          Ip: "192.168.18.3",
-          Port: "8193",
-        },
-      ],
-      xdata: [
-        "2022-06-01",
-        "2022-06-02",
-        "2022-06-03",
-        "2022-06-04",
-        "2022-06-05",
-        "2022-06-06",
-        "2022-06-07",
-      ],
-      Ydata: [200, 160, 300, 360, 400, 380, 300],
-      deviceId: "",
+      deviceList: [],
+      xdata: [],
+      Ydata: [],
+      MagData: [],
+      AluData: [],
     };
   },
   mounted() {
     this.getdeviceId();
+    this.getdevice();
     this.initChart();
   },
   methods: {
     query() {
       console.log(this.form);
-      this.$axios
-        .get(
-          this.$api +
-            url +
-            "startTime=" +
-            this.form.startTime +
-            "&endTime=" +
-            this.form.endTime +
-            "&deviceId=" +
-            this.deviceId
-        )
-        .then((res) => {
-          this.data = res.data.data;
-          if (this.data != null) {
-            this.data.forEach((item) => {
-              console.log(item);
-              this.xdata.push(item.Time);
-              this.Ydata.push(item.Total);
-            });
-            //获取数据后加载获取echart的方法
-            this.chartInstance = this.$echarts.init(this.$refs.loadBar);
-            let initOption = {
-              legend: {
-                textStyle: {
-                  color: "#ffffff",
-                },
-              },
-              grid: {
-                left: "3%",
-                right: "4%",
-                bottom: "4%",
-                containLabel: true,
-              },
-              xAxis: {
-                type: "category",
-                axisLabel: {
-                  interval: 0,
-                  color: "#ffffff",
-                  fontSize: 16,
-                },
-                axisLine: {
-                  lineStyle: {
-                    color: "#ffffff",
-                  },
-                },
-                data: this.xdata,
-              },
-              yAxis: {
-                axisLabel: {
-                  interval: 0,
-                  color: "#ffffff",
-                  fontSize: 16,
-                },
-                axisLine: {
-                  lineStyle: {
-                    color: "#ffffff",
-                  },
-                },
-                type: "value",
-              },
-              series: [
-                {
-                  name: "累计产量",
-                  data: this.Ydata,
-                  type: "bar",
-                },
-              ],
-            };
-            this.chartInstance.setOption(initOption);
-          }
-        });
+      if (
+        (this.form.startTime !== "") &
+        (this.form.endTime !== "") &
+        (this.form.deviceId !== "")
+      ) {
+        this.$axios
+          .get(
+            this.$api +
+              url +
+              "startTime=" +
+              this.form.startTime +
+              "&endTime=" +
+              this.form.endTime +
+              "&deviceId=" +
+              this.form.deviceId
+          )
+          .then((res) => {
+            this.data = res.data.data;
+            if (this.data != null) {
+              this.xdata = [];
+              this.Ydata = [];
+              this.MagData = [];
+              this.AluData = [];
+              let data = res.data.data;
+              data.forEach((item) => {
+                this.xdata.push(item.Time);
+                this.Ydata.push(item.Total);
+                this.MagData.push(item.MagnesiumTotal);
+                this.AluData.push(item.AluminumTotal);
+              });
+            }
+            this.updateChart();
+          });
+      }
     },
     initChart() {
       this.chartInstance = this.$echarts.init(this.$refs.loadBar);
@@ -204,13 +144,48 @@ export default {
         },
         series: [
           {
-            name: "累计产量",
-            data: this.Ydata,
+            name: "总加工数量",
+            data: [],
+            type: "bar",
+          },
+          {
+            name: "镁加工数量",
+            data: [],
+            type: "bar",
+          },
+          {
+            name: "铝加工数量",
+            data: [],
             type: "bar",
           },
         ],
       };
       this.chartInstance.setOption(initOption);
+    },
+    //更新图表数据
+    updateChart() {
+      this.chartInstance = this.$echarts.init(this.$refs.loadBar);
+      const dataOption = {
+        xAxis: { data: this.xdata },
+        series: [
+          {
+            name: "总加工数量",
+            data: this.Ydata,
+            type: "bar",
+          },
+          {
+            name: "镁加工数量",
+            data: this.MagData,
+            type: "bar",
+          },
+          {
+            name: "铝加工数量",
+            data: this.AluData,
+            type: "bar",
+          },
+        ],
+      };
+      this.chartInstance.setOption(dataOption);
     },
     getTimestamp(time) {
       return new Date(time).getTime();
