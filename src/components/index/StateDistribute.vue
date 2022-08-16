@@ -7,8 +7,7 @@
   </div>
 </template>
 <script>
-let url =
-  "https://www.fastmock.site/mock/2d1419597327286d2cd869db91121624/api/CNC/StatusDistributed";
+let url = "/api/CNC/StatusDistributed";
 export default {
   data() {
     return {
@@ -19,11 +18,12 @@ export default {
       timer5Sec: null,
       statusmap: {
         0: "复位",
-        99: "报警",
         1: "停止",
-        2: "进给保持",
+        2: "保持进给",
         3: "循环启动",
-        4: "启动状态",
+        4: "指令启动",
+        98: "急停",
+        99: "报警",
       },
     };
   },
@@ -87,12 +87,14 @@ export default {
       this.chartInstance.setOption(initOption);
     },
     getData() {
-      this.$axios.get(url).then((res) => {
+      this.$axios.get(this.$api + url).then((res) => {
         this.dataList = [];
-        this.dataList = res.data.data;
-        this.dataList.forEach((item) => {
-          item.name = this.statusmap[item.name];
-        });
+        if (res.data.data !== null) {
+          this.dataList = res.data.data;
+          this.dataList.forEach((item) => {
+            item.name = this.statusmap[item.name];
+          });
+        }
       });
 
       this.updateChart();

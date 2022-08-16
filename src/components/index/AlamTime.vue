@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-let url = "http://192.168.20.160:24912/api/CNC/getTop5";
+let url = "/api/CNC/getTop5";
 export default {
   data() {
     return {
@@ -139,12 +139,12 @@ export default {
       this.chartInstance.setOption(initOption);
     },
     getData() {
-      this.$axios.get(url).then((res) => {
+      this.$axios.get(this.$api + url).then((res) => {
         this.data = res.data.data;
         if (this.data != null) {
           this.data.forEach((item) => {
-            this.deviceNumberList.push(item.name);
-            this.durationTimeList.push(item.value);
+            this.deviceNumberList.push(item.deviceName);
+            this.durationTimeList.push(item.duration);
           });
           this.chartInstance = this.$echarts.init(
             this.$refs.alarm_duration_top5_ref

@@ -31,7 +31,6 @@
           ></el-form-item
         >
       </el-form>
-
       <div class="chart-container" ref="text"></div>
     </div>
   </div>
@@ -326,9 +325,6 @@ export default {
         });
       });
       this.minTime = this.sort(this.timeArry);
-      console.log(this.seriesData);
-      console.log(this.minTime);
-      console.log(this.state);
     },
     sort(array) {
       let time = array.sort(

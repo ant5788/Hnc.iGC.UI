@@ -7,15 +7,34 @@
   </div>
 </template>
 <script>
+let getperUrl = "/api/CNC/GetStatusPercentage?";
 export default {
   data() {
     return {
       chartInstance: null,
       dataList: [],
+      statusmap: {
+        0: "复位",
+        1: "停止",
+        2: "保持进给",
+        3: "循环启动",
+        4: "指令启动",
+        98: "急停",
+        99: "报警",
+      },
     };
   },
   mounted() {
     this.initchart();
+    this.getdata();
+    window.addEventListener("resize", () => {
+      this.screenAdapter();
+    });
+    this.startInterval();
+    this.screenAdapter();
+  },
+  created() {
+    //this.getdata();
   },
   methods: {
     initchart() {
@@ -59,6 +78,29 @@ export default {
     },
     //获取设备运行时间
     getdata() {
+      let id = this.getUrlParams(window.location.search, "id");
+      let startTime = new Date(new Date().toLocaleDateString()).getTime();
+      let endTime = new Date().getTime();
+      this.$axios
+        .get(
+          this.$api +
+            getperUrl +
+            "deviceId=" +
+            id +
+            "&startTime=" +
+            startTime +
+            "&=endTime" +
+            endTime
+        )
+        .then((res) => {
+          this.dataList = [];
+          if (res.data.data !== null) {
+            this.dataList = res.data.data;
+            this.dataList.forEach((item) => {
+              item.name = this.statusmap[item.name];
+            });
+          }
+        });
       this.updateChart();
     },
     //更新设备数据
@@ -70,6 +112,24 @@ export default {
         },
       };
       this.chartInstance.setOption(dataOption);
+    },
+    //获取url传参
+    getUrlParams(url, params) {
+      var res = new RegExp("(?:&|/?)" + params + "=([^&$]+)").exec(url);
+      return res ? res[1] : "";
+    },
+    screenAdapter() {
+      const adapterOption = {};
+      this.chartInstance.setOption(adapterOption);
+      this.chartInstance.resize();
+    },
+    startInterval() {
+      if (this.timer5Sec != null) {
+        clearInterval(this.timer5Sec);
+      }
+      this.timer5Sec = setInterval(() => {
+        this.getdata();
+      }, 1000 * 5);
     },
   },
 };

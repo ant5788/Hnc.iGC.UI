@@ -5,14 +5,19 @@
     </div>
     <div class="con fl">
       <div class="warp">
-        <div class="item" @click="getdevice">
+        <div
+          class="item"
+          @click="getdevice(item.DeviceId)"
+          v-for="item in deviceList"
+          :key="item.Id"
+        >
           <div class="img_box fl">
             <img src="../../assets/images/machine_img.png" />
           </div>
           <div class="device_info fl">
             <p>
               <span class="text">设备名称：</span>
-              <span></span>
+              <span>{{ item.DeviceName }}</span>
             </p>
             <p>
               <span class="text">设备编号：</span>
@@ -29,16 +34,31 @@
   </div>
 </template>
 <script>
+let query = "/api/CNC/GetDeviceList";
 import leftNav from "../common/leftNav.vue";
 export default {
   components: { leftNav },
   data() {
-    return {};
+    return {
+      deviceList: [],
+    };
   },
-  created() {},
+  created() {
+    this.getDeviceData();
+  },
   methods: {
-    getdevice() {
-      this.$router.push("/Machine");
+    getdevice(id) {
+      console.log(id);
+      this.$router
+        .push({ path: "/Machine", query: { id: id } })
+        .catch(() => {});
+    },
+    getDeviceData() {
+      this.$axios.get(this.$api + query).then((res) => {
+        if (res.data.state === 1) {
+          this.deviceList = res.data.data;
+        }
+      });
     },
   },
 };

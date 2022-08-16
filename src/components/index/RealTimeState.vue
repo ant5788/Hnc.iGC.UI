@@ -3,16 +3,14 @@
     <dv-border-box-12>
       <div class="title">▎设备实时状态</div>
       <div class="alam_info">
-        <span>工位</span>
+        <span>设备名称</span>
         <span>设备状态</span>
-        <span>持续时长</span>
       </div>
       <div class="list_warp">
         <ul>
           <li v-for="(item, index) in deviceStateList" :key="index">
-            <span>{{ item.Station }}</span>
+            <span>{{ item.name }}</span>
             <span>{{ item.StatusName }}</span>
-            <span>{{ item.Duration }}</span>
           </li>
         </ul>
       </div>
@@ -20,13 +18,18 @@
   </div>
 </template>
 <script>
-let url = "http://192.168.20.160:24912/api/CNC/DeviceRealTimeStatus";
+let url = "/api/CNC/DeviceRealTimeStatus";
 export default {
   data() {
     return {
       deviceStateList: [],
       statusmap: {
         0: "复位",
+        1: "停止",
+        2: "保持进给",
+        3: "循环启动",
+        4: "指令启动",
+        98: "急停",
         99: "报警",
       },
     };
@@ -36,10 +39,11 @@ export default {
   },
   methods: {
     getData() {
-      this.$axios.get(url).then((res) => {
+      this.$axios.get(this.$api + url).then((res) => {
+        console.log(res);
         this.deviceStateList = res.data.data;
         this.deviceStateList.forEach((item) => {
-          item.StatusName = this.statusmap[item.Status];
+          item.StatusName = this.statusmap[item.State];
         });
       });
     },
@@ -64,7 +68,7 @@ export default {
     margin: 0 auto;
     span {
       display: inline-block;
-      width: 33%;
+      width: 50%;
       font-size: 18px;
       font-weight: 400;
       line-height: 18px;
@@ -89,7 +93,7 @@ export default {
         list-style: none;
         span {
           display: inline-block;
-          width: 33%;
+          width: 50%;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

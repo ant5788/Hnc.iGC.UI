@@ -26,7 +26,7 @@ import deviceMap from "./DeviceMap";
 // import TimeUtilizationTop from "./TimeUtilizationTop";
 import RealTimeState from "./RealTimeState";
 import StateDistribute from "./StateDistribute";
-let url = "http://192.168.20.160:24912/api/CNC";
+let url = "/api/CNC";
 export default {
   name: "HelloWorld",
   props: {
@@ -56,7 +56,8 @@ export default {
   },
   methods: {
     getData() {
-      this.$axios.get(url).then((res) => {
+      this.$axios.get(this.$api + url).then((res) => {
+        console.log(res);
         this.data = res.data;
         this.processData(this.data);
       });

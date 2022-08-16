@@ -11,32 +11,25 @@
             />
           </div>
           <div class="detail fl">
-            <img src="../../assets/images/machine_img.png" class="ma_img" />
+            <img :src="deviceData.DevicePhoto" class="ma_img" />
           </div>
           <div class="detail fl">
             <div class="line">
               <span>设备名称：</span>
-              <span>{{ deviceData.Name }}</span>
+              <span>{{ deviceData.DeviceName }}</span>
             </div>
             <div class="line">
               <span>设备ID：</span>
+              <span>{{ deviceData.DeviceId }}</span>
+            </div>
+            <div class="line"></div>
+            <div class="line">
+              <span>设备类型：</span>
               <span></span>
             </div>
             <div class="line">
-              <span>设备类型：</span>
-              <span>4</span>
-            </div>
-            <div class="line">
               <span>设备所在车间：</span>
-              <span>{{ Partcode }}</span>
-            </div>
-            <div class="line">
-              <span>加工零件编码：</span>
-              <span>{{ Partcode }}</span>
-            </div>
-            <div class="line">
-              <span>零件加工百分比：</span>
-              <span>{{ Partcode }}</span>
+              <span></span>
             </div>
           </div>
         </dv-border-box-12>
@@ -44,14 +37,15 @@
           <div class="title">▎加工信息</div>
           <p>
             <span class="text">加工计数</span
-            ><span class="number">{{ deviceData.PartsTotal }}</span>
-            <span class="text">程序号</span
-            ><span class="number">{{ deviceData.CurrentProgramNumber }}</span>
+            ><span class="number">{{ ProData.PartsTotal }}</span>
+            <span class="text">加工零件编码</span
+            ><span class="number">{{ Partcode }}</span>
           </p>
           <p>
             <span class="text">程序名称</span
-            ><span class="number">{{ deviceData.CurrentProgramName }}</span>
-            <span class="text"> 程序推送</span>
+            ><span class="number">{{ ProData.CurrentProgramName }}</span>
+            <span class="text">零件加工百分比：</span>
+            <span class="number">{{ PartPercentage }}</span>
           </p>
         </dv-border-box-12>
       </div>
@@ -64,26 +58,26 @@
           <div class="title">▎负载</div>
           <div class="content">
             <div class="axisItem" v-for="(item, i) in axisLoadForm" :key="i">
-              <div class="name">{{ item.name }}</div>
+              <div class="name">{{ item.Name }}</div>
               <div class="percent">
                 <div class="progress-out">
                   <div
                     class="progress-in"
                     :style="{
-                      width: item.value + '%',
+                      width: item.Load + '%',
                       background:
-                        setColor(item.value) === 0
+                        setColor(item.Load) === 0
                           ? '#18A23F'
-                          : setColor(item.value) === 1
+                          : setColor(item.Load) === 1
                           ? '#F5A623'
-                          : setColor(item.value) === 2
+                          : setColor(item.Load) === 2
                           ? '#f30707'
                           : '',
                     }"
                   ></div>
                 </div>
               </div>
-              <div class="value">{{ item.value }}%</div>
+              <div class="value">{{ item.Load }}%</div>
             </div>
           </div>
         </dv-border-box-12>
@@ -153,10 +147,12 @@
   </div>
 </template>
 <script>
-let url =
-  "http://192.168.20.160:24912/api/CNC/A183AA3A-7274-48D5-AADC-53009B7DC203";
-let partUrl =
-  "http://192.168.20.160:24912/api/CNC/PartCode?deviceId=A183AA3A-7274-48D5-AADC-53009B7DC203";
+let cncUrl = "/api/CNC/";
+let query = "/api/CNC/GetDeviceDetailById?";
+let partUrl = "/api/CNC/PartCode?"; //加工零件编码
+let tfsUrl = "/api/CNC/GetCutterInfo?"; //刀具信息
+let LoadUrl = "/api/CNC/GetSpindleLoad?"; //获取负载
+let PerUr = "/api/CNC/GetPartPercentage?"; //获取加工百分比
 import register from "./ registerInfo";
 import lineChart from "./lineChart";
 export default {
@@ -187,20 +183,20 @@ export default {
       ],
       axisLoadForm: [
         {
-          name: "X",
-          value: 80,
+          Name: "X",
+          Load: 80,
         },
         {
-          name: "Y",
-          value: 60,
+          Name: "Y",
+          Load: 60,
         },
         {
-          name: "Z",
-          value: 40,
+          Name: "Z",
+          Load: 40,
         },
         {
-          name: "C",
-          value: 100,
+          Name: "C",
+          Load: 100,
         },
       ],
       tfsForm: {
@@ -247,20 +243,30 @@ export default {
       ],
       chartInstance: null,
       deviceData: {
-        Name: "智能高速五轴数控机床",
-        PartsTotal: "200",
-        CurrentProgramNumber: "007",
+        DevicePhoto: "",
+        DeviceName: "",
+        DeviceId: "",
         CurrentProgramName: "../prog/O1111",
       },
       Partcode: "005",
+      PartPercentage: "",
+      ProData: {
+        PartsTotal: "",
+        CurrentProgramNumber: "",
+        CurrentProgramName: "",
+      },
     };
   },
   mounted() {
     this.initchart();
-    this.initPartcode();
   },
   created() {
     this.initData();
+    this.initPartcode();
+    this.getFi();
+    this.GetSpindleLoad();
+    this.GetPartPercentage();
+    this.getCNC();
   },
   methods: {
     //设置负载背景颜色
@@ -405,28 +411,78 @@ export default {
       };
       this.chartInstance.setOption(initOption);
     },
-    initData() {
-      this.$axios.get(url).then((res) => {
-        this.deviceData = res.data;
-        this.multiplyingPower.forEach((item) => {
-          if (item.name === "主轴修调") {
-            item.value = this.deviceData.SpindleOverride;
-          } else if (item.name === "进给修调") {
-            item.value = this.deviceData.FeedOverride;
-          } else {
-            item.value = this.deviceData.RapidOverride;
-          }
-        });
-        this.tfsForm.toolNumber.value = this.deviceData.CutterInfos.Number;
-        this.tfsForm.feedSpeed.value = this.deviceData.FeedSpeed;
-        this.tfsForm.feedSpeed.unit = this.deviceData.FeedSpeedUnit;
-        this.tfsForm.spindleSpeed.value = this.deviceData.SpindleSpeed;
-        this.tfsForm.spindleSpeed.unit = this.deviceData.SpindleSpeedUnit;
+    getCNC() {
+      let url = cncUrl + this.getUrlParams(window.location.search, "id");
+      this.$axios.get(this.$api + url).then((res) => {
+        if (res.data !== null) {
+          let data = res.data;
+          this.ProData.PartsTotal = data.PartsTotal;
+          this.ProData.CurrentProgramName = data.CurrentProgramName;
+          this.multiplyingPower.forEach((item) => {
+            if (item.name === "主轴修调") {
+              item.value = data.SpindleOverride;
+            } else if (item.name === "进给修调") {
+              item.value = data.FeedOverride;
+            } else {
+              item.value = data.RapidOverride;
+            }
+          });
+        } else {
+          return false;
+        }
       });
     },
+    //获取设备详情
+    initData() {
+      let url = query + "id=" + this.getUrlParams(window.location.search, "id");
+      this.$axios.get(this.$api + url).then((res) => {
+        if (res.data.data !== null && res.data.state === 1) {
+          this.deviceData = res.data.data;
+        }
+      });
+    },
+    //获取url传参
+    getUrlParams(url, params) {
+      var res = new RegExp("(?:&|/?)" + params + "=([^&$]+)").exec(url);
+      return res ? res[1] : "";
+    },
+    //获取正在加工的零件编码
     initPartcode() {
-      this.$axios.get(partUrl).then((res) => {
-        this.Partcode = res.data.data;
+      let id = this.getUrlParams(window.location.search, "id");
+      this.$axios.get(this.$api + partUrl + "deviceId=" + id).then((res) => {
+        if (res.data.sate === 1) {
+          this.Partcode = res.data.data.code;
+        }
+      });
+    },
+    //获取刀具信息
+    getFi() {
+      let id = this.getUrlParams(window.location.search, "id");
+      this.$axios.get(this.$api + tfsUrl + "deviceId=" + id).then((res) => {
+        if (res.data.state === 1 && res.data.data !== null) {
+          this.tfsForm.toolNumber.value = res.data.data.CurrentCutterNumber;
+          this.tfsForm.feedSpeed.value = res.data.data.FeedSpeed;
+          this.tfsForm.toolTime.value = res.data.data.toolTime;
+        }
+      });
+    },
+    //主轴负载
+    GetSpindleLoad() {
+      let id = this.getUrlParams(window.location.search, "id");
+      this.$axios.get(this.$api + LoadUrl + "deviceId=" + id).then((res) => {
+        if (res.data.state === 1 && res.data.data !== null) {
+          this.axisLoadForm = res.data.data;
+        }
+      });
+    },
+    //加工零件百分比
+    GetPartPercentage() {
+      let id = this.getUrlParams(window.location.search, "id");
+      this.$axios.get(this.$api + PerUr + "deviceId=" + id).then((res) => {
+        if (res.data.state === 1) {
+          // console.log(res);
+          this.PartPercentage = res.data.data;
+        }
       });
     },
   },
@@ -487,8 +543,8 @@ export default {
     width: 50%;
     font-size: 20px;
     .line {
-      height: 45px;
-      line-height: 45px;
+      height: 50px;
+      line-height: 50px;
     }
   }
   .text {

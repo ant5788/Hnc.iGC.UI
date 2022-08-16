@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-let url = "";
+let url = "/api/CNC/RealTimeAlarmMessage";
 export default {
   data() {
     return {
@@ -34,7 +34,7 @@ export default {
   methods: {
     getdata() {
       this.alarmData = [];
-      this.$axios.get(url).then((res) => {
+      this.$axios.get(this.$api + url).then((res) => {
         this.alarmData.push(res.data.data);
         if (this.alarmData != null) {
           this.alarmData.forEach((item) => {
