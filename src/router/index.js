@@ -4,7 +4,6 @@ import Home from "../components/index/index.vue";
 import deviceDetails from "../components/deviceDetails/deviceIndex.vue";
 import Machine from "../components/MachineDetails/MachineIndex.vue";
 import Production from "../components/Production/ProductionIndex.vue";
-//import Efficiency from "../components/efficiencyAnalysis/efficiencyIndex.vue";
 import ProLineRate from "../components/productionLineRate/productionLine.vue";
 import Efficiency from "../components/text/textLIne.vue";
 import deviceList from "../components/deviceList/deviceList.vue";
@@ -15,6 +14,7 @@ import Rate from "../components/PassRate/passRateindex.vue";
 import OutsideP from "../components/outsideP/OutsidePindex.vue";
 import Achievement from "../components/AchievementRate/AchievementIndex.vue";
 import Output from "../components/AchievementRate/AchievementList.vue";
+import Grain from "../components/Grain/GrainIndex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -127,6 +127,14 @@ const routes = [
     component: Output,
     meta: {
       title: "实际产量",
+    },
+  },
+  {
+    path: "/Grain",
+    name: "Grain",
+    component: Grain,
+    meta: {
+      title: "设备嫁动率/运动率",
     },
   },
 ];

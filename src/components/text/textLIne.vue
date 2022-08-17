@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -37,10 +38,11 @@
 </template>
 <script>
 import leftNav from "../common/leftNav.vue";
+import Header from "../common/Header.vue";
 import { dataAssembly, formatters, formateText, renderItem } from "./data";
 let query = "/api/CNC/EfficiencyAnalysis?";
 export default {
-  components: { leftNav },
+  components: { leftNav, Header },
   data() {
     return {
       chartInstance: null,
@@ -63,6 +65,7 @@ export default {
         99: "报警",
         98: "离线",
       },
+      title: "设备运行日志",
       Ydata: [],
       seriesData: [],
       timeArry: [],
@@ -143,59 +146,6 @@ export default {
           Rate: 60,
           run: 20,
         },
-        // {
-        //   Id: null,
-        //   flag: 0,
-        //   DeviceId: "A183AA3A-7274-48D5-AADC-53009B7DC203",
-        //   DeviceName: "立式加工中心",
-        //   DeviceStatus: 0,
-        //   StartTime: "2022-05-31T10:25:12",
-        //   EndTime: "2022-05-31T14:25:12",
-        //   Duration: 0,
-        //   CreateTime: "0001-01-01T00:00:00",
-        //   CurrentProgramNumber: 0,
-        //   CurrentProgramName: null,
-        // },
-        // {
-        //   Id: null,
-        //   flag: 0,
-        //   DeviceId: "A183AA3A-7274-48D5-AADC-53009B7DC203",
-        //   DeviceName: "立式加工中心",
-        //   DeviceStatus: 0,
-        //   StartTime: "2022-05-31T08:24:24",
-        //   EndTime: "2022-05-31T10:24:24",
-        //   Duration: 0,
-        //   CreateTime: "0001-01-01T00:00:00",
-        //   CurrentProgramNumber: 0,
-        //   CurrentProgramName: null,
-        // },
-
-        // {
-        //   Id: null,
-        //   flag: 1,
-        //   DeviceId: "D55F897D-D483-4E84-9928-BC6338C5C4C5",
-        //   DeviceName: "立式车床",
-        //   DeviceStatus: 98,
-        //   StartTime: "2022-05-31T09:24:24",
-        //   EndTime: "2022-05-31T10:24:24",
-        //   Duration: 0,
-        //   CreateTime: "0001-01-01T00:00:00",
-        //   CurrentProgramNumber: 0,
-        //   CurrentProgramName: null,
-        // },
-        // {
-        //   Id: null,
-        //   flag: 1,
-        //   DeviceId: "D55F897D-D483-4E84-9928-BC6338C5C4C5",
-        //   DeviceName: "立式车床",
-        //   DeviceStatus: 0,
-        //   StartTime: "2022-05-31T09:24:24",
-        //   EndTime: "2022-05-31T10:24:24",
-        //   Duration: 0,
-        //   CreateTime: "0001-01-01T00:00:00",
-        //   CurrentProgramNumber: 0,
-        //   CurrentProgramName: null,
-        // },
       ],
     };
   },

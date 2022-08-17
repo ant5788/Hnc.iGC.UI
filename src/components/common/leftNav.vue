@@ -52,6 +52,10 @@ export default {
           id: 8,
         },
         {
+          text: "设备稼动率/运动率",
+          id: 11,
+        },
+        {
           text: "达成率分析",
           id: 9,
         },
@@ -95,6 +99,9 @@ export default {
           break;
         case 10:
           this.$router.push("/Output").catch(() => {});
+          break;
+        case 11:
+          this.$router.push("/Grain").catch(() => {});
       }
     },
   },

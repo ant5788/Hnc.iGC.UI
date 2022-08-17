@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -72,8 +73,9 @@ import leftNav from "../common/leftNav.vue";
 import addOutside from "./OutsidePAdd.vue";
 import updataOutside from "./OutsidePUpdata.vue";
 import detailsOutside from "./OutsidePDetails.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav, addOutside, updataOutside, detailsOutside },
+  components: { leftNav, Header, addOutside, updataOutside, detailsOutside },
   data() {
     return {
       currentPage4: 4,
@@ -89,6 +91,7 @@ export default {
       pageSize: 10,
       pageNo: 1,
       total: 0,
+      title: "外协加工进度",
     };
   },
   mounted() {

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -68,8 +69,9 @@ import leftNav from "../common/leftNav.vue";
 import PassRateAdd from "./PassRateAdd.vue";
 import PassRateUpdata from "./PassRateUpdata.vue";
 import PassRateDetails from "./PassRateDetails.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav, PassRateAdd, PassRateUpdata, PassRateDetails },
+  components: { leftNav, Header, PassRateAdd, PassRateUpdata, PassRateDetails },
   data() {
     return {
       visible: false,
@@ -84,6 +86,7 @@ export default {
       pageSize: 10,
       pageNo: 1,
       total: 0,
+      title: "合格率统计分析",
     };
   },
   created() {

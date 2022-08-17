@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -61,8 +62,9 @@ import upLoad from "../common/UpLoad.vue";
 import addDigo from "./equipmentAdd.vue";
 import upDigo from "./equipmentUpdate.vue";
 import detailDigo from "./equipmentDetails.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav, addDigo, upDigo, detailDigo, upLoad },
+  components: { leftNav, Header, addDigo, upDigo, detailDigo, upLoad },
   data() {
     return {
       tableData: [],
@@ -79,6 +81,7 @@ export default {
       pageSize: 10,
       pageNo: 1,
       total: 0,
+      title: "设备档案管理",
     };
   },
   created() {

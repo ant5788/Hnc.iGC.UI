@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -65,8 +66,9 @@ import upLoad from "../common/UpLoad.vue";
 import addDigo from "./ExamineAdd";
 import UpDigo from "./ExamineUpdata.vue";
 import detailsDigo from "./ExamineDetails.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav, addDigo, UpDigo, detailsDigo, upLoad },
+  components: { leftNav, Header, addDigo, UpDigo, detailsDigo, upLoad },
   data() {
     return {
       tableData: [],
@@ -83,6 +85,7 @@ export default {
       pageSize: 10,
       pageNo: 1,
       total: 0,
+      title: "设备点检情况",
     };
   },
   created() {

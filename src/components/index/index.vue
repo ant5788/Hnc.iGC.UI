@@ -1,5 +1,6 @@
 <template>
-  <div class="main">
+  <div>
+    <Header :title="title"></Header>
     <div class="left fl">
       <AlamTime
         :durationTimeList="durationTimeList"
@@ -26,6 +27,7 @@ import deviceMap from "./DeviceMap";
 // import TimeUtilizationTop from "./TimeUtilizationTop";
 import RealTimeState from "./RealTimeState";
 import StateDistribute from "./StateDistribute";
+import Header from "../common/Header.vue";
 let url = "/api/CNC";
 export default {
   name: "HelloWorld",
@@ -40,6 +42,7 @@ export default {
     // TimeUtilizationTop,
     RealTimeState,
     StateDistribute,
+    Header,
   },
   data() {
     return {
@@ -49,6 +52,7 @@ export default {
       difference: [],
       deviceNumberList: [],
       durationTimeList: [],
+      title: "超越智慧工厂",
     };
   },
   created() {

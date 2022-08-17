@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -10,11 +11,13 @@
 </template>
 <script>
 import leftNav from "../common/leftNav.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav },
+  components: { leftNav, Header },
   data() {
     return {
       chartInstance: null,
+      title: "设备达成率分析",
     };
   },
   mounted() {

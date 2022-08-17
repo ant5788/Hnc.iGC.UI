@@ -3,11 +3,12 @@
     <div class="clearfloat">
       <div class="left"></div>
       <div class="center">
-        <div class="title">智慧工厂管理平台</div>
+        <div class="title">{{ title }}</div>
         <dv-decoration-5 class="top" />
       </div>
       <div class="right">
-        <button class="btn" @click="go">设备监控</button>
+        <button class="btn" @click="go(0)">首页</button>
+        <button class="btn" @click="go(1)">设备监控</button>
       </div>
     </div>
     <div class="bottom_img"></div>
@@ -18,11 +19,18 @@
 export default {
   name: "HeaderCom",
   props: {
-    msg: String,
+    title: {
+      type: String,
+      require: true,
+    },
   },
   methods: {
-    go() {
-      this.$router.push("/deviceList");
+    go(val) {
+      if (val === 1) {
+        this.$router.push("/deviceList");
+      } else {
+        this.$router.push("/");
+      }
     },
   },
 };
@@ -51,6 +59,7 @@ export default {
       border: 1px solid #00d8ff;
       cursor: pointer;
       border-radius: 10px;
+      margin: 0 10px;
     }
   }
   .center {

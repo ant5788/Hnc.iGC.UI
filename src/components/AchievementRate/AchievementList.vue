@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -28,10 +29,11 @@
 </template>
 <script>
 import leftNav from "../common/leftNav.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav },
+  components: { leftNav, Header },
   data() {
-    return { tableData: [], currentPage4: 1 };
+    return { tableData: [], currentPage4: 1, title: "计划产量实际产量列表" };
   },
   methods: {
     handleSizeChange() {},

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -18,8 +19,9 @@ import leftNav from "../common/leftNav.vue";
 import proStatis from "./ProductionStatistics.vue";
 import faultChart from "./faultChart.vue";
 let DeviceUrl = "/api/CNC/GetDeviceList";
+import Header from "../common/Header.vue";
 export default {
-  components: { proStatis, faultChart, leftNav },
+  components: { proStatis, Header, faultChart, leftNav },
   data() {
     return {
       monthArr: [],
@@ -31,6 +33,7 @@ export default {
       alarmNum: 0,
       DeviceList: [],
       deviceId: "",
+      title: "生产统计",
     };
   },
   created() {

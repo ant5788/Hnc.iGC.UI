@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -36,10 +37,12 @@
 <script>
 let query = "/api/CNC/GetDeviceList";
 import leftNav from "../common/leftNav.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav },
+  components: { leftNav, Header },
   data() {
     return {
+      title: "设备列表",
       deviceList: [],
     };
   },

@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <Header :title="title"></Header>
     <div class="left fl">
       <leftNav></leftNav>
     </div>
@@ -68,11 +69,11 @@ import upLoad from "../common/UpLoad.vue";
 import addDigo from "./MaintenanceAdd.vue";
 import upDigo from "./MaintenanceUpdate.vue";
 import detailDigo from "./MaintenanceDetails.vue";
+import Header from "../common/Header.vue";
 export default {
-  components: { leftNav, addDigo, upDigo, detailDigo, upLoad },
+  components: { leftNav, Header, addDigo, upDigo, detailDigo, upLoad },
   data() {
     return {
-      currentPage4: 4,
       visible: false,
       show: false,
       updata: {},
@@ -87,6 +88,7 @@ export default {
       pageSize: 10,
       pageNo: 1,
       total: 0,
+      title: "设备维保计划",
     };
   },
   created() {
