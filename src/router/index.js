@@ -15,6 +15,8 @@ import OutsideP from "../components/outsideP/OutsidePindex.vue";
 import Achievement from "../components/AchievementRate/AchievementIndex.vue";
 import Output from "../components/AchievementRate/AchievementList.vue";
 import Grain from "../components/Grain/GrainIndex.vue";
+import Repair from "../components/Devicerepair/repairIndex.vue";
+import Alarm from "../components/Alarm/AlarmIndex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -135,6 +137,22 @@ const routes = [
     component: Grain,
     meta: {
       title: "设备嫁动率/运动率",
+    },
+  },
+  {
+    path: "/Repair",
+    name: "Repair",
+    component: Repair,
+    meta: {
+      title: "设备维修记录",
+    },
+  },
+  {
+    path: "/Alarm",
+    name: "Alarm",
+    component: Alarm,
+    meta: {
+      title: "报警及统计",
     },
   },
 ];

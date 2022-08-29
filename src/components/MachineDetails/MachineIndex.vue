@@ -1,5 +1,6 @@
 <template>
   <div class="machine_box">
+    <Header :title="title"></Header>
     <div class="machine_top">
       <div class="machine_top_left">
         <dv-border-box-12 class="machine_details">
@@ -155,10 +156,12 @@ let LoadUrl = "/api/CNC/GetSpindleLoad?"; //获取负载
 let PerUr = "/api/CNC/GetPartPercentage?"; //获取加工百分比
 import register from "./ registerInfo";
 import lineChart from "./lineChart";
+import Header from "../common/Header.vue";
 export default {
-  components: { register, lineChart },
+  components: { register, lineChart, Header },
   data() {
     return {
+      title: "设备详情",
       axisPositionForm: [
         {
           name: "X",

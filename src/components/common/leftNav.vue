@@ -32,6 +32,14 @@ export default {
           id: 3,
         },
         {
+          text: "设备维修记录",
+          id: 12,
+        },
+        {
+          text: "报警及统计",
+          id: 13,
+        },
+        {
           text: "设备点检情况",
           id: 4,
         },
@@ -102,6 +110,12 @@ export default {
           break;
         case 11:
           this.$router.push("/Grain").catch(() => {});
+          break;
+        case 12:
+          this.$router.push("/Repair").catch(() => {});
+          break;
+        case 13:
+          this.$router.push("/Alarm").catch(() => {});
       }
     },
   },

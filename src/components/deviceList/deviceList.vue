@@ -79,6 +79,20 @@ export default {
   .con {
     width: 85%;
     margin-top: 20px;
+    max-height: calc(100% - 220px);
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      /*滚动条整体样式*/
+      width: 10px;
+      /*高宽分别对应横竖滚动条的尺寸*/
+      height: 1px;
+    }
+    &::-webkit-scrollbar-thumb {
+      /*滚动条里面小方块*/
+      border-radius: 10px;
+      box-shadow: inset 0 0 5px #59ebe8;
+      background: #59ebe8;
+    }
   }
   .warp {
     width: 100%;
@@ -89,6 +103,7 @@ export default {
     width: 32%;
     border: 1px solid #59ebe8;
     border-radius: 8px;
+    margin: 8px;
   }
   .img_box {
     width: 45%;
