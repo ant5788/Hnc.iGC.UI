@@ -24,6 +24,10 @@ export default {
           id: 1,
         },
         {
+          text: "虚拟设备管理",
+          id: 15,
+        },
+        {
           text: "设备档案管理",
           id: 2,
         },
@@ -34,6 +38,10 @@ export default {
         {
           text: "设备维修记录",
           id: 12,
+        },
+        {
+          text: "报警数据采集",
+          id: 14,
         },
         {
           text: "报警及统计",
@@ -116,6 +124,9 @@ export default {
           break;
         case 13:
           this.$router.push("/Alarm").catch(() => {});
+          break;
+        case 15:
+          this.$router.push("/FictitiousList").catch(() => {});
       }
     },
   },

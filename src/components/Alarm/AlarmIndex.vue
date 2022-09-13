@@ -11,7 +11,12 @@
         :data="tableData"
         :height="tableHeight"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
-      ></el-table>
+      >
+        <el-table-column prop="AlarmNumber" label="报警编号"></el-table-column>
+        <el-table-column prop="AlarmMessage" label="报警内容"></el-table-column>
+        <el-table-column prop="StartAt" label="报警开始时间"></el-table-column>
+        <el-table-column prop="EndAt" label="报警结束时间"></el-table-column>
+      </el-table>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -34,12 +39,25 @@ export default {
     return {
       visible: false,
       upShow: false,
-      tableData: [],
+      tableData: [
+        {
+          id: "123",
+          AlarmNumber: "01",
+          AlarmMessage: "内存不足",
+          StartAt: "2022-06-07 12:00:00",
+          EndAt: "2022-06-07 12:05:00",
+        },
+      ],
       title: "报警记录及统计",
       tableHeight: "",
       pageSize: 10,
       pageNo: 1,
       total: 0,
+      show: false,
+      updata: {},
+      detail: false,
+      dflag: false,
+      datailData: {},
     };
   },
   mounted() {
@@ -82,6 +100,18 @@ export default {
     upLoad() {
       this.upShow = true;
     },
+    handleEdit(row) {
+      this.updata = row;
+      this.show = true;
+      this.flag = true;
+    },
+    //查看详情
+    handledetail(row) {
+      this.datailData = row;
+      this.detail = true;
+      this.dflag = true;
+    },
+    handleDelete() {},
   },
 };
 </script>

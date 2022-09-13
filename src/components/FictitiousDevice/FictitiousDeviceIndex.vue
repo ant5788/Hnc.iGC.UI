@@ -6,23 +6,15 @@
     </div>
     <div class="con fl">
       <el-button type="primary" @click="add">新增</el-button>
-      <el-button type="primary" @click="upLoad">文件上传</el-button>
       <el-table
         :data="tableData"
         :height="tableHeight"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
       >
         <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
-        <el-table-column prop="DeviceType" label="设备类型"></el-table-column>
-        <el-table-column
-          prop="DerviceNumber"
-          label="设备编号"
-        ></el-table-column>
-        <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
-        <el-table-column
-          prop="archivesNumber"
-          label="档案编号"
-        ></el-table-column>
+        <el-table-column prop="DeviceType" label="设备型号"></el-table-column>
+        <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
+        <el-table-column prop="AssetsNumber" label="资产编号"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
@@ -55,23 +47,25 @@
       :data="datailData"
       v-if="dflag"
     ></detailDigo>
-    <upLoad :upShow.sync="upShow" :type="type"></upLoad>
   </div>
 </template>
 <script>
-let query = "/api/CNC/GetArchivesList"; //查询接口
-let del = "/api/CNC/DeleteArchives?";
 import leftNav from "../common/leftNav.vue";
-import upLoad from "../common/UpLoad.vue";
-import addDigo from "./equipmentAdd.vue";
-import upDigo from "./equipmentUpdate.vue";
-import detailDigo from "./equipmentDetails.vue";
 import Header from "../common/Header.vue";
+import addDigo from "../FictitiousDevice/FictitiousDeviceAdd.vue";
+import upDigo from "../FictitiousDevice/FictitiousDeviceUpdata.vue";
+import detailDigo from "../FictitiousDevice/FictitiousDeviceDetails.vue";
+let query = "/api/CNC/GetDeviceDetailList";
+let del = "/api/CNC/DeleteDeviceDetailById?";
 export default {
-  components: { leftNav, Header, addDigo, upDigo, detailDigo, upLoad },
+  components: { leftNav, Header, addDigo, upDigo, detailDigo },
   data() {
     return {
       tableData: [],
+      pageSize: 10,
+      pageNo: 1,
+      total: 0,
+      title: "虚拟设备管理",
       visible: false,
       show: false,
       updata: {},
@@ -79,13 +73,6 @@ export default {
       detail: false,
       dflag: false,
       datailData: {},
-      upShow: false,
-      type: 1,
-      tableHeight: "",
-      pageSize: 10,
-      pageNo: 1,
-      total: 0,
-      title: "设备档案管理",
     };
   },
   created() {
@@ -142,33 +129,6 @@ export default {
         this.tableHeight = window.innerHeight - tableH;
       }
     },
-    //编辑
-    handleEdit(row) {
-      this.updata = row;
-      this.show = true;
-      this.flag = true;
-    },
-    //查看详情
-    handledetail(row) {
-      this.datailData = row;
-      this.detail = true;
-      this.dflag = true;
-    },
-    //删除
-    handleDelete(row) {
-      this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
-        if (res.data.state === 1) {
-          this.$message({
-            showClose: true,
-            message: res.data.message,
-            type: "success",
-          });
-        } else {
-          this.$message(res.data.message);
-        }
-        this.getdata();
-      });
-    },
     //
     handleSizeChange(val) {
       this.pageSize = val;
@@ -182,8 +142,33 @@ export default {
     add() {
       this.visible = true;
     },
-    upLoad() {
-      this.upShow = true;
+    //编辑
+    handleEdit(row) {
+      this.updata = {};
+      this.updata = row;
+      this.show = true;
+      this.flag = true;
+      console.log(row);
+    },
+    //查看详情
+    handledetail(row) {
+      this.datailData = row;
+      this.detail = true;
+      this.dflag = true;
+    },
+    handleDelete(row) {
+      this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
+        if (res.data.state === 1) {
+          this.$message({
+            showClose: true,
+            message: res.data.message,
+            type: "success",
+          });
+        } else {
+          this.$message(res.data.message);
+        }
+        this.getdata();
+      });
     },
   },
 };

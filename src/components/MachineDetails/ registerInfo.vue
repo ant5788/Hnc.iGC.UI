@@ -96,6 +96,20 @@ export default {
           this.dataList = [];
           if (res.data.data !== null) {
             this.dataList = res.data.data;
+            this.dataList = [
+              {
+                name: 0,
+                ratio: 20,
+              },
+              {
+                name: 1,
+                ratio: 30,
+              },
+              {
+                name: 2,
+                ratio: 40,
+              },
+            ];
             this.dataList.forEach((item) => {
               item.name = this.statusmap[item.name];
             });

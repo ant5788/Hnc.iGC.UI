@@ -7,6 +7,9 @@
       :before-close="onClose"
     >
       <el-form :model="form" :rules="rules" ref="form" class="form_box">
+        <el-form-item label="设备图片" prop="DevicePhoto">
+          <img :src="url" class="img" />
+        </el-form-item>
         <el-form-item label="设备名称" prop="DeviceName">
           <el-input
             v-model="form.DeviceName"
@@ -21,23 +24,16 @@
             disabled
           ></el-input>
         </el-form-item>
-        <el-form-item label="设备编码" prop="DerviceNumber">
+        <el-form-item label="设备编码" prop="DeviceNumber">
           <el-input
-            v-model="form.DerviceNumber"
+            v-model="form.DeviceNumber"
             class="input_box"
             disabled
           ></el-input>
         </el-form-item>
-        <el-form-item label="资产编号" prop="AssetNumber">
+        <el-form-item label="资产编号" prop="AssetsNumber">
           <el-input
-            v-model="form.AssetNumber"
-            class="input_box"
-            disabled
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="档案编号" prop="archivesNumber">
-          <el-input
-            v-model="form.archivesNumber"
+            v-model="form.AssetsNumber"
             class="input_box"
             disabled
           ></el-input>
@@ -47,6 +43,7 @@
   </div>
 </template>
 <script>
+let imgquery = "/api/CNC/ShowImg?";
 export default {
   props: {
     detail: {
@@ -60,12 +57,13 @@ export default {
   },
   data() {
     return {
+      url: "",
       form: {
         DeviceName: "",
         DeviceType: "",
-        DerviceNumber: "",
-        AssetNumber: "",
-        archivesNumber: "",
+        DeviceNumber: "",
+        AssetsNumber: "",
+        DevicePhoto: "",
       },
       rules: {
         DeviceName: [
@@ -74,27 +72,37 @@ export default {
         DeviceType: [
           { required: true, message: "请输入设备类型", trigger: "blur" },
         ],
-        DerviceNumber: [
+        DeviceNumber: [
           { required: true, message: "请输入设备编码", trigger: "blur" },
         ],
-        AssetNumber: [
+        AssetsNumber: [
           { required: true, message: "请输入资产编号", trigger: "blur" },
         ],
-        archivesNumber: [
-          { required: true, message: "请输入档案编号", trigger: "blur" },
+        DevicePhoto: [
+          { required: true, message: "请上传图片", trigger: "blur" },
         ],
       },
     };
   },
   created() {
     this.form = this.data;
+    this.getimg();
   },
   watch: {
     data() {
       this.form = this.data;
+      this.getimg();
     },
   },
   methods: {
+    getimg() {
+      this.$axios
+        .get(this.$api + imgquery + "guid=" + this.form.DevicePhoto)
+        .then((res) => {
+          console.log(res);
+          this.url = res.data.data;
+        });
+    },
     onClose() {
       this.$emit("update:detail", false);
       console.log(this.datailData);
@@ -111,5 +119,8 @@ export default {
 }
 .input_box {
   width: 400px;
+}
+.img {
+  width: 200px;
 }
 </style>

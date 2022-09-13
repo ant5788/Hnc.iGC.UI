@@ -37,7 +37,6 @@ export default {
     });
   },
   created() {
-    console.log(this.$echarts);
     this.getData();
   },
   methods: {
@@ -139,6 +138,8 @@ export default {
       this.chartInstance.setOption(initOption);
     },
     getData() {
+      this.durationTimeList = [];
+      this.deviceNumberList = [];
       this.$axios.get(this.$api + url).then((res) => {
         this.data = res.data.data;
         if (this.data != null) {

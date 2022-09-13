@@ -17,6 +17,7 @@ import Output from "../components/AchievementRate/AchievementList.vue";
 import Grain from "../components/Grain/GrainIndex.vue";
 import Repair from "../components/Devicerepair/repairIndex.vue";
 import Alarm from "../components/Alarm/AlarmIndex.vue";
+import FictitiousList from "../components/FictitiousDevice/FictitiousDeviceIndex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -153,6 +154,14 @@ const routes = [
     component: Alarm,
     meta: {
       title: "报警及统计",
+    },
+  },
+  {
+    path: "/FictitiousList",
+    name: "FictitiousList",
+    component: FictitiousList,
+    meta: {
+      title: "虚拟设备管理",
     },
   },
 ];

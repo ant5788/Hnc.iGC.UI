@@ -7,40 +7,31 @@
       :before-close="onClose"
     >
       <el-form :model="form" :rules="rules" ref="form" class="form_box">
-        <el-form-item label="设备编号" prop="DeviceNumber">
-          <el-input v-model="form.DeviceNumber" class="input_box"></el-input>
+        <el-form-item label="设备图片" prop="DevicePhoto">
+          <input
+            type="file"
+            id="upImageFile"
+            @change="ImageToBase64"
+            v-show="showUp"
+          />
+          <img :src="url" v-show="!showUp" class="img" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="changeImg" v-show="!showUp"
+            >修改图片</el-button
+          >
         </el-form-item>
         <el-form-item label="设备名称" prop="DeviceName">
           <el-input v-model="form.DeviceName" class="input_box"></el-input>
         </el-form-item>
-        <el-form-item label="设备型号" prop="DeviceModel">
-          <el-input v-model="form.DeviceModel" class="input_box"></el-input>
-        </el-form-item>
         <el-form-item label="设备类型" prop="DeviceType">
           <el-input v-model="form.DeviceType" class="input_box"></el-input>
         </el-form-item>
-        <el-form-item label="设备状态" prop="DeviceState">
-          <el-input v-model="form.DeviceState" class="input_box"></el-input>
+        <el-form-item label="设备编码" prop="DeviceNumber">
+          <el-input v-model="form.DeviceNumber" class="input_box"></el-input>
         </el-form-item>
-        <el-form-item label="保养内容" prop="Content">
-          <el-input
-            type="textarea"
-            row="2"
-            v-model="form.Content"
-            class="input_box"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="设备分类" prop="DeviceClassification">
-          <el-input
-            v-model="form.DeviceClassification"
-            class="input_box"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="责任人" prop="PersonLiable">
-          <el-input v-model="form.PersonLiable" class="input_box"></el-input>
-        </el-form-item>
-        <el-form-item label="使用单位" prop="UserDep">
-          <el-input v-model="form.UserDep" class="input_box"></el-input>
+        <el-form-item label="资产编号" prop="AssetsNumber">
+          <el-input v-model="form.AssetsNumber" class="input_box"></el-input>
         </el-form-item>
         <el-form-item>
           <div class="btns">
@@ -55,7 +46,9 @@
   </div>
 </template>
 <script>
-let updata = "/api/CNC/UpdateMaintain";
+let updata = "/api/CNC/UpdateDeviceDetail";
+let upLoad = "/api/CNC/UploadImg";
+let imgquery = "/api/CNC/ShowImg?";
 export default {
   props: {
     show: {
@@ -69,57 +62,79 @@ export default {
   },
   data() {
     return {
+      url: "",
+      showUp: false,
       form: {
-        DeviceNumber: "",
         DeviceName: "",
-        DeviceModel: "",
         DeviceType: "",
-        DeviceState: "",
-        Content: "",
-        DeviceClassification: "",
-        PersonLiable: "",
-        UserDep: "",
+        DeviceNumber: "",
+        AssetsNumber: "",
+        DevicePhoto: "",
       },
       rules: {
-        DeviceNumber: [
-          { required: true, message: "请输入设备编号", trigger: "blur" },
-        ],
         DeviceName: [
           { required: true, message: "请输入设备名称", trigger: "blur" },
-        ],
-        DeviceModel: [
-          { required: true, message: "请输入设备型号", trigger: "blur" },
         ],
         DeviceType: [
           { required: true, message: "请输入设备类型", trigger: "blur" },
         ],
-        DeviceState: [
-          { required: true, message: "请输入设备状态", trigger: "blur" },
+        DeviceNumber: [
+          { required: true, message: "请输入设备编码", trigger: "blur" },
         ],
-        Content: [
-          { required: true, message: "请输入保养内容", trigger: "blur" },
+        AssetsNumber: [
+          { required: true, message: "请输入资产编号", trigger: "blur" },
         ],
-        DeviceClassification: [
-          { required: true, message: "请输入设备分类", trigger: "blur" },
-        ],
-        PersonLiable: [
-          { required: true, message: "请输入责任人", trigger: "blur" },
-        ],
-        UserDep: [
-          { required: true, message: "请输入使用单位", trigger: "blur" },
+        DevicePhoto: [
+          { required: true, message: "请上传图片", trigger: "blur" },
         ],
       },
     };
   },
   created() {
+    this.form = {};
     this.form = this.data;
+    this.getimg();
   },
   watch: {
     data() {
       this.form = this.data;
+      this.getimg();
     },
   },
   methods: {
+    getimg() {
+      this.$axios
+        .get(this.$api + imgquery + "guid=" + this.form.DevicePhoto)
+        .then((res) => {
+          console.log(res);
+          this.url = res.data.data;
+        });
+    },
+    changeImg() {
+      this.showUp = true;
+    },
+    ImageToBase64() {
+      let files = document.getElementById("upImageFile").files[0];
+      console.log(files);
+      var reader = new FileReader();
+      reader.readAsDataURL(files);
+      reader.onload = () => {
+        this.iconBase64 = reader.result;
+        let fileData = {
+          type: "image",
+          filename: files.name,
+          Base64String: this.iconBase64,
+        };
+
+        this.$axios.post(this.$api + upLoad, fileData).then((res) => {
+          console.log(res);
+          this.form.DevicePhoto = res.data.data;
+        });
+      };
+      reader.onerror = function (error) {
+        console.log("Error: ", error);
+      };
+    },
     submitForm(formName) {
       delete this.form.CreateTime;
       delete this.form.UpdateTime;
@@ -163,5 +178,8 @@ export default {
 }
 .btns {
   text-align: center;
+}
+.img {
+  width: 200px;
 }
 </style>

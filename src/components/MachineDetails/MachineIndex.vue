@@ -12,7 +12,8 @@
             />
           </div>
           <div class="detail fl">
-            <img :src="deviceData.DevicePhoto" class="ma_img" />
+            <!-- <img :src="deviceData.DevicePhoto" class="ma_img" /> -->
+            <img src="../../assets/images/machine_img.png" class="ma_img" />
           </div>
           <div class="detail fl">
             <div class="line">
@@ -247,16 +248,16 @@ export default {
       chartInstance: null,
       deviceData: {
         DevicePhoto: "",
-        DeviceName: "",
-        DeviceId: "",
+        DeviceName: "机床设备一",
+        DeviceId: "001",
         CurrentProgramName: "../prog/O1111",
       },
       Partcode: "005",
       PartPercentage: "",
       ProData: {
-        PartsTotal: "",
-        CurrentProgramNumber: "",
-        CurrentProgramName: "",
+        PartsTotal: "2000",
+        CurrentProgramNumber: "002",
+        CurrentProgramName: "002",
       },
     };
   },
@@ -264,12 +265,12 @@ export default {
     this.initchart();
   },
   created() {
-    this.initData();
-    this.initPartcode();
-    this.getFi();
-    this.GetSpindleLoad();
-    this.GetPartPercentage();
-    this.getCNC();
+    // this.initData();
+    // this.initPartcode();
+    // this.getFi();
+    // this.GetSpindleLoad();
+    // this.GetPartPercentage();
+    // this.getCNC();
   },
   methods: {
     //设置负载背景颜色

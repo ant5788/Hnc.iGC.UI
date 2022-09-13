@@ -5,37 +5,50 @@
       <leftNav></leftNav>
     </div>
     <div class="con fl">
-      <div class="warp">
-        <div
-          class="item"
-          @click="getdevice(item.DeviceId)"
-          v-for="item in deviceList"
-          :key="item.Id"
-        >
-          <div class="img_box fl">
-            <img src="../../assets/images/machine_img.png" />
-          </div>
-          <div class="device_info fl">
-            <p>
-              <span class="text">设备名称：</span>
-              <span>{{ item.DeviceName }}</span>
-            </p>
-            <p>
-              <span class="text">设备编号：</span>
-              <span></span>
-            </p>
-            <p>
-              <span class="text">资产编号：</span>
-              <span></span>
-            </p>
+      <div class="deviceList">
+        <div class="warp">
+          <div
+            class="item"
+            @click="getdevice(item.DeviceId)"
+            v-for="item in deviceList"
+            :key="item.Id"
+          >
+            <div class="img_box fl">
+              <img :src="item.DevicePhoto" />
+            </div>
+            <div class="device_info fl">
+              <p>
+                <span class="text">设备名称：</span>
+                <span>{{ item.DeviceName }}</span>
+              </p>
+              <p>
+                <span class="text">设备编号：</span>
+                <span>{{ item.DeviceNumber }}</span>
+              </p>
+              <p>
+                <span class="text">资产编号：</span>
+                <span>{{ item.AssetsNumber }}</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
+      <el-pagination
+        v-show="isshow"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageNo"
+        :page-sizes="[10, 20, 30]"
+        :page-size="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
 <script>
-let query = "/api/CNC/GetDeviceList";
+let query = "/api/CNC/GetDeviceDetailList";
 import leftNav from "../common/leftNav.vue";
 import Header from "../common/Header.vue";
 export default {
@@ -44,6 +57,10 @@ export default {
     return {
       title: "设备列表",
       deviceList: [],
+      isshow: false,
+      pageSize: 10,
+      pageNo: 1,
+      total: 0,
     };
   },
   created() {
@@ -57,11 +74,34 @@ export default {
         .catch(() => {});
     },
     getDeviceData() {
-      this.$axios.get(this.$api + query).then((res) => {
-        if (res.data.state === 1) {
-          this.deviceList = res.data.data;
-        }
-      });
+      this.deviceList = [];
+      this.$axios
+        .get(
+          this.$api +
+            query +
+            "?pageNo=" +
+            this.pageNo +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          if (res.data.state === 1) {
+            this.deviceList = res.data.data.list;
+            if (this.deviceList.length > 0) {
+              this.isshow = true;
+            } else {
+              this.isshow = false;
+            }
+          }
+        });
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getDeviceData();
+    },
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.getDeviceData();
     },
   },
 };
@@ -79,20 +119,19 @@ export default {
   .con {
     width: 85%;
     margin-top: 20px;
-    max-height: calc(100% - 220px);
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      /*滚动条整体样式*/
-      width: 10px;
-      /*高宽分别对应横竖滚动条的尺寸*/
-      height: 1px;
-    }
-    &::-webkit-scrollbar-thumb {
-      /*滚动条里面小方块*/
-      border-radius: 10px;
-      box-shadow: inset 0 0 5px #59ebe8;
-      background: #59ebe8;
-    }
+    // overflow-y: auto;
+    // &::-webkit-scrollbar {
+    //   /*滚动条整体样式*/
+    //   width: 10px;
+    //   /*高宽分别对应横竖滚动条的尺寸*/
+    //   height: 1px;
+    // }
+    // &::-webkit-scrollbar-thumb {
+    //   /*滚动条里面小方块*/
+    //   border-radius: 10px;
+    //   box-shadow: inset 0 0 5px #59ebe8;
+    //   background: #59ebe8;
+    // }
   }
   .warp {
     width: 100%;
@@ -114,6 +153,15 @@ export default {
   .device_info {
     width: 55%;
     color: #fff;
+    font-size: 18px;
+  }
+  .el-pagination button,
+  /deep/.el-pagination span:not([class*="suffix"]) {
+    font-size: 18px;
+    height: 30px;
+    line-height: 30px;
+  }
+  /deep/.el-input--mini {
     font-size: 18px;
   }
 }

@@ -95,6 +95,11 @@ export default {
   created() {
     this.form = this.data;
   },
+  watch: {
+    data() {
+      this.form = this.data;
+    },
+  },
   methods: {
     onClose() {
       this.$emit("update:detail", false);

@@ -9,6 +9,7 @@ import store from "./store";
 import base from "./api/index";
 import "element-ui/lib/theme-chalk/index.css";
 import utils from "./utils/common";
+import webSocket from "./utils/socket";
 import {
   DatePicker,
   TimePicker,
@@ -25,6 +26,7 @@ import {
   Message,
   Input,
   Upload,
+  Loading,
 } from "element-ui";
 Vue.component(DatePicker.name, DatePicker);
 Vue.component(TimePicker.name, TimePicker);
@@ -42,12 +44,14 @@ Vue.use(Input);
 Vue.use(FormItem);
 Vue.use(Upload);
 Vue.use(dataV);
+Vue.use(Loading);
 Vue.config.productionTip = false;
 Vue.prototype.$axios = Axios;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$api = base.url.base;
 Vue.prototype.$utils = utils;
 Vue.prototype.$message = Message;
+Vue.prototype.sendMsg = webSocket.sendMsg;
 new Vue({
   render: (h) => h(App),
   router,

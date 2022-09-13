@@ -176,6 +176,11 @@ export default {
   created() {
     this.form = this.data;
   },
+  watch: {
+    data() {
+      this.form = this.data;
+    },
+  },
   methods: {
     submitForm(formName) {
       delete this.form.CreateTime;

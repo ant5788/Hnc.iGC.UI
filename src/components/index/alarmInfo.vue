@@ -5,7 +5,7 @@
       <div class="alam_info">
         <span>设备名称</span>
         <span>报警内容</span>
-        <span>报警报警时长</span>
+        <span>报警时长</span>
       </div>
       <div class="list_warp">
         <ul>
@@ -29,18 +29,18 @@ export default {
   },
   created() {
     this.getdata();
-    console.log(this.$api);
   },
   methods: {
     getdata() {
       this.alarmData = [];
       this.$axios.get(this.$api + url).then((res) => {
+        this.alarmData = [];
         this.alarmData.push(res.data.data);
+        console.log(res);
         if (this.alarmData != null) {
           this.alarmData.forEach((item) => {
             item.StartAt = this.Timeconversion(item.StartAt);
             item.EndAt = this.Timeconversion(item.EndAt);
-            console.log(item);
           });
         }
       });
