@@ -138,7 +138,7 @@ export default {
           label: "检点中",
         },
         {
-          value: 0,
+          value: 2,
           label: "检点完成",
         },
       ],

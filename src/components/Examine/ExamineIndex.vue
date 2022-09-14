@@ -16,8 +16,8 @@
         <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
         <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
         <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
-        <el-table-column prop="Type" label="类型"></el-table-column>
-        <el-table-column prop="State" label="状态"></el-table-column>
+        <el-table-column prop="TypeName" label="类型"></el-table-column>
+        <el-table-column prop="StateName" label="状态"></el-table-column>
         <el-table-column prop="StartTime" label="开始时间"></el-table-column>
         <el-table-column prop="EndTime" label="结束时间"></el-table-column>
         <el-table-column
@@ -86,6 +86,16 @@ export default {
       pageNo: 1,
       total: 0,
       title: "设备点检情况",
+      stateData: {
+        0: "检点未完成",
+        1: "检点中",
+        2: "检点完成",
+      },
+      typeData: {
+        0: "类型",
+        1: "类型1",
+        2: "类型2",
+      },
     };
   },
   created() {
@@ -125,6 +135,8 @@ export default {
                 item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
                 item.StartTime = this.$utils.Timeconversion(item.StartTime);
                 item.EndTime = this.$utils.Timeconversion(item.EndTime);
+                item.StateName = this.stateData[item.State];
+                item.TypeName = this.typeData[item.Type];
               });
               this.total = res.data.data.total;
               this.tableData = data;

@@ -36,14 +36,22 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="类型" prop="Type">
-            <el-input v-model="form.Type" class="input_box" disabled></el-input>
+            <el-select v-model="form.Type" class="input_box" disabled>
+              <el-option
+                v-for="item in typeData"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="状态" prop="State">
-            <el-input
-              v-model="form.State"
-              class="input_box"
-              disabled
-            ></el-input>
+          <el-form-item label="状态" prop="State" disabled>
+            <el-option
+              v-for="item in stateData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
           </el-form-item>
           <el-form-item label="开始时间" prop="StartTime">
             <el-date-picker
@@ -102,6 +110,34 @@ export default {
   },
   data() {
     return {
+      typeData: [
+        {
+          value: 0,
+          label: "类型",
+        },
+        {
+          value: 1,
+          label: "类型1",
+        },
+        {
+          value: 2,
+          label: "类型2",
+        },
+      ],
+      stateData: [
+        {
+          value: 0,
+          label: "检点未完成",
+        },
+        {
+          value: 1,
+          label: "检点中",
+        },
+        {
+          value: 2,
+          label: "检点完成",
+        },
+      ],
       form: {
         DeviceName: "",
         DeviceNumber: "",
