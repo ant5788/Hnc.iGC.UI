@@ -11,7 +11,39 @@
         :data="tableData"
         :height="tableHeight"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
-      ></el-table>
+      >
+        <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
+        <el-table-column prop="DeviceType" label="设备类型"></el-table-column>
+        <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
+        <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
+        <el-table-column
+          prop="StartTime"
+          label="维修开始时间"
+        ></el-table-column>
+        <el-table-column prop="EndTime" label="维修结束时间"></el-table-column>
+        <el-table-column prop="reason" label="维修原因"></el-table-column>
+        <el-table-column
+          prop="RepairPersonnel"
+          label="维修人员"
+        ></el-table-column>
+        <el-table-column
+          prop="RepairStateName"
+          label="维修状态"
+        ></el-table-column>
+        <el-table-column label="操作" width="250">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary">
+              修改</el-button
+            >
+            <el-button @click="handleDelete(scope.row)" type="warning">
+              删除</el-button
+            >
+            <el-button @click="handledetail(scope.row)" type="primary">
+              详情</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -23,23 +55,45 @@
       >
       </el-pagination>
     </div>
+    <addDigo :visible.sync="visible"></addDigo>
+    <upDigo :show.sync="show" :data="updata" v-if="flag"></upDigo>
+    <detailDigo
+      :detail.sync="detail"
+      :data="datailData"
+      v-if="dflag"
+    ></detailDigo>
   </div>
 </template>
 <script>
 import Header from "../common/Header.vue";
 import leftNav from "../common/leftNav.vue";
+import addDigo from "./repairAdd.vue";
+import upDigo from "./repairUpdata.vue";
+import detailDigo from "./repairDetails.vue";
+let query = "/api/CNC/GetAllDeviceRepair";
+let del = "/api/CNC/DeleteDeviceRepairById?";
 export default {
-  components: { leftNav, Header },
+  components: { leftNav, Header, addDigo, upDigo, detailDigo },
   data() {
     return {
       visible: false,
+      show: false,
       upShow: false,
+      updata: {},
+      flag: false,
+      detail: false,
+      dflag: false,
+      datailData: {},
       tableData: [],
       title: "设备维修记录",
       tableHeight: "",
       pageSize: 10,
       pageNo: 1,
       total: 0,
+      status: {
+        0: "未完成",
+        1: "完成",
+      },
     };
   },
   mounted() {
@@ -56,6 +110,7 @@ export default {
   },
   created() {
     this.getTableHeight();
+    this.getData();
   },
   methods: {
     getTableHeight() {
@@ -67,13 +122,49 @@ export default {
         this.tableHeight = window.innerHeight - tableH;
       }
     },
+    getData() {
+      this.$axios
+        .get(
+          this.$api +
+            query +
+            "?pageNo=" +
+            this.pageNo +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          if (res.data.state === 1) {
+            let data = res.data.data.list;
+            if (data.length > 0) {
+              data.forEach((item) => {
+                item.StartTime = this.$utils.Timeconversion(item.StartTime);
+                item.EndTime = this.$utils.Timeconversion(item.EndTime);
+                item.RepairStateName = this.status[item.RepairState];
+              });
+              this.total = res.data.data.total;
+              this.tableData = data;
+            }
+          }
+        });
+    },
+    handleEdit(row) {
+      this.updata = row;
+      this.show = true;
+      this.flag = true;
+    },
+    handledetail(row) {
+      console.log("ok");
+      this.datailData = row;
+      this.detail = true;
+      this.dflag = true;
+    },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getdata();
+      this.getData();
     },
     handleCurrentChange(val) {
       this.pageNo = val;
-      this.getdata();
+      this.getData();
     },
     //新增
     add() {
@@ -81,6 +172,17 @@ export default {
     },
     upLoad() {
       this.upShow = true;
+    },
+    //删除
+    handleDelete(row) {
+      this.$axios.get(this.$api + del + "id=" + row.Id).then((res) => {
+        if (res.data.state === 1) {
+          this.$message.success(res.data.message);
+        } else {
+          this.$message(res.data.message);
+        }
+        this.getData();
+      });
     },
   },
 };

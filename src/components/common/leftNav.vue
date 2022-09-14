@@ -40,10 +40,6 @@ export default {
           id: 12,
         },
         {
-          text: "报警数据采集",
-          id: 14,
-        },
-        {
           text: "报警及统计",
           id: 13,
         },

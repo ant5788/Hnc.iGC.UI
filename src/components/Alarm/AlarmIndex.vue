@@ -5,13 +5,12 @@
       <leftNav></leftNav>
     </div>
     <div class="con fl">
-      <el-button type="primary" @click="add">新增</el-button>
-      <el-button type="primary" @click="upLoad">文件上传</el-button>
       <el-table
         :data="tableData"
         :height="tableHeight"
         :header-cell-style="{ background: '#071225', color: '#fff' }"
       >
+        <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
         <el-table-column prop="AlarmNumber" label="报警编号"></el-table-column>
         <el-table-column prop="AlarmMessage" label="报警内容"></el-table-column>
         <el-table-column prop="StartAt" label="报警开始时间"></el-table-column>
@@ -33,21 +32,14 @@
 <script>
 import Header from "../common/Header.vue";
 import leftNav from "../common/leftNav.vue";
+let query = "/api/CNC/GetAlarmList";
 export default {
   components: { leftNav, Header },
   data() {
     return {
       visible: false,
       upShow: false,
-      tableData: [
-        {
-          id: "123",
-          AlarmNumber: "01",
-          AlarmMessage: "内存不足",
-          StartAt: "2022-06-07 12:00:00",
-          EndAt: "2022-06-07 12:05:00",
-        },
-      ],
+      tableData: [],
       title: "报警记录及统计",
       tableHeight: "",
       pageSize: 10,
@@ -74,6 +66,7 @@ export default {
   },
   created() {
     this.getTableHeight();
+    this.getdata();
   },
   methods: {
     getTableHeight() {
@@ -93,25 +86,30 @@ export default {
       this.pageNo = val;
       this.getdata();
     },
-    //新增
-    add() {
-      this.visible = true;
+    getdata() {
+      this.$axios
+        .get(
+          this.$api +
+            query +
+            "?pageNo=" +
+            this.pageNo +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          if (res.data.state === 1) {
+            let data = res.data.data.list;
+            if (data.length > 0) {
+              data.forEach((item) => {
+                item.StartTime = this.$utils.Timeconversion(item.StartTime);
+                item.EndTime = this.$utils.Timeconversion(item.EndTime);
+              });
+            }
+            this.total = res.data.data.total;
+            this.tableData = data;
+          }
+        });
     },
-    upLoad() {
-      this.upShow = true;
-    },
-    handleEdit(row) {
-      this.updata = row;
-      this.show = true;
-      this.flag = true;
-    },
-    //查看详情
-    handledetail(row) {
-      this.datailData = row;
-      this.detail = true;
-      this.dflag = true;
-    },
-    handleDelete() {},
   },
 };
 </script>
