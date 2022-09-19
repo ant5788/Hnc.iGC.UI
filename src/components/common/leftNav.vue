@@ -75,6 +75,10 @@ export default {
           text: "计划产量实际产量列表",
           id: 10,
         },
+        {
+          text: "三维车间",
+          id: 16,
+        },
       ],
     };
   },
@@ -123,6 +127,9 @@ export default {
           break;
         case 15:
           this.$router.push("/FictitiousList").catch(() => {});
+          break;
+        case 16:
+          this.$router.push("/Unity").catch(() => {});
       }
     },
   },

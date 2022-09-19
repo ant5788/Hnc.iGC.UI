@@ -40,21 +40,21 @@
           <p>
             <span class="text">加工计数</span
             ><span class="number">{{ ProData.PartsTotal }}</span>
-            <span class="text">加工零件编码</span
-            ><span class="number">{{ Partcode }}</span>
+            <!-- <span class="text">加工零件编码</span
+            ><span class="number">{{ Partcode }}</span> -->
+            <span class="text">零件加工百分比</span>
+            <span class="number">{{ PartPercentage }}</span>
           </p>
           <p>
             <span class="text">程序名称</span
             ><span class="number">{{ ProData.CurrentProgramName }}</span>
-            <span class="text">零件加工百分比：</span>
-            <span class="number">{{ PartPercentage }}</span>
           </p>
         </dv-border-box-12>
       </div>
       <div class="machine_top_midle">
         <dv-border-box-12 class="Axios_info">
-          <div class="title">▎设备利用率</div>
-          <div class="chart-container" ref="proportions"></div>
+          <div class="title">▎加工零件编码</div>
+          <span class="number">{{ Partcode }}</span>
         </dv-border-box-12>
         <dv-border-box-12 class="load_info">
           <div class="title">▎负载</div>
@@ -85,7 +85,15 @@
         </dv-border-box-12>
       </div>
       <div class="machine_top_right">
-        <register></register>
+        <Unity
+          src="/unity/Build/apk.json"
+          width="100%"
+          height="800px"
+          unityLoader="/unity/Build/UnityLoader.js"
+          ref="unityvue"
+          :hide-footer="true"
+          class="main-unity"
+        ></Unity>
       </div>
     </div>
     <div class="machine_midle">
@@ -100,7 +108,8 @@
       </dv-border-box-12>
     </div>
     <div class="machine_bottom">
-      <div class="machine_bottom_left">
+      <lineChart></lineChart>
+      <!-- <div class="machine_bottom_left">
         <dv-border-box-12>
           <div class="multiplying-power">
             <div
@@ -142,9 +151,7 @@
           </div>
         </dv-border-box-12>
       </div>
-      <div class="machine_bottom_right">
-        <lineChart></lineChart>
-      </div>
+      <div class="machine_bottom_right"></div> -->
     </div>
   </div>
 </template>
@@ -155,11 +162,13 @@ let partUrl = "/api/CNC/PartCode?"; //加工零件编码
 let tfsUrl = "/api/CNC/GetCutterInfo?"; //刀具信息
 let LoadUrl = "/api/CNC/GetSpindleLoad?"; //获取负载
 let PerUr = "/api/CNC/GetPartPercentage?"; //获取加工百分比
-import register from "./ registerInfo";
+// import register from "./ registerInfo";
+
 import lineChart from "./lineChart";
 import Header from "../common/Header.vue";
+import Unity from "vue-unity-webgl";
 export default {
-  components: { register, lineChart, Header },
+  components: { lineChart, Header, Unity },
   data() {
     return {
       title: "设备详情",
@@ -248,29 +257,29 @@ export default {
       chartInstance: null,
       deviceData: {
         DevicePhoto: "",
-        DeviceName: "机床设备一",
-        DeviceId: "001",
-        CurrentProgramName: "../prog/O1111",
+        DeviceName: "",
+        DeviceId: "",
+        CurrentProgramName: "",
       },
-      Partcode: "005",
+      Partcode: "",
       PartPercentage: "",
       ProData: {
-        PartsTotal: "2000",
-        CurrentProgramNumber: "002",
-        CurrentProgramName: "002",
+        PartsTotal: "",
+        CurrentProgramNumber: "",
+        CurrentProgramName: "",
       },
     };
   },
   mounted() {
-    this.initchart();
+    // this.initchart();
   },
   created() {
-    // this.initData();
-    // this.initPartcode();
-    // this.getFi();
-    // this.GetSpindleLoad();
-    // this.GetPartPercentage();
-    // this.getCNC();
+    this.initData();
+    this.initPartcode();
+    this.getFi();
+    this.GetSpindleLoad();
+    this.GetPartPercentage();
+    this.getCNC();
   },
   methods: {
     //设置负载背景颜色

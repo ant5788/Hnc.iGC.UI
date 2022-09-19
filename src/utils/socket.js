@@ -1,7 +1,7 @@
 // import Vue from 'vue'
 let socket = null;
 let lockReconnet = false; // 避免重复连接
-const wsUrl = "ws://localhost:8001";
+const wsUrl = "ws://192.168.20.162:24912";
 let isReconnet = false;
 let globalCallback = null;
 let sendData = null; // 把要发送给socket的数据和处理socket返回数据的回调保存起来

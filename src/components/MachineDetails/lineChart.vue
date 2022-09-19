@@ -2,7 +2,7 @@
   <div class="linChart_box">
     <dv-border-box-12>
       <div class="time_box fl">
-        <p>
+        <!-- <p>
           <el-select
             v-model="Shift"
             placeholder="请选择时间"
@@ -16,7 +16,7 @@
               :value="item.value"
             ></el-option>
           </el-select>
-        </p>
+        </p> -->
         <p>
           <el-date-picker
             type="date"
@@ -59,18 +59,18 @@ let MakeUrl = "/api/CNC/GetMakeNumber?";
 export default {
   data() {
     return {
-      Shift: "4",
+      Shift: "5",
       time: this.$utils.getDateTime("day"),
       index: 0,
       chartInstance: null,
       value1: "",
       shiftInfo: [
-        { value: "1", label: "早班" },
-        { value: "2", label: "中班" },
-        { value: "3", label: "晚班" },
-        { value: "4", label: "日期" },
+        // { value: "1", label: "早班" },
+        // { value: "2", label: "中班" },
+        // { value: "3", label: "晚班" },
+        // { value: "4", label: "日期" },
         { value: "5", label: "时间段" },
-        { value: "6", label: "月" },
+        // { value: "6", label: "月" },
       ],
       xdata: [],
       Ydata: [],
@@ -95,7 +95,7 @@ export default {
     this.endTime = this.$utils.getTimestamp(
       this.$utils.getDateTime("day") + " " + "23:59:59"
     );
-    this.getAxisData(this.startTime, this.endTime);
+    // this.getAxisData(this.startTime, this.endTime);
   },
   methods: {
     //月的选择
@@ -169,7 +169,7 @@ export default {
               this.AluData.push(item.AluminumTotal);
             });
           }
-          this.updateChart();
+          // this.updateChart();
         });
     },
     //数据切换
@@ -204,7 +204,7 @@ export default {
               color: "#ffffff",
             },
           },
-          data: [],
+          data: ["一号刀具", "二号刀具", "三号刀具", "四号刀具"],
         },
         yAxis: {
           axisLabel: {
@@ -221,20 +221,20 @@ export default {
         },
         series: [
           {
-            name: "总加工数量",
-            data: [],
+            name: "刀具使用时长",
+            data: [10, 20, 30, 40],
             type: "bar",
           },
-          {
-            name: "镁加工数量",
-            data: [],
-            type: "bar",
-          },
-          {
-            name: "铝加工数量",
-            data: [],
-            type: "bar",
-          },
+          // {
+          //   name: "镁加工数量",
+          //   data: [],
+          //   type: "bar",
+          // },
+          // {
+          //   name: "铝加工数量",
+          //   data: [],
+          //   type: "bar",
+          // },
         ],
       };
       this.chartInstance.setOption(initOption);
@@ -246,20 +246,20 @@ export default {
         xAxis: { data: this.xdata },
         series: [
           {
-            name: "总加工数量",
+            name: "刀具使用时长",
             data: this.Ydata,
             type: "bar",
           },
-          {
-            name: "镁加工数量",
-            data: this.MagData,
-            type: "bar",
-          },
-          {
-            name: "铝加工数量",
-            data: this.AluData,
-            type: "bar",
-          },
+          // {
+          //   name: "镁加工数量",
+          //   data: this.MagData,
+          //   type: "bar",
+          // },
+          // {
+          //   name: "铝加工数量",
+          //   data: this.AluData,
+          //   type: "bar",
+          // },
         ],
       };
       this.chartInstance.setOption(dataOption);
@@ -296,7 +296,7 @@ export default {
   border-radius: 8px;
 }
 .shif {
-  width: 120px;
+  width: 200px;
   margin-left: 10px;
 }
 .time {
@@ -304,6 +304,6 @@ export default {
 }
 /deep/.el-date-editor.el-input,
 .el-date-editor.el-input__inner {
-  width: 134px;
+  width: 200px;
 }
 </style>

@@ -18,6 +18,7 @@ import Grain from "../components/Grain/GrainIndex.vue";
 import Repair from "../components/Devicerepair/repairIndex.vue";
 import Alarm from "../components/Alarm/AlarmIndex.vue";
 import FictitiousList from "../components/FictitiousDevice/FictitiousDeviceIndex.vue";
+import Unity from "../components/Unity/UnityINdex.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -162,6 +163,14 @@ const routes = [
     component: FictitiousList,
     meta: {
       title: "虚拟设备管理",
+    },
+  },
+  {
+    path: "/Unity",
+    name: "Unity",
+    component: Unity,
+    meta: {
+      title: "三维车间",
     },
   },
 ];

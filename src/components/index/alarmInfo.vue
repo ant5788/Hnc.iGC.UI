@@ -3,14 +3,14 @@
     <dv-border-box-12>
       <div class="title">▎实时报警信息</div>
       <div class="alam_info">
-        <span>设备名称</span>
+        <span>报警号</span>
         <span>报警内容</span>
         <span>报警时长</span>
       </div>
       <div class="list_warp">
         <ul>
           <li v-for="(item, index) in alarmData" :key="index">
-            <span>{{ item.Message }}</span>
+            <span>{{ item.Number }}</span>
             <span>{{ item.Message }}</span>
             <span>{{ item.EndAt }}</span>
           </li>
