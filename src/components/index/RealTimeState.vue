@@ -32,7 +32,13 @@ export default {
         98: "急停",
         99: "报警",
       },
+      time: null,
     };
+  },
+  mounted() {
+    this.time = setInterval(() => {
+      this.getData();
+    }, 1500);
   },
   created() {
     this.getData();
@@ -47,6 +53,11 @@ export default {
         });
       });
     },
+  },
+  beforDesroy() {
+    // eslint-disable-next-line no-undef
+    clearIntreval(this.time);
+    this.time = null;
   },
 };
 </script>

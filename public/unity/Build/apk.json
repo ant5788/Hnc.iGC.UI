@@ -1,6 +1,6 @@
 {
 "companyName": "DefaultCompany",
-"productName": "ToolsTrackView",
+"productName": "JsTalker",
 "dataUrl": "apk.data.unityweb",
 "wasmCodeUrl": "apk.wasm.code.unityweb",
 "wasmFrameworkUrl": "apk.wasm.framework.unityweb",

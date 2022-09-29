@@ -2,11 +2,8 @@
   <div>
     <Header :title="title"></Header>
     <div class="left fl">
-      <AlamTime
-        :durationTimeList="durationTimeList"
-        :deviceNumberList="deviceNumberList"
-      ></AlamTime>
-      <AlamInfo :alarmData="alarmData"></AlamInfo>
+      <AlamTime></AlamTime>
+      <AlamInfo></AlamInfo>
       <!-- <TimeUti></TimeUti> -->
     </div>
     <div class="center fl">
@@ -53,17 +50,20 @@ export default {
       deviceNumberList: [],
       durationTimeList: [],
       title: "超越智慧工厂",
+      time: null,
     };
   },
-  created() {
-    this.getData();
+  mounted() {
+    this.time = setInterval(() => {
+      this.getData();
+    }, 1500);
   },
+  created() {},
   methods: {
     getData() {
       this.$axios.get(this.$api + url).then((res) => {
         console.log(res);
         this.data = res.data;
-        this.processData(this.data);
       });
     },
     processData(data) {
@@ -121,6 +121,11 @@ export default {
         });
       });
     },
+  },
+  beforDesroy() {
+    // eslint-disable-next-line no-undef
+    clearIntreval(this.time);
+    this.time = null;
   },
 };
 </script>

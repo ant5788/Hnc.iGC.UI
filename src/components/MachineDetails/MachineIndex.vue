@@ -85,15 +85,24 @@
         </dv-border-box-12>
       </div>
       <div class="machine_top_right">
-        <Unity
+        <!-- <Unity
           src="/unity/Build/apk.json"
           width="100%"
           height="800px"
           unityLoader="/unity/Build/UnityLoader.js"
           ref="unityvue"
-          :hide-footer="true"
-          class="main-unity"
-        ></Unity>
+        ></Unity> -->
+        <el-button @click="show">测试</el-button>
+        <iframe
+          id="iframes"
+          ref="iframe"
+          class="iframe"
+          src="/unity/index.html"
+          width="100%"
+          frameborder="0"
+          scrolling="auto"
+          height="500px"
+        ></iframe>
       </div>
     </div>
     <div class="machine_midle">
@@ -166,9 +175,10 @@ let PerUr = "/api/CNC/GetPartPercentage?"; //获取加工百分比
 
 import lineChart from "./lineChart";
 import Header from "../common/Header.vue";
-import Unity from "vue-unity-webgl";
+//import Unity from "vue-unity-webgl";
+
 export default {
-  components: { lineChart, Header, Unity },
+  components: { lineChart, Header },
   data() {
     return {
       title: "设备详情",
@@ -268,20 +278,38 @@ export default {
         CurrentProgramNumber: "",
         CurrentProgramName: "",
       },
+      time: null,
     };
   },
   mounted() {
-    // this.initchart();
+    // this.initUnity();
+    this.time = setInterval(() => {
+      // this.initData();
+      // this.initPartcode();
+      // this.getFi();
+      // this.GetSpindleLoad();
+      // this.GetPartPercentage();
+      // this.getCNC();
+    }, 15000);
   },
   created() {
-    this.initData();
-    this.initPartcode();
-    this.getFi();
-    this.GetSpindleLoad();
-    this.GetPartPercentage();
-    this.getCNC();
+    // this.initData();
+    // this.initPartcode();
+    // this.getFi();
+    // this.GetSpindleLoad();
+    // this.GetPartPercentage();
+    // this.getCNC();
+    localStorage.setItem("token", "adsdasdasdads");
   },
   methods: {
+    show() {
+      console.log(this.$refs.iframe.contentWindow.gameInstance.SendMessage);
+      this.$refs.iframe.contentWindow.gameInstance.SendMessage(
+        "JsTalker",
+        "SetToken",
+        localStorage.token
+      );
+    },
     //设置负载背景颜色
     setColor(value) {
       let model;
@@ -293,136 +321,6 @@ export default {
         model = 2;
       }
       return model;
-    },
-    initchart() {
-      this.chartInstance = this.$echarts.init(this.$refs.proportions);
-      const initOption = {
-        title: [
-          {
-            text: "设备使用效率",
-            x: "center",
-            top: "32%",
-            textStyle: {
-              color: "#fff",
-              fontSize: 18,
-              fontWeight: "100",
-            },
-          },
-          {
-            text: "60%",
-            x: "center",
-            top: "50%",
-            textStyle: {
-              fontSize: 18,
-              color: "#00f0ff",
-              foontWeight: "500",
-            },
-          },
-        ],
-        polar: {
-          radius: ["44%", "50%"],
-          center: ["50%", "50%"],
-        },
-        angleAxis: {
-          max: 100,
-          show: false,
-        },
-        radiusAxis: {
-          type: "category",
-          show: true,
-          axisLabel: {
-            show: false,
-          },
-          axisLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-        },
-        series: [
-          {
-            type: "pie",
-            startAngle: 0,
-            radius: ["83%", "90%"],
-            center: ["50%", "50%"],
-            data: [
-              {
-                hoverOffset: 1,
-                value: 75,
-                name: "",
-                itemStyle: {
-                  normal: {
-                    color: "#00f0ff",
-                  },
-                },
-                label: {
-                  show: false,
-                },
-                labelLine: {
-                  normal: {
-                    smooth: true,
-                    lineStyle: {
-                      width: 0,
-                    },
-                  },
-                },
-                hoverAnimation: false,
-              },
-              {
-                label: {
-                  show: false,
-                },
-                labelLine: {
-                  normal: {
-                    smooth: true,
-                    lineStyle: {
-                      width: 0,
-                    },
-                  },
-                },
-                value: 100 - 75,
-                hoverAnimation: false,
-                itemStyle: {
-                  color: "rgba(251, 200, 79, 0)",
-                },
-              },
-            ],
-          },
-          {
-            name: "",
-            type: "pie",
-            startAngle: 90,
-            radius: "80%",
-            hoverAnimation: false,
-            center: ["50%", "50%"],
-            itemStyle: {
-              normal: {
-                labelLine: {
-                  show: false,
-                },
-                color: new this.$echarts.graphic.RadialGradient(0.5, 0.5, 1, [
-                  {
-                    offset: 1,
-                    color: "rgba(55,70,130, 1)",
-                  },
-                  {
-                    offset: 0,
-                    color: "rgba(55,70,130, 0)",
-                  },
-                ]),
-                shadowBlur: 10,
-              },
-            },
-            data: [
-              {
-                value: 100,
-              },
-            ],
-          },
-        ],
-      };
-      this.chartInstance.setOption(initOption);
     },
     getCNC() {
       let url = cncUrl + this.getUrlParams(window.location.search, "id");
@@ -498,6 +396,11 @@ export default {
         }
       });
     },
+  },
+  beforDesroy() {
+    // eslint-disable-next-line no-undef
+    clearIntreval(this.time);
+    this.time = null;
   },
 };
 </script>

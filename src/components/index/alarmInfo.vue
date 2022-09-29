@@ -25,7 +25,13 @@ export default {
   data() {
     return {
       alarmData: [],
+      time: null,
     };
+  },
+  mounted() {
+    this.time = setInterval(() => {
+      this.getData();
+    }, 1500);
   },
   created() {
     this.getdata();
@@ -63,6 +69,11 @@ export default {
         year + "-" + month + "-" + day + " " + hours + ":" + min + ":" + seconds
       );
     },
+  },
+  beforDesroy() {
+    // eslint-disable-next-line no-undef
+    clearIntreval(this.time);
+    this.time = null;
   },
 };
 </script>
