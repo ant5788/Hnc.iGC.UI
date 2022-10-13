@@ -80,7 +80,6 @@ export default {
   methods: {
     ImageToBase64() {
       let files = document.getElementById("upImageFile").files[0];
-      console.log(files);
       var reader = new FileReader();
       reader.readAsDataURL(files);
       reader.onload = () => {

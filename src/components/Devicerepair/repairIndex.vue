@@ -15,7 +15,10 @@
         <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
         <el-table-column prop="DeviceType" label="设备类型"></el-table-column>
         <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
-        <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
+        <!-- <el-table-column prop="AssetNumber" label="资产编号"></el-table-column> -->
+        <el-table-column prop="DeviceModel" label="设备型号"></el-table-column>
+        <el-table-column prop="PurchaseDate" label="采购日期"></el-table-column>
+        <el-table-column prop="DurableYars" label="使用年限"></el-table-column>
         <el-table-column
           prop="StartTime"
           label="维修开始时间"
@@ -24,12 +27,17 @@
         <el-table-column prop="reason" label="维修原因"></el-table-column>
         <el-table-column
           prop="RepairPersonnel"
-          label="维修人员"
+          label="维修负责人"
         ></el-table-column>
         <el-table-column
           prop="RepairStateName"
           label="维修状态"
         ></el-table-column>
+        <el-table-column
+          prop="RepairDuration"
+          label="维修时长"
+        ></el-table-column>
+        <el-table-column prop="RepairCost" label="维修金额"></el-table-column>
         <el-table-column label="操作" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">

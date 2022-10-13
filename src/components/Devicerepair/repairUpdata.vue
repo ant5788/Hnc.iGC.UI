@@ -16,8 +16,14 @@
         <el-form-item label="设备编号" prop="DeviceNumber">
           <el-input v-model="form.DeviceNumber" class="input_box"></el-input>
         </el-form-item>
-        <el-form-item label="资产编号" prop="AssetNumber">
-          <el-input v-model="form.AssetNumber" class="input_box"></el-input>
+        <el-form-item label="设备型号" prop="DeviceModel">
+          <el-input v-model="form.DeviceModel" class="input_box"></el-input>
+        </el-form-item>
+        <el-form-item label="使用年限" prop="DurableYars">
+          <el-input
+            v-model.number="form.DurableYars"
+            class="input_box"
+          ></el-input>
         </el-form-item>
         <el-form-item label="维修开始时间" prop="StartTime">
           <el-date-picker
@@ -45,7 +51,7 @@
             class="input_box"
           ></el-input>
         </el-form-item>
-        <el-form-item label="维修人员" prop="RepairPersonnel">
+        <el-form-item label="维修负责人" prop="RepairPersonnel">
           <el-input v-model="form.RepairPersonnel" class="input_box"></el-input>
         </el-form-item>
         <el-form-item label="维修状态" prop="RepairState">
@@ -57,6 +63,12 @@
               :value="item.value"
             ></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="维修时长" prop="RepairDuration">
+          <el-input v-model="form.RepairDuration" class="input_box"></el-input>
+        </el-form-item>
+        <el-form-item label="维修金额" prop="RepairCost">
+          <el-input v-model="form.RepairCost" class="input_box"></el-input>
         </el-form-item>
         <el-form-item>
           <div class="btns">
@@ -89,12 +101,15 @@ export default {
         DeviceName: "",
         DeviceType: "",
         DeviceNumber: "",
-        AssetNumber: "",
+        DeviceModel: "",
+        DurableYars: "",
         StartTime: "",
         EndTime: "",
         RepairPersonnel: "",
         reason: "",
         RepairState: "",
+        RepairDuration: "",
+        RepairCost: "",
       },
       RepairStateData: [
         {
@@ -118,8 +133,8 @@ export default {
         DeviceNumber: [
           { required: true, message: "请输入设备编号", trigger: "blur" },
         ],
-        AssetNumber: [
-          { required: true, message: "请输入资产编号", trigger: "blur" },
+        DeviceModel: [
+          { required: true, message: "请输入设备型号", trigger: "blur" },
         ],
         StartTime: [
           { required: true, message: "请选择开始时间", trigger: "blur" },
@@ -128,10 +143,21 @@ export default {
           { required: true, message: "请选择结束时间", trigger: "blur" },
         ],
         RepairPersonnel: [
-          { required: true, message: "请输入维修人员", trigger: "blur" },
+          { required: true, message: "请输入维修负责人", trigger: "blur" },
         ],
         reason: [
           { required: true, message: "请输入维修原因", trigger: "blur" },
+        ],
+        DurableYars: [
+          { required: true, message: "请输入使用年限", trigger: "blur" },
+        ],
+        RepairDuration: [
+          { required: true, message: "请输入维修时长", trigger: "blur" },
+          { pattern: /^[0-9]./, message: "维修时长需为数字", trigger: "blur" },
+        ],
+        RepairCost: [
+          { required: true, message: "请输入维修金额", trigger: "blur" },
+          { pattern: /^[0-9]./, message: "维修金额需为数字", trigger: "blur" },
         ],
         RepairState: [
           {

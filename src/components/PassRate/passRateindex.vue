@@ -12,18 +12,33 @@
         :show-overflow-tooltip="true"
         :height="tableHeight"
       >
-        <el-table-column label="编号" prop="Number"></el-table-column>
-        <el-table-column label="名称" prop="Name"></el-table-column>
-        <el-table-column label="时间" prop="Date"></el-table-column>
+        <el-table-column label="ERP指令单号" prop="OrderNo"></el-table-column>
+        <el-table-column label="零件订单号" prop="PartOrder"></el-table-column>
+        <el-table-column label="部件名称" prop="PartName"></el-table-column>
         <el-table-column
-          label="上料道数量"
-          prop="FeedingNumber"
+          label="检验数量"
+          prop="InspectionQuantity"
         ></el-table-column>
         <el-table-column
-          label="废料道数量"
-          prop="WasteNumber"
+          label="不合格数量"
+          prop="UnqualifiedQuantity"
         ></el-table-column>
-        <el-table-column label="合格率" prop="Pass_Rate"></el-table-column>
+        <el-table-column
+          label="不合格问题描述"
+          prop="Problem"
+        ></el-table-column>
+        <el-table-column label="工序" prop="WorkingProcedure"></el-table-column>
+        <el-table-column label="原因分类1级" prop="Cause1"></el-table-column>
+        <el-table-column label="原因分类2级" prop="Cause2"></el-table-column>
+        <el-table-column label="责任人" prop="PersonLiable"></el-table-column>
+        <el-table-column label="解决措施" prop="Solutions"></el-table-column>
+        <el-table-column
+          label="检验日期"
+          prop="InspectionDate"
+        ></el-table-column>
+        <el-table-column label="检验员" prop="Inspector"></el-table-column>
+        <el-table-column label="备注" prop="remarks"></el-table-column>
+
         <el-table-column label="操作" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
@@ -122,7 +137,7 @@ export default {
             let data = res.data.data.list;
             if (data.length > 0) {
               data.forEach((item) => {
-                item.Date = this.$utils.Timeconversion(item.Date);
+                item.InspectionDate = this.$utils.Timeconversion(item.InspectionDate);
               });
               this.total = res.data.data.total;
               this.tableData = data;

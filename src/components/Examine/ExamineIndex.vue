@@ -15,17 +15,44 @@
       >
         <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
         <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
-        <el-table-column prop="AssetNumber" label="资产编号"></el-table-column>
-        <el-table-column prop="TypeName" label="类型"></el-table-column>
-        <el-table-column prop="StateName" label="状态"></el-table-column>
-        <el-table-column prop="StartTime" label="开始时间"></el-table-column>
-        <el-table-column prop="EndTime" label="结束时间"></el-table-column>
+        <el-table-column prop="DeviceModel" label="设备型号"></el-table-column>
         <el-table-column
-          prop="Details"
-          label="检点详细信息"
-          width="180"
+          prop="SpareParts"
+          label="零部件是否齐全"
         ></el-table-column>
-        <el-table-column prop="Inspector" label="检点人员"></el-table-column>
+        <el-table-column prop="Liquid" label="液压"></el-table-column>
+        <el-table-column prop="Pressure" label="气压"></el-table-column>
+        <el-table-column prop="Handle" label="各操作手柄"></el-table-column>
+        <el-table-column
+          prop="SafetyDevices"
+          label="安全装置"
+        ></el-table-column>
+        <el-table-column
+          prop="InstrumentPressure"
+          label="各仪表指示压力"
+        ></el-table-column>
+        <el-table-column
+          prop="FanScreen"
+          label="各散热风扇及滤网"
+        ></el-table-column>
+        <el-table-column
+          prop="DriveMotor"
+          label="各部驱动电机"
+        ></el-table-column>
+        <el-table-column
+          prop="LeakageOilGasWater"
+          label="漏水"
+        ></el-table-column>
+        <el-table-column
+          prop="PrincipalAxis"
+          label="主轴及回转传动机构"
+        ></el-table-column>
+        <el-table-column prop="Appearance" label="机床外表"></el-table-column>
+        <el-table-column
+          prop="ElectricalPart"
+          label="电器部分"
+        ></el-table-column>
+
         <el-table-column label="操作" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">

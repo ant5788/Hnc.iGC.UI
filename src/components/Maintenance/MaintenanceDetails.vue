@@ -35,9 +35,19 @@
             disabled
           ></el-input>
         </el-form-item>
-        <el-form-item label="设备状态" prop="DeviceState">
+        <el-form-item label="采购日期" prop="PurchaseDate">
+          <el-date-picker
+            v-model="form.PurchaseDate"
+            type="datetime"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            disabled
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="使用年限" prop="DurableYears">
           <el-input
-            v-model="form.DeviceState"
+            v-model="form.DurableYears"
             class="input_box"
             disabled
           ></el-input>
@@ -51,12 +61,38 @@
             disabled
           ></el-input>
         </el-form-item>
-        <el-form-item label="设备分类" prop="DeviceClassification">
-          <el-input
-            v-model="form.DeviceClassification"
-            class="input_box"
+        <el-form-item label="保养周期" prop="Cycle">
+          <el-input v-model="form.Cycle" class="input_box" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="上次保养时间" prop="LastTime">
+          <el-date-picker
+            v-model="form.LastTime"
+            type="datetime"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
             disabled
-          ></el-input>
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="计划保养时间" prop="PlannedTime">
+          <el-date-picker
+            v-model="form.PlannedTime"
+            type="datetime"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            disabled
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="实际保养时间" prop="ActualTime">
+          <el-date-picker
+            v-model="form.ActualTime"
+            type="datetime"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            disabled
+          >
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="责任人" prop="PersonLiable">
           <el-input
@@ -65,12 +101,26 @@
             disabled
           ></el-input>
         </el-form-item>
-        <el-form-item label="使用单位" prop="UserDep">
-          <el-input
-            v-model="form.UserDep"
-            class="input_box"
+        <el-form-item label="提前预警时间" prop="EarlyWarningTime">
+          <el-date-picker
+            v-model="form.EarlyWarningTime"
+            type="datetime"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
             disabled
-          ></el-input>
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="维保状态" prop="MaintainState">
+          <el-select v-model="form.MaintainState">
+            <el-option
+              v-for="item in StateData"
+              :key="item.id"
+              :label="item.label"
+              :value="item.val"
+              disabled
+            ></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -95,12 +145,24 @@ export default {
         DeviceName: "",
         DeviceModel: "",
         DeviceType: "",
-        DeviceState: "",
+        PurchaseDate: "",
+        DurableYears: "",
         Content: "",
-        DeviceClassification: "",
+        Cycle: "",
         PersonLiable: "",
         UserDep: "",
+        LastTime: "",
+        PlannedTime: "",
+        ActualTime: "",
+        EarlyWarningTime: "",
       },
+      StateData: [
+        {
+          label: "1",
+          id: 1,
+          val: 1,
+        },
+      ],
       rules: {
         DeviceNumber: [
           { required: true, message: "请输入设备编号", trigger: "blur" },
@@ -114,20 +176,38 @@ export default {
         DeviceType: [
           { required: true, message: "请输入设备类型", trigger: "blur" },
         ],
-        DeviceState: [
-          { required: true, message: "请输入设备状态", trigger: "blur" },
+        PurchaseDate: [
+          { required: true, message: "请选择采购日期", trigger: "blur" },
         ],
         Content: [
           { required: true, message: "请输入保养内容", trigger: "blur" },
         ],
-        DeviceClassification: [
-          { required: true, message: "请输入设备分类", trigger: "blur" },
+        Cycle: [
+          { required: true, message: "请输入设备保养周期", trigger: "blur" },
+        ],
+        LastTime: [
+          { required: true, message: "请选择上次保养时间", trigger: "blur" },
+        ],
+        PlannedTime: [
+          { required: true, message: "请选择计划保养时间", trigger: "blur" },
+        ],
+        ActualTime: [
+          { required: true, message: "请选择实际保养时间", trigger: "blur" },
+        ],
+        EarlyWarningTime: [
+          { required: true, message: "请选择提前预警时间", trigger: "blur" },
         ],
         PersonLiable: [
           { required: true, message: "请输入责任人", trigger: "blur" },
         ],
         UserDep: [
           { required: true, message: "请输入使用单位", trigger: "blur" },
+        ],
+        DurableYears: [
+          { required: true, message: "请输入使用年限", trigger: "blur" },
+        ],
+        MaintainState: [
+          { required: true, message: "请选择维保状态", trigger: "blur" },
         ],
       },
     };

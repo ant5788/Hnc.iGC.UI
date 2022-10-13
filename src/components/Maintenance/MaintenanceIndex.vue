@@ -17,15 +17,32 @@
         <el-table-column prop="DeviceName" label="设备名称"></el-table-column>
         <el-table-column prop="DeviceModel" label="设备型号"></el-table-column>
         <el-table-column prop="DeviceType" label="设备类型"></el-table-column>
-        <el-table-column prop="DeviceState" label="设备状态"></el-table-column>
+        <el-table-column prop="PurchaseDate" label="采购日期"></el-table-column>
+        <el-table-column prop="DurableYears" label="使用年限"></el-table-column>
         <el-table-column prop="Content" label="保养内容"></el-table-column>
         <el-table-column prop="Cycle" label="保养周期"></el-table-column>
+        <el-table-column prop="LastTime" label="上次保养时间"></el-table-column>
         <el-table-column
-          prop="DeviceClassification"
-          label="设备分类"
+          prop="PlannedTime"
+          label="计划保养时间"
+        ></el-table-column>
+        <el-table-column
+          prop="ActualTime"
+          label="实际保养时间"
+        ></el-table-column>
+        <el-table-column
+          prop="ActualTime"
+          label="实际保养时间"
         ></el-table-column>
         <el-table-column prop="PersonLiable" label="责任人"></el-table-column>
-        <el-table-column prop="UserDep" label="使用单位"></el-table-column>
+        <el-table-column
+          prop="EarlyWarningTime"
+          label="提前预警时间"
+        ></el-table-column>
+        <el-table-column
+          prop="MaintainState"
+          label="维保状态"
+        ></el-table-column>
         <el-table-column label="操作" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
@@ -136,8 +153,15 @@ export default {
             let data = res.data.data.list;
             if (data.length > 0) {
               data.forEach((item) => {
-                item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
-                item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
+                item.PurchaseDate = this.$utils.Timeconversion(
+                  item.PurchaseDate
+                );
+                item.LastTime = this.$utils.Timeconversion(item.LastTime);
+                item.PlannedTime = this.$utils.Timeconversion(item.PlannedTime);
+                item.ActualTime = this.$utils.Timeconversion(item.ActualTime);
+                item.EarlyWarningTime = this.$utils.Timeconversion(
+                  item.EarlyWarningTime
+                );
               });
               this.total = res.data.data.total;
               this.tableData = data;

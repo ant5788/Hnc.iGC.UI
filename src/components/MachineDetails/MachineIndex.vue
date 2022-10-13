@@ -40,8 +40,8 @@
           <p>
             <span class="text">加工计数</span
             ><span class="number">{{ ProData.PartsTotal }}</span>
-            <!-- <span class="text">加工零件编码</span
-            ><span class="number">{{ Partcode }}</span> -->
+            <span class="text">加工零件编码</span
+            ><span class="number">{{ Partcode }}</span>
             <span class="text">零件加工百分比</span>
             <span class="number">{{ PartPercentage }}</span>
           </p>
@@ -53,8 +53,7 @@
       </div>
       <div class="machine_top_midle">
         <dv-border-box-12 class="Axios_info">
-          <div class="title">▎加工零件编码</div>
-          <span class="number">{{ Partcode }}</span>
+          <CropRate></CropRate>
         </dv-border-box-12>
         <dv-border-box-12 class="load_info">
           <div class="title">▎负载</div>
@@ -117,50 +116,14 @@
       </dv-border-box-12>
     </div>
     <div class="machine_bottom">
-      <lineChart></lineChart>
-      <!-- <div class="machine_bottom_left">
+      <div class="machine_bottom_left">
         <dv-border-box-12>
-          <div class="multiplying-power">
-            <div
-              class="rotary-knob-item"
-              v-for="(item, i) in multiplyingPower"
-              :key="i"
-            >
-              <img
-                class="rotary-knob-img"
-                :src="item.imgUrl"
-                :alt="item.name"
-              />
-              <img
-                class="pointer-img"
-                :style="'transform: rotate(' + (item.value - 75) * 1.8 + 'deg)'"
-                src="../../assets/images/pointer.png"
-                alt="pointer"
-              />
-              <div
-                style="
-                  height: 30px;
-                  width: 104px;
-                  margin-left: 50%;
-                  transform: translate(-50%, -0.1rem);
-                  display: flex;
-                  flex-direction: row;
-                "
-              >
-                <img
-                  :src="item.iconImgUrl"
-                  style="height: 30px; width: 42px"
-                  :alt="item.name"
-                />
-                <div style="height: 30px; margin-left: 17px; line-height: 30px">
-                  {{ item.value }}%
-                </div>
-              </div>
-            </div>
-          </div>
+          <lineChart></lineChart>
         </dv-border-box-12>
       </div>
-      <div class="machine_bottom_right"></div> -->
+      <div class="machine_bottom_right">
+        <Plan></Plan>
+      </div>
     </div>
   </div>
 </template>
@@ -171,14 +134,15 @@ let partUrl = "/api/CNC/PartCode?"; //加工零件编码
 let tfsUrl = "/api/CNC/GetCutterInfo?"; //刀具信息
 let LoadUrl = "/api/CNC/GetSpindleLoad?"; //获取负载
 let PerUr = "/api/CNC/GetPartPercentage?"; //获取加工百分比
-// import register from "./ registerInfo";
+import CropRate from "./CropRate"; //稼动率
 
-import lineChart from "./lineChart";
-import Header from "../common/Header.vue";
+import lineChart from "./lineChart"; //ERP和实际加工公司对比
+import Plan from "./PlanData.vue";
+import Header from "../common/Header.vue"; //引入头部组件
 //import Unity from "vue-unity-webgl";
 
 export default {
-  components: { lineChart, Header },
+  components: { lineChart, Header, CropRate, Plan },
   data() {
     return {
       title: "设备详情",
@@ -279,6 +243,10 @@ export default {
         CurrentProgramName: "",
       },
       time: null,
+      data: [
+        { x: 1, y: 2, Z: 3 },
+        { x: 2, y: 3, Z: 4 },
+      ],
     };
   },
   mounted() {
@@ -303,11 +271,12 @@ export default {
   },
   methods: {
     show() {
+      let text_data = JSON.stringify(this.data);
       console.log(this.$refs.iframe.contentWindow.gameInstance.SendMessage);
       this.$refs.iframe.contentWindow.gameInstance.SendMessage(
         "JsTalker",
         "SetToken",
-        localStorage.token
+        text_data
       );
     },
     //设置负载背景颜色
@@ -476,34 +445,34 @@ export default {
   .Axios_info {
     width: 100%;
     height: 280px;
-    .content {
-      color: #fff;
-      margin-top: 16px;
-      overflow: auto;
-      cursor: move;
-      &::-webkit-scrollbar {
-        /*高宽分别对应横竖滚动条的尺寸*/
-        width: 0;
-      }
-      .axisItem {
-        height: 50px;
-        display: flex;
-        flex-direction: row;
-        font-size: 20px;
-        .name {
-          flex: 1;
-        }
-        .value {
-          flex: 3;
-        }
-        .unit {
-          flex: 1;
-        }
-        div {
-          text-align: center;
-        }
-      }
-    }
+    // .content {
+    //   color: #fff;
+    //   margin-top: 16px;
+    //   overflow: auto;
+    //   cursor: move;
+    //   &::-webkit-scrollbar {
+    //     /*高宽分别对应横竖滚动条的尺寸*/
+    //     width: 0;
+    //   }
+    //   .axisItem {
+    //     height: 50px;
+    //     display: flex;
+    //     flex-direction: row;
+    //     font-size: 20px;
+    //     .name {
+    //       flex: 1;
+    //     }
+    //     .value {
+    //       flex: 3;
+    //     }
+    //     .unit {
+    //       flex: 1;
+    //     }
+    //     div {
+    //       text-align: center;
+    //     }
+    //   }
+    // }
   }
   .load_info {
     width: 100%;

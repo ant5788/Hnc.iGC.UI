@@ -49,7 +49,7 @@ export default {
       difference: [],
       deviceNumberList: [],
       durationTimeList: [],
-      title: "超越智慧工厂",
+      title: "数字加工中心",
       time: null,
     };
   },

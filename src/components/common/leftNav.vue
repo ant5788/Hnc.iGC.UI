@@ -79,6 +79,10 @@ export default {
           text: "三维车间",
           id: 16,
         },
+        {
+          text: "文件上传",
+          id: 17,
+        },
       ],
     };
   },
@@ -130,6 +134,9 @@ export default {
           break;
         case 16:
           this.$router.push("/Unity").catch(() => {});
+          break;
+        case 17:
+          this.$router.push("/Program").catch(() => {});
       }
     },
   },

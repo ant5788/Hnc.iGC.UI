@@ -19,6 +19,7 @@ import Repair from "../components/Devicerepair/repairIndex.vue";
 import Alarm from "../components/Alarm/AlarmIndex.vue";
 import FictitiousList from "../components/FictitiousDevice/FictitiousDeviceIndex.vue";
 import Unity from "../components/Unity/UnityINdex.vue";
+import Program from "../components/Programupload/ProgramUpload.vue";
 Vue.use(Router);
 const routes = [
   {
@@ -171,6 +172,14 @@ const routes = [
     component: Unity,
     meta: {
       title: "三维车间",
+    },
+  },
+  {
+    path: "/Program",
+    name: "Program",
+    component: Program,
+    meta: {
+      title: "程序上传",
     },
   },
 ];

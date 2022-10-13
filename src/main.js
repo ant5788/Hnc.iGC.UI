@@ -1,15 +1,15 @@
 import Vue from "vue";
 import App from "./App.vue";
-import Axios from "axios";
-import router from "./router";
-import dataV from "@jiaminghi/data-view";
-import * as echarts from "echarts";
-import "./assets/css/main.scss";
-import store from "./store";
-import base from "./api/index";
-import "element-ui/lib/theme-chalk/index.css";
-import utils from "./utils/common";
-import webSocket from "./utils/socket";
+import Axios from "axios"; //前端的http请求
+import router from "./router"; //路由
+import dataV from "@jiaminghi/data-view"; //大屏展示相关的css 插件
+import * as echarts from "echarts"; //图表显示的插件
+import "./assets/css/main.scss"; //全局的css
+import store from "./store"; //全局数据交互（目前没有用到）
+import base from "./api/index"; //引入后端的接口IP地址配置
+import "element-ui/lib/theme-chalk/index.css"; //element-ui样式的引入
+import utils from "./utils/common"; //全局方法的封装
+import webSocket from "./utils/socket"; //与后端实时通讯方式的引入
 import {
   DatePicker,
   TimePicker,
@@ -27,7 +27,7 @@ import {
   Input,
   Upload,
   Loading,
-} from "element-ui";
+} from "element-ui"; //按需引入elemet-ui的相关组件
 Vue.component(DatePicker.name, DatePicker);
 Vue.component(TimePicker.name, TimePicker);
 Vue.use(Select);
@@ -45,6 +45,7 @@ Vue.use(FormItem);
 Vue.use(Upload);
 Vue.use(dataV);
 Vue.use(Loading);
+//引入对象在vue对象进行挂载
 Vue.config.productionTip = false;
 Vue.prototype.$axios = Axios;
 Vue.prototype.$echarts = echarts;

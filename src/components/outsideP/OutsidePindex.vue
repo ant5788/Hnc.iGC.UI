@@ -12,22 +12,61 @@
         :show-overflow-tooltip="true"
       >
         <el-table-column
-          prop="OutsourceDate"
-          label="委外日期"
+          prop="OutsourcingOrder"
+          label="委外订单"
         ></el-table-column>
-        <el-table-column prop="ReturnDate" label="返回日期"></el-table-column>
+        <el-table-column prop="Supplier" label="供应商"></el-table-column>
+        <el-table-column prop="ItemNumber" label="物料编码"></el-table-column>
         <el-table-column
-          prop="ProcessingNumber"
-          label="加工数量"
+          prop="ItemDescription"
+          label="物料描述"
+        ></el-table-column>
+        <el-table-column prop="Number" label="数量"></el-table-column>
+        <el-table-column
+          prop="ReceivedQuantity"
+          label="已入库数量"
         ></el-table-column>
         <el-table-column
-          prop="ProcessingComponents"
-          label="加工零件"
+          prop="QualifiedQuantity"
+          label="合格数量"
         ></el-table-column>
         <el-table-column
-          prop="ProcessoinQuality"
-          label="加工质量"
+          prop="ToBeInspected"
+          label="待检数量"
         ></el-table-column>
+        <el-table-column
+          prop="OutsourcingTime"
+          label="委外申请创建日期"
+        ></el-table-column>
+        <el-table-column
+          prop="ActualRequiredDate"
+          label="实际要求到货日期"
+        ></el-table-column>
+        <el-table-column
+          prop="ContractSigningDate"
+          label="合同签订日期"
+        ></el-table-column>
+        <el-table-column
+          prop="ContractArrivalDate"
+          label="合同要求到货日期"
+        ></el-table-column>
+        <el-table-column
+          prop="DeliveryTime"
+          label="委外出库时间"
+        ></el-table-column>
+        <el-table-column
+          prop="EarlyWarning"
+          label="提前预警时间"
+        ></el-table-column>
+        <el-table-column
+          prop="ActualArrivalDate"
+          label="实际到货日期"
+        ></el-table-column>
+        <el-table-column
+          prop="ProcurementTeam"
+          label="采购组"
+        ></el-table-column>
+        <el-table-column prop="Remarks" label="备注"></el-table-column>
         <el-table-column width="250" label="操作">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary">
@@ -127,12 +166,28 @@ export default {
             let data = res.data.data.list;
             if (data != null && data.length > 0) {
               data.forEach((item) => {
+                //时间格式化处理
                 item.OutsourceDate = this.$utils.Timeconversion(
                   item.OutsourceDate
                 );
-                item.ReturnDate = this.$utils.Timeconversion(item.ReturnDate);
-                item.createTime = this.$utils.Timeconversion(item.createTime);
-                item.updateTime = this.$utils.Timeconversion(item.updateTime);
+                item.OutsourcingTime = this.$utils.Timeconversion(
+                  item.OutsourcingTime
+                );
+                item.ActualRequiredDate = this.$utils.Timeconversion(
+                  item.ActualRequiredDate
+                );
+                item.ContractSigningDate = this.$utils.Timeconversion(
+                  item.ContractSigningDate
+                );
+                item.ContractArrivalDate = this.$utils.Timeconversion(
+                  item.ContractArrivalDate
+                );
+                item.DeliveryTime = this.$utils.Timeconversion(
+                  item.DeliveryTime
+                );
+                item.ActualArrivalDate = this.$utils.Timeconversion(
+                  item.ActualArrivalDate
+                );
               });
               this.total = res.data.data.total;
               this.tableData = data;
