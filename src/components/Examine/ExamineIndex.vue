@@ -20,7 +20,10 @@
           prop="SpareParts"
           label="零部件是否齐全"
         ></el-table-column>
-        <el-table-column prop="Liquid" label="液压"></el-table-column>
+        <el-table-column
+          prop="Liquid"
+          label="液压，润滑，冷却系统"
+        ></el-table-column>
         <el-table-column prop="Pressure" label="气压"></el-table-column>
         <el-table-column prop="Handle" label="各操作手柄"></el-table-column>
         <el-table-column
@@ -41,7 +44,7 @@
         ></el-table-column>
         <el-table-column
           prop="LeakageOilGasWater"
-          label="漏水"
+          label="漏油、漏气、漏水"
         ></el-table-column>
         <el-table-column
           prop="PrincipalAxis"

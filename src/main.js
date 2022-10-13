@@ -27,6 +27,8 @@ import {
   Input,
   Upload,
   Loading,
+  Radio,
+  RadioGroup,
 } from "element-ui"; //按需引入elemet-ui的相关组件
 Vue.component(DatePicker.name, DatePicker);
 Vue.component(TimePicker.name, TimePicker);
@@ -45,6 +47,8 @@ Vue.use(FormItem);
 Vue.use(Upload);
 Vue.use(dataV);
 Vue.use(Loading);
+Vue.use(Radio);
+Vue.use(RadioGroup);
 //引入对象在vue对象进行挂载
 Vue.config.productionTip = false;
 Vue.prototype.$axios = Axios;
