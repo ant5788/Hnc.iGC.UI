@@ -17,42 +17,45 @@
         <el-table-column prop="DeviceNumber" label="设备编号"></el-table-column>
         <el-table-column prop="DeviceModel" label="设备型号"></el-table-column>
         <el-table-column
-          prop="SpareParts"
+          prop="SparePartsName"
           label="零部件是否齐全"
         ></el-table-column>
         <el-table-column
-          prop="Liquid"
+          prop="LiquidName"
           label="液压，润滑，冷却系统"
         ></el-table-column>
-        <el-table-column prop="Pressure" label="气压"></el-table-column>
-        <el-table-column prop="Handle" label="各操作手柄"></el-table-column>
+        <el-table-column prop="PressureName" label="气压"></el-table-column>
+        <el-table-column prop="HandleName" label="各操作手柄"></el-table-column>
         <el-table-column
-          prop="SafetyDevices"
+          prop="SafetyDevicesName"
           label="安全装置"
         ></el-table-column>
         <el-table-column
-          prop="InstrumentPressure"
+          prop="InstrumentPressureName"
           label="各仪表指示压力"
         ></el-table-column>
         <el-table-column
-          prop="FanScreen"
+          prop="FanScreenName"
           label="各散热风扇及滤网"
         ></el-table-column>
         <el-table-column
-          prop="DriveMotor"
+          prop="DriveMotorName"
           label="各部驱动电机"
         ></el-table-column>
         <el-table-column
-          prop="LeakageOilGasWater"
+          prop="LeakageOilGasWaterName"
           label="漏油、漏气、漏水"
         ></el-table-column>
         <el-table-column
-          prop="PrincipalAxis"
+          prop="PrincipalAxisName"
           label="主轴及回转传动机构"
         ></el-table-column>
-        <el-table-column prop="Appearance" label="机床外表"></el-table-column>
         <el-table-column
-          prop="ElectricalPart"
+          prop="AppearanceName"
+          label="机床外表"
+        ></el-table-column>
+        <el-table-column
+          prop="ElectricalPartName"
           label="电器部分"
         ></el-table-column>
 
@@ -126,6 +129,7 @@ export default {
         1: "类型1",
         2: "类型2",
       },
+      SparePartsData: { 0: "正常", 1: "异常", 2: "待修", 3: "修好" },
     };
   },
   created() {
@@ -161,12 +165,23 @@ export default {
             let data = res.data.data.list;
             if (data.length > 0) {
               data.forEach((item) => {
-                item.CreateTime = this.$utils.Timeconversion(item.CreateTime);
-                item.UpdateTime = this.$utils.Timeconversion(item.UpdateTime);
-                item.StartTime = this.$utils.Timeconversion(item.StartTime);
-                item.EndTime = this.$utils.Timeconversion(item.EndTime);
-                item.StateName = this.stateData[item.State];
-                item.TypeName = this.typeData[item.Type];
+                item.SparePartsName = this.SparePartsData[item.SpareParts];
+                item.LiquidName = this.SparePartsData[item.Liquid];
+                item.PressureName = this.SparePartsData[item.Pressure];
+                item.HandleName = this.SparePartsData[item.Handle];
+                item.SafetyDevicesName =
+                  this.SparePartsData[item.SafetyDevices];
+                item.InstrumentPressureName =
+                  this.SparePartsData[item.InstrumentPressure];
+                item.FanScreenName = this.SparePartsData[item.FanScreen];
+                item.DriveMotorName = this.SparePartsData[item.DriveMotor];
+                item.LeakageOilGasWaterName =
+                  this.SparePartsData[item.LeakageOilGasWater];
+                item.PrincipalAxisName =
+                  this.SparePartsData[item.PrincipalAxis];
+                item.AppearanceName = this.SparePartsData[item.Appearance];
+                item.ElectricalPartName =
+                  this.SparePartsData[item.ElectricalPart];
               });
               this.total = res.data.data.total;
               this.tableData = data;

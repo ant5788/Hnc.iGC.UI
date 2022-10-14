@@ -199,22 +199,22 @@ export default {
         {
           label: "正常",
           id: 1,
-          val: 1,
+          val: 0,
         },
         {
           label: "异常",
           id: 2,
-          val: 2,
+          val: 1,
         },
         {
           label: "待修",
           id: 3,
-          val: 3,
+          val: 2,
         },
         {
           label: "修好",
           id: 4,
-          val: 4,
+          val: 3,
         },
       ],
       form: {

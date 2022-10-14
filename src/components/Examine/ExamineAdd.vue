@@ -14,7 +14,7 @@
         label-width="210px"
       >
         <el-form-item label="设备名称" prop="DeviceName">
-          <el-select v-model="form.DeviceName" >
+          <el-select v-model="form.DeviceName">
             <el-option></el-option>
           </el-select>
         </el-form-item>
@@ -219,25 +219,24 @@ export default {
         {
           label: "正常",
           id: 1,
-          val: 1,
+          val: 0,
         },
         {
           label: "异常",
           id: 2,
-          val: 2,
+          val: 1,
         },
         {
           label: "待修",
           id: 3,
-          val: 3,
+          val: 2,
         },
         {
           label: "修好",
           id: 4,
-          val: 4,
+          val: 3,
         },
       ],
-
       rules: {
         DeviceName: [
           { required: true, message: "请输入设备名称", trigger: "blur" },
