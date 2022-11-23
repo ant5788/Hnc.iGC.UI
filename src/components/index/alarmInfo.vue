@@ -30,7 +30,7 @@ export default {
   },
   mounted() {
     this.time = setInterval(() => {
-      this.getData();
+      this.getdata();
     }, 1500);
   },
   created() {

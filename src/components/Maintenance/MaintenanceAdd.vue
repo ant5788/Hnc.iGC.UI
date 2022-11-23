@@ -73,13 +73,7 @@
           <el-input v-model="form.PersonLiable" class="input_box"></el-input>
         </el-form-item>
         <el-form-item label="提前预警时间" prop="EarlyWarningTime">
-          <el-date-picker
-            v-model="form.EarlyWarningTime"
-            type="datetime"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd HH:mm:ss"
-          >
-          </el-date-picker>
+          <el-input v-model.Number="from.EarlyWarningTime"></el-input>
         </el-form-item>
         <el-form-item label="维保状态" prop="MaintainState">
           <el-select v-model="form.MaintainState">
@@ -124,7 +118,6 @@ export default {
         Content: "",
         Cycle: "",
         PersonLiable: "",
-        UserDep: "",
         LastTime: "",
         PlannedTime: "",
         ActualTime: "",
@@ -174,9 +167,7 @@ export default {
         PersonLiable: [
           { required: true, message: "请输入责任人", trigger: "blur" },
         ],
-        UserDep: [
-          { required: true, message: "请输入使用单位", trigger: "blur" },
-        ],
+
         DurableYears: [
           { required: true, message: "请输入使用年限", trigger: "blur" },
         ],
